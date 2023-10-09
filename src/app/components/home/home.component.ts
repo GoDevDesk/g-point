@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
+public sidebarVisible = true;
   constructor(private authService:AuthService) { }
 
   ngOnInit(): void {

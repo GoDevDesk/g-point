@@ -1,4 +1,4 @@
-import { MessageService } from 'primeng/api';
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -11,13 +11,12 @@ import { environment } from 'src/environments/environment';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
-import {ButtonModule} from 'primeng/button';
-import {InputTextModule} from 'primeng/inputtext';
-import {ToastModule} from 'primeng/toast';
-import {MessagesModule} from 'primeng/messages';
-import {MessageModule} from 'primeng/message';
+
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { SharedModule } from './shared/shared.module';
+import { PrimeNgModule } from './prime-ng/prime-ng.module';
 
 @NgModule({
   declarations: [
@@ -27,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HomeComponent
   ],
   imports: [
+    SharedModule,
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -34,13 +34,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    ButtonModule,
-    InputTextModule,
-    ToastModule,
-    MessagesModule,
-    MessageModule
+    PrimeNgModule
   ],
-  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
