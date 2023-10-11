@@ -3,8 +3,7 @@
     "rules": "database.rules.json"
   },
   "hosting": {
-    "site": "backstore",
-    "public": "y",
+    "public": "dist/angularfirebase",
     "ignore": [
       "firebase.json",
       "**/.*",

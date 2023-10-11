@@ -24,29 +24,45 @@ export class MenuComponent implements OnInit {
   private _addItems():MenuItem[]{
     return [
       {
-        label: 'Pipes de angular',
-        icon: 'pi pi-desktop',
+        label: 'Vender',
+        icon: 'pi pi-dollar',
         items: [
           {
-            label: 'Ingresos',
-            icon: 'pi pi-align-left',
-            routerLink: ''
-          },
-          {
-            label: 'Ventas',
-            icon: 'pi pi-dollar',
-            routerLink: ''
-          },
-          {
-            label: 'Balances',
-            icon: 'pi pi-globe',
-            routerLink: ''
+            label: 'Promociones',
+            icon: 'pi pi-dollar'
           }
-        ],
+        ]
       },
       {
-        label: 'Ajustes',
-        icon: 'pi pi-cog'
+        label: 'Stock',
+        icon: 'pi pi-table',
+        items: [
+          {
+            label: 'Carga de Stock',
+            icon: 'pi pi-dollar'
+          },
+          {
+            label: 'mis Productos',
+            icon: 'pi pi-dollar'
+          },
+          {
+            label: 'Vencimientos',
+            icon: 'pi pi-dollar'
+          },
+          {
+            label: 'Poco Stock',
+            icon: 'pi pi-dollar'
+          }
+        ]
+      },
+      {
+        label: 'Finanzas',
+        icon: 'pi pi-money-bill'
+      },
+      {
+        label: 'Informacion',
+        icon: 'pi pi-chart-line',
+        
       }
   ];
 
