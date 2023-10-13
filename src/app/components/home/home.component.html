@@ -1,8 +1,60 @@
-<div class="surface-section px-4 py-8 md:px-6 lg:px-8">
-    <div class="text-700 text-center">
-        <div class="text-blue-600 font-bold mb-3"><i class="pi pi-gift"></i>&nbsp;POWERED BY BackSide Dev</div>
-        <div class="text-900 font-bold text-5xl mb-3">Join Our Design Community</div>
-        <div class="text-700 text-2xl mb-5">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit numquam eligendi quos.</div>
-        <button pButton pRipple label="LOGOUT" (click)="logout()" icon="pi pi-angle-left" class="font-bold px-5 py-3 p-button-raised p-button-rounded white-space-nowrap"></button>
-    </div>
+
+<div  class="header">
+<p-card header="Buenos dias !">
+    <p class="m-0">
+        ¡Bienvenido a BackStore - Tu Socio de Negocios de Confianza!
+        Aquí tienes tu resumen principal: Toda la información vital de tu negocio en un solo lugar. ¡Comencemos a simplificar la gestión de tu pequeña empresa!
+    </p>
+</p-card>
+</div>
+<div class="cards">
+    <a href="" style="text-decoration-line: none;">
+    <p-card header="Ganancias del mes" [style]="{ width: '360px', 'text-align':'center' }">
+        <ng-template pTemplate="header">
+        </ng-template>
+            <p style="font-size: 3rem; text-align: center;">
+           75000
+            </p>
+    </p-card>
+</a>
+<a href="" style="text-decoration-line: none;">
+    <p-card header="Gastos del mes" [style]="{ width: '360px', 'text-align':'center' }">
+        <ng-template pTemplate="header">
+        </ng-template>
+            <p style="font-size: 3rem; text-align: center;">
+           25000
+            </p>
+    </p-card>
+</a>
+    <a href="" style="text-decoration-line: none;">
+    <p-card header="Poco Stock" [style]="{ width: '360px', 'text-align':'center' }">
+        <ng-template pTemplate="header">
+        </ng-template>
+            <p style="font-size: 3rem; text-align: center;">
+           19
+            </p>
+    </p-card>
+</a>
+    <a href="" style="text-decoration-line: none;">
+    <p-card header="Alerta vencimiento" [style]="{ width: '360px', 'text-align':'center' }">
+        <ng-template pTemplate="header">
+        </ng-template>
+            <p style="font-size: 3rem; text-align: center;">
+           12
+            </p>
+    </p-card>
+</a>
+</div>
+<div class="cards">
+    <p-card header="Ultimas Ventas" [style]="{ width: '360px' }" >
+        <ng-template pTemplate="header">
+            <p style=" text-align: left; margin-left: 10px; margin-top: 20px;">
+                <li *ngFor="let sale of sales">
+                    {{ sale.time }} Venta nro: {{ sale.id }} |  {{ sale.total }} $
+                 </p>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <p-button label="Ver mas" icon="pi pi-search"></p-button>
+        </ng-template>
+    </p-card>
 </div>

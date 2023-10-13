@@ -7,6 +7,7 @@ import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
 import { MessageService } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
+import { CardModule } from 'primeng/card';
 
 @NgModule({
   exports: [
@@ -16,7 +17,8 @@ import { MenubarModule } from 'primeng/menubar';
     ToastModule,
     MessagesModule,
     MessageModule,
-    MenubarModule
+    MenubarModule,
+    CardModule
   ],
   providers: [MessageService],
 })

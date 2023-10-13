@@ -24,9 +24,17 @@ export class MenuComponent implements OnInit {
   private _addItems():MenuItem[]{
     return [
       {
-        label: 'Vender',
+        label: 'Ventas',
         icon: 'pi pi-dollar',
         items: [
+          {
+            label: 'Vender',
+            icon: 'pi pi-dollar'
+          },
+          {
+            label: 'Historial',
+            icon: 'pi pi-dollar'
+          },
           {
             label: 'Promociones',
             icon: 'pi pi-dollar'
@@ -46,11 +54,7 @@ export class MenuComponent implements OnInit {
             icon: 'pi pi-dollar'
           },
           {
-            label: 'Vencimientos',
-            icon: 'pi pi-dollar'
-          },
-          {
-            label: 'Poco Stock',
+            label: 'Pedido',
             icon: 'pi pi-dollar'
           }
         ]
