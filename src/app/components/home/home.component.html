@@ -1,7 +1,7 @@
 
 <div  class="header">
-<p-card header="Buenos dias !">
-    <p class="m-0">
+<p-card header="Buenos dias !" [style]="{ }">
+    <p>
         ¡Bienvenido a BackStore - Tu Socio de Negocios de Confianza!
         Aquí tienes tu resumen principal: Toda la información vital de tu negocio en un solo lugar. ¡Comencemos a simplificar la gestión de tu pequeña empresa!
     </p>
@@ -44,13 +44,45 @@
             </p>
     </p-card>
 </a>
-</div>
-<div class="cards">
+<p-divider type="solid" style="width: 100%;"></p-divider>
     <p-card header="Ultimas Ventas" [style]="{ width: '360px' }" >
         <ng-template pTemplate="header">
             <p style=" text-align: left; margin-left: 10px; margin-top: 20px;">
                 <li *ngFor="let sale of sales">
                     {{ sale.time }} Venta nro: {{ sale.id }} |  {{ sale.total }} $
+                 </p>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <p-button label="Ver mas" icon="pi pi-search"></p-button>
+        </ng-template>
+    </p-card>
+    <p-card header="Ultimos Gastos" [style]="{ width: '360px' }" >
+        <ng-template pTemplate="header">
+            <p style=" text-align: left; margin-left: 10px; margin-top: 20px;">
+                <li *ngFor="let expense of expenses">
+                    {{ expense.time }} Desembolso nro: {{ expense.id }} |  {{ expense.total }} $
+                 </p>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <p-button label="Ver mas" icon="pi pi-search"></p-button>
+        </ng-template>
+    </p-card>
+    <p-card header="Pedidos pendientes" [style]="{ width: '360px' }" >
+        <ng-template pTemplate="header">
+            <p style=" text-align: left; margin-left: 10px; margin-top: 20px;">
+                <li *ngFor="let expense of expenses">
+                    {{ expense.time }} Pedido nro: {{ expense.id }} |  {{ expense.total }} $
+                 </p>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <p-button label="Ver mas" icon="pi pi-search"></p-button>
+        </ng-template>
+    </p-card>
+    <p-card header="Pagos pendientes" [style]="{ width: '360px' }" >
+        <ng-template pTemplate="header">
+            <p style=" text-align: left; margin-left: 10px; margin-top: 20px;">
+                <li *ngFor="let expense of expenses">
+                    {{ expense.time }} Venta nro: {{ expense.id }} |  {{ expense.total }} $
                  </p>
         </ng-template>
         <ng-template pTemplate="footer">

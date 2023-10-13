@@ -6,6 +6,7 @@
     align-items: center;
     margin: 30px;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 p-card-content {
     padding: 0px;
@@ -13,3 +14,4 @@ p-card-content {
 ::ng-deep p-card .p-card-content{
     padding: 0% !important;
 }
+

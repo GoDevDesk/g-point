@@ -46,11 +46,11 @@ export class MenuComponent implements OnInit {
         icon: 'pi pi-table',
         items: [
           {
-            label: 'Carga de Stock',
+            label: 'mis Productos',
             icon: 'pi pi-dollar'
           },
           {
-            label: 'mis Productos',
+            label: 'Carga de Stock',
             icon: 'pi pi-dollar'
           },
           {
