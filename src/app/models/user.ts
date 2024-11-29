@@ -8,5 +8,5 @@ export interface User {
 
 export interface authUser{
     email:string,
-    password:string
+    password:string //sad
 }
