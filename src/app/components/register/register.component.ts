@@ -1,5 +1,6 @@
+import { AuthService } from 'src/app/services/auth.service';
 import { authUser } from './../../models/user';
-import { AuthService } from './../../services/auth.service';
+
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -18,8 +19,8 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  register(registerUser: authUser) {
-    this.authService.register(registerUser.email, registerUser.password)
-  }
+  // register(registerUser: authUser) {
+  //   this.authService.register(registerUser.email, registerUser.password)
+  // }
 
 }

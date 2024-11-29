@@ -1,6 +1,7 @@
-import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { authUser } from 'src/app/models/user';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
+
 
 @Component({
   selector: 'app-login',
@@ -8,16 +9,24 @@ import { authUser } from 'src/app/models/user';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  loginUser: authUser = {
-    email: '',
-    password: ''
-  }
-  constructor(private authService: AuthService) { }
+  credentials = { username: '', password: '' }; // Datos de usuario
 
-  ngOnInit(): void {
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  login(loginUser: authUser) {
-    this.authService.login(loginUser.email, loginUser.password)
+  ngOnInit(): void {}
+
+  onLogin(): void {
+    this.authService.login(this.credentials).subscribe(
+      (response) => {
+        // Almacenar el token
+        this.authService.setToken(response.token);
+        console.log('Usuario autenticado');
+        // Redirigir a otra página (ej. dashboard)
+        this.router.navigate(['/dashboard']);
+      },
+      (error) => {
+        console.error('Error al iniciar sesión', error);
+      }
+    );
   }
 }

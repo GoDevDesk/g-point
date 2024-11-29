@@ -9,6 +9,8 @@ import { MessageService } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
+import { TabMenuModule } from 'primeng/tabmenu';
+
 
 @NgModule({
   exports: [
@@ -20,7 +22,9 @@ import { DividerModule } from 'primeng/divider';
     MessageModule,
     MenubarModule,
     CardModule,
-    DividerModule
+    DividerModule,
+    TabMenuModule
+    
   ],
   providers: [MessageService],
 })

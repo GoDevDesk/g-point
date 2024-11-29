@@ -1,0 +1,59 @@
+<!-- component -->
+<div class="max-w-2xl mx-auto">
+
+    <div class="px-3 py-2">
+      <!--descripciopn-->
+        <div class="flex flex-col gap-1 text-center">
+            <a class="block mx-auto bg-center bg-no-repeat bg-cover w-20 h-20 rounded-full border border-gray-400 shadow-lg" href="" style="background-image: url('https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg')"></a>
+            <p class="font-serif font-semibold">Marina Davinchi</p>
+            <span class="text-sm text-gray-400">New York, NY - Los Angeles, CA</span>
+            <span class="text-sm text-gray-400">https://www.youtube.com/watch?v=dQw4w9WgXcQ</span>
+        </div>
+
+
+         <!--informacion del usuario-->
+        <div class="flex justify-center items-center gap-2 my-3">
+            <div class="font-semibold text-center mx-4">
+                <p class="text-black">102</p>
+                <span class="text-gray-400">Posts</span>
+            </div>
+            <div class="font-semibold text-center mx-4">
+                <p class="text-black">102</p>
+                <span class="text-gray-400">Followers</span>
+            </div>
+            <div class="font-semibold text-center mx-4">
+                <p class="text-black">102</p>
+                <span class="text-gray-400">Folowing</span>
+            </div>
+        </div>      
+
+       <!--boton seguir y mensaje-->
+        <div class="flex justify-center gap-2 my-5">
+            <button class="bg-pink-500 px-10 py-2 rounded-full text-white shadow-lg">Follow</button>
+            <button class="bg-white border border-gray-500 px-10 py-2 rounded-full shadow-lg">Message</button>
+        </div>
+        <!--botones tab-->
+        <div class="flex justify-between items-center">
+            <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'albums'" (click)="activeTab = 'albums'">
+              <!-- Ícono -->
+              Albums
+            </button>
+            <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'photos'" (click)="activeTab = 'photos'">
+              <!-- Ícono -->
+              Photos
+            </button>
+            <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'drinks'" (click)="activeTab = 'drinks'">
+              <!-- Ícono -->
+              Drinks
+            </button>
+          </div>
+        <app-albums-grid *ngIf="activeTab === 'albums'"></app-albums-grid>
+        <app-personal-photos *ngIf="activeTab === 'photos'"></app-personal-photos>
+        <app-drinks *ngIf="activeTab === 'drinks'"></app-drinks>
+
+    </div>
+    <!--menu inferior-->
+    <app-toolbar-footer></app-toolbar-footer>
+    
+
+</div>
