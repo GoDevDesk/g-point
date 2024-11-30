@@ -1,12 +1,12 @@
 export interface User {
-    uid?: string,
-    email:string,
-    displayName:string,
-    photoURL?: string,
-    emailVerified:boolean
+    id: number,
+    userName: string,
+    emailAddress: string,
+    firstName: string,
+    lastName: string
 }
 
 export interface authUser{
     email:string,
-    password:string //sad
+    password:string
 }

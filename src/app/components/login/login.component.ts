@@ -1,32 +1,51 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
-
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  credentials = { username: '', password: '' }; // Datos de usuario
+  credentials = { username: '', password: '' };
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-  onLogin(): void {
-    this.authService.login(this.credentials).subscribe(
-      (response) => {
-        // Almacenar el token
-        this.authService.setToken(response.token);
-        console.log('Usuario autenticado');
-        // Redirigir a otra página (ej. dashboard)
-        this.router.navigate(['/dashboard']);
+  async onLogin(): Promise<void> {
+    this.authService.login(this.credentials).subscribe({
+      next: async (response) => {
+        this.authService.setToken(response.token || response);
+
+        try {
+          const userId = await this.fetchCurrentUser(); // Esperar el ID del usuario
+          this.router.navigate(['/profile', userId]);
+        } catch (error) {
+          console.error('Error durante el proceso de login:', error);
+        }
       },
-      (error) => {
+      error: (error) => {
         console.error('Error al iniciar sesión', error);
-      }
-    );
+      },
+    });
+  }
+
+  fetchCurrentUser(): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.authService.getCurrentUserLogged().subscribe({
+        next: (user: User) => {
+          console.log('Usuario actual:', user);
+          this.authService.setCurrentUser(user);
+          resolve(user.id); // Suponiendo que el usuario tiene un campo `id`
+        },
+        error: (error) => {
+          console.error('Error al obtener el usuario actual:', error);
+          reject(error);
+        },
+      });
+    });
   }
 }

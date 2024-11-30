@@ -22,7 +22,8 @@ import { ToolbarFooterComponent } from './components/toolbar-footer/toolbar-foot
 import { PersonalPhotosComponent } from './components/personal-photos/personal-photos.component';
 import { DrinksComponent } from './components/drinks/drinks.component';
 import { AuthService } from './services/auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -47,8 +48,13 @@ import { HttpClientModule } from '@angular/common/http';
     PrimeNgModule,
     HttpClientModule
   ],
-  // providers: [OwnauthService], // Registro del servicio
   bootstrap: [AppComponent],
-  providers: [AuthService]
+  providers: [AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true, // Permite múltiples interceptores si se agregan otros en el futuro
+    },
+  ]
 })
 export class AppModule { }
