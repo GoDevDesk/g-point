@@ -24,6 +24,8 @@ import { DrinksComponent } from './components/drinks/drinks.component';
 import { AuthService } from './services/auth.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { MensualSuscriptionComponent } from './components/mensual-suscription/mensual-suscription.component';
+import { LooseDrinkComponent } from './components/loose-drink/loose-drink.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     ToolbarFooterComponent,
     PersonalPhotosComponent,
     DrinksComponent,
+    MensualSuscriptionComponent,
+    LooseDrinkComponent,
   ],
   imports: [
     SharedModule,
