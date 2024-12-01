@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AlbumService {
-  private apiUrl = 'https://localhost:44335/api/album'; // URL base del backend
+  private apiUrl = 'https://localhost:44306/api/album'; // URL base del backend
 
   constructor(private http: HttpClient) { }
 
@@ -17,9 +17,8 @@ export class AlbumService {
       .set('id', userId.toString()) // El parámetro 'id' que el backend espera
       .set('page', page.toString()) // El número de página
       .set('pageSize', pageSize.toString()); // El tamaño de la página
-
+      const url = `${this.apiUrl}/collection/${userId}`;
     // Realizar la petición GET a la API con los parámetros de paginación
-    return this.http.get<PaginatedResultResponse<Album>>(this.apiUrl, { params });
+    return this.http.get<PaginatedResultResponse<Album>>(url, { params });
   }
 }
-//sad

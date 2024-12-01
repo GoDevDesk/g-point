@@ -37,6 +37,7 @@ export class ProfileComponent implements OnInit {
     // Verificar si el usuario logueado es dueño del perfil
     this.isOwner = this.authService.isProfileOwner(this.profileId);
     this.fetchUserProfile();
+    this.authService.setVisitedProfileId(Number(this.profileId));
   }
 
 

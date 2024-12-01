@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Album } from 'src/app/models/album';
+import { PaginatedResultResponse } from 'src/app/models/paginatedResultResponse';
+import { AlbumService } from 'src/app/services/album.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-albums-grid',
@@ -6,10 +10,38 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./albums-grid.component.scss']
 })
 export class AlbumsGridComponent implements OnInit {
+  albums: Album[] = [];
+  totalItems: number = 0;
+  page: number = 1;
+  pageSize: number = 5;
+  totalPages: number = 0;
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(private albumService: AlbumService, private authService: AuthService) {}
+ 
+    ngOnInit(): void {
+      this.loadAlbums();
+    }
+  
+    loadAlbums(): void {
+      var visitedProfileId = this.authService.getVisitedProfileId();
+      this.albumService.getAlbumsByUserId(visitedProfileId, this.page, this.pageSize).subscribe({
+        next: (response: PaginatedResultResponse<Album>) => {
+          this.albums = response.items;
+          this.totalItems = response.totalItems;
+          this.page = response.page;
+          this.pageSize = response.pageSize;
+  
+          // Calcular el total de páginas
+          this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+        },
+        error: (err) => {
+          console.error('Error loading albums', err);
+        }
+      });
+    }
+  
+    onPageChange(newPage: number): void {
+      this.page = newPage;
+      this.loadAlbums();
+    }
   }
-
-}

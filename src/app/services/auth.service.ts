@@ -9,6 +9,7 @@ import { User } from '../models/user';
 export class AuthService {
   private apiUrl = 'https://localhost:44335/api'; // URL base del backend
   private currentUser: any; // Almacena el usuario actual
+  private visitedProfileId = 0; // Almacena el id del perfil visitado
 
   constructor(private http: HttpClient) { }
 
@@ -48,5 +49,13 @@ export class AuthService {
   // Verificar si el usuario actual es dueño del perfil
   isProfileOwner(profileId: string): boolean {
     return this.currentUser && String(this.currentUser.id) === profileId;
+  }
+
+  getVisitedProfileId(): number {
+    return this.visitedProfileId;
+  }
+
+  setVisitedProfileId(id: number): void {
+    this.visitedProfileId = id;
   }
 }
