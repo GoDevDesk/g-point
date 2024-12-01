@@ -22,3 +22,4 @@ export class AlbumService {
     return this.http.get<PaginatedResultResponse<Album>>(this.apiUrl, { params });
   }
 }
+//sad
