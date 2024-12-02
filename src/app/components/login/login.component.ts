@@ -38,7 +38,10 @@ export class LoginComponent implements OnInit {
       this.authService.getCurrentUserLogged().subscribe({
         next: (user: User) => {
           console.log('Usuario actual:', user);
-          this.authService.setCurrentUser(user);
+          //     this.authService.setCurrentUser(user);
+
+          localStorage.setItem('currentUser', JSON.stringify(user));
+
           resolve(user.id); // Suponiendo que el usuario tiene un campo `id`
         },
         error: (error) => {

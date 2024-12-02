@@ -26,6 +26,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MensualSuscriptionComponent } from './components/mensual-suscription/mensual-suscription.component';
 import { LooseDrinkComponent } from './components/loose-drink/loose-drink.component';
+import { AlbumContentComponent } from './components/album-content/album-content.component';
+import { AlbumDetailComponent } from './components/album-detail/album-detail.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { LooseDrinkComponent } from './components/loose-drink/loose-drink.compon
     DrinksComponent,
     MensualSuscriptionComponent,
     LooseDrinkComponent,
+    AlbumContentComponent,
+    AlbumDetailComponent,
   ],
   imports: [
     SharedModule,

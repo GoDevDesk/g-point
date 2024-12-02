@@ -8,7 +8,7 @@ import { User } from '../models/user';
 })
 export class AuthService {
   private apiUrl = 'https://localhost:44335/api'; // URL base del backend
-  private currentUser: any; // Almacena el usuario actual
+  // private currentUser: any; // Almacena el usuario actual
   private visitedProfileId = 0; // Almacena el id del perfil visitado
 
   constructor(private http: HttpClient) { }
@@ -33,23 +33,36 @@ export class AuthService {
     localStorage.removeItem('authToken');
   }
 
-  setCurrentUser(user: any): void {
-    this.currentUser = user;
-  }
+  // setCurrentUser(user: any): void {
+  //   this.currentUser = user;
+  // }
 
-  // Obtener el usuario actual almacenado
-  getCurrentUserLocal(): Observable<User> {
-    return this.currentUser;
-  }
+  // // Obtener el usuario actual almacenado
+  // getCurrentUserLocal(): Observable<User> {
+  //   return this.currentUser;
+  // }
 
   getCurrentUserLogged(): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/user/currentUser`);
   }
 
-  // Verificar si el usuario actual es dueño del perfil
   isProfileOwner(profileId: string): boolean {
-    return this.currentUser && String(this.currentUser.id) === profileId;
+    
+    // Obtener el currentUser del localStorage
+    const storedUser = localStorage.getItem('currentUser');
+    
+    // Si no existe el usuario en el localStorage, devolver false
+    if (!storedUser) {
+      return false;
+    }
+    
+    // Parsear el objeto JSON almacenado en localStorage
+    const currentUser = JSON.parse(storedUser);
+  
+    // Comparar el ID del perfil con el ID del currentUser
+    return String(currentUser.id) === profileId;
   }
+
 
   getVisitedProfileId(): number {
     return this.visitedProfileId;
