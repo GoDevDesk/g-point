@@ -24,7 +24,6 @@ export class AlbumsGridComponent implements OnInit {
   }
 
   loadAlbums(): void {
-    debugger;
     var visitedProfileId = this.authService.getVisitedProfileId();
     this.albumService.getAlbumsByUserId(visitedProfileId, this.page, this.pageSize).subscribe({
       next: (response: PaginatedResultResponse<Album>) => {

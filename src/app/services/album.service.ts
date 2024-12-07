@@ -21,4 +21,9 @@ export class AlbumService {
     // Realizar la petición GET a la API con los parámetros de paginación
     return this.http.get<PaginatedResultResponse<Album>>(url, { params });
   }
+
+  isAlbumOwnerOrBuyer(userId: number): Observable<boolean> {
+      const url = `${this.apiUrl}/access/${userId}`;
+    return this.http.get<boolean>(url);
+  }
 }

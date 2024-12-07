@@ -22,32 +22,33 @@ export class AlbumDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Obtener el albumId desde la URL
-    this.albumId = +this.route.snapshot.paramMap.get('albumId')!;
+    // // Obtener el albumId desde la URL
+    // this.albumId = +this.route.snapshot.paramMap.get('albumId')!;
     
-    // Obtener si el usuario es el dueño del álbum
-    this.isAlbumOwner = this.authService.isAlbumOwner(this.albumId.toString());
+    // // Obtener si el usuario es el dueño del álbum
+    // this.isAlbumOwner = this.authService.isAlbumOwner(this.albumId.toString());
+    // this.isAlbumBuyer = this.authService.isAlbumBuyer(this.albumId.toString());
 
-    // Si el usuario es el dueño, redirigir a la ruta que definiste
-    if (this.isAlbumOwner) {
-      this.router.navigate(['/album-content', this.albumId]); // O la ruta que quieras
-      return; // Detener ejecución
-    }
+    // // Si el usuario es el dueño, redirigir a la ruta que definiste
+    // if (this.isAlbumOwner) {
+    //   this.router.navigate(['/album-content', this.albumId]); // O la ruta que quieras
+    //   return; // Detener ejecución
+    // }
 
-    // Si el usuario no es el dueño, buscar los datos del álbum
-    this.fetchAlbumData();
+    // // Si el usuario no es el dueño, buscar los datos del álbum
+    // this.fetchAlbumData();
   }
 
-  // Método para obtener los datos del álbum desde el backend
-  fetchAlbumData(): void {
-    this.albumService.getAlbumById(this.albumId).subscribe(
-      (album: Album) => {
-        this.album = album;
-      },
-      (error) => {
-        console.error('Error al obtener el álbum:', error);
-        // Maneja el error (redirige, muestra un mensaje, etc.)
-      }
-    );
-  }
-}
+//   // Método para obtener los datos del álbum desde el backend
+//   fetchAlbumData(): void {
+//     this.albumService.getAlbumById(this.albumId).subscribe(
+//       (album: Album) => {
+//         this.album = album;
+//       },
+//       (error) => {
+//         console.error('Error al obtener el álbum:', error);
+//         // Maneja el error (redirige, muestra un mensaje, etc.)
+//       }
+//     );
+//   }
+ }

@@ -6,6 +6,7 @@ import { LoginComponent } from './components/login/login.component'
 import { ProfileComponent } from './components/profile/profile.component';
 import { AlbumContentComponent } from './components/album-content/album-content.component';
 import { AlbumDetailComponent } from './components/album-detail/album-detail.component';
+import { AuthGuard } from './guard/auth.guard';
 
 
 const routes: Routes = [
@@ -25,14 +26,16 @@ const routes: Routes = [
     path: 'profile/:id', component: ProfileComponent
   },
   {
-    path: 'albumContent/:albumId', component: AlbumContentComponent
+    path: 'albumContent/:albumId', component: AlbumContentComponent,
+    canActivate: [AuthGuard] 
   },
   {
     path: 'album-detail/:id', component: AlbumDetailComponent
   }
 
-
 ];
+
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

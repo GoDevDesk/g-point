@@ -7,8 +7,11 @@
 @tailwind utilities;
 
 
-body{
+html body {
     background-color: black;
     color: rgb(236 72 153 / var(--tw-bg-opacity, 1));
 }
 
+.gray-cards {
+    background-color: #363636; /* Cambia este valor según lo que necesites */
+  }

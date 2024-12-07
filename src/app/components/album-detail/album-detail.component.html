@@ -1,32 +1,30 @@
-<div class="flex flex-col items-center p-6 bg-white shadow-lg rounded-lg">
-    <!-- Imagen del álbum -->
-    <div class="h-64 w-64 bg-center bg-cover rounded-lg mb-4" 
-         [style.background-image]="'url(' + album?.miniature + ')'"></div>
-    
-    <!-- Detalles del álbum -->
-    <div class="text-center">
-      <!-- Título del álbum -->
-      <h2 class="text-4xl font-bold text-pink-500 mb-2">{{ album?.name }}</h2>
-      
-      <!-- Cantidad de archivos -->
-      <p class="text-gray-500 text-lg flex items-center justify-center mb-2">
-        <i class="fas fa-folder text-yellow-500 mr-2"></i> Archivos: {{ album?.numberOfPosts }}
+<div class="flex flex-col min-h-screen items-center justify-center">
+  <!-- Primera Card -->
+  <div class="card-container">
+    <!-- Imagen -->
+    <div class="h-48 w-32 bg-center bg-cover rounded-lg" [style.background-image]></div>
+    <!-- Contenido -->
+    <div class="ml-6">
+      <h2 class="text-3xl font-bold text-pink-500 mb-3">TITULO</h2>
+      <p class="text-white  text-base mb-3 flex items-center">
+        <i class="fas fa-folder text-yellow-500 mr-2"></i> ARCHIVOS
       </p>
-      
-      <!-- Fecha -->
-      <p class="text-gray-500 text-lg flex items-center justify-center mb-2">
-        <i class="fas fa-clock text-blue-500 mr-2"></i> Fecha: {{ album?.creationDate | date: 'dd/MM/yyyy' }}
+      <p class="text-white text-base mb-4 flex items-center">
+        <i class="fas fa-clock text-blue-500 mr-2"></i> Fecha:
       </p>
-      
-      <!-- Precio -->
-      <p class="text-3xl font-semibold text-gray-800 flex items-center justify-center mb-4">
-        <i class="fas fa-money-bill-wave text-green-500 mr-2"></i> $ ARS {{ album?.price }}
+      <p class="text-2xl font-semibold text-white  flex items-center">
+        <i class="fas fa-money-bill-wave text-green-500 mr-2"></i> $ ARS
       </p>
     </div>
-  
-    <!-- Botón de comprar -->
-    <button class="px-6 py-3 bg-green-500 text-white rounded-lg text-xl font-bold hover:bg-green-600">
-      Comprar
+  </div>
+ <!-- Segunda Card -->
+ <div class="card-footer mt-4 p-6 bg-gray-800 rounded-lg">
+  <p class="text-1xl text-white mb-8">Para obtener el contenido debes loguearte o crear una cuenta:</p>
+  <!-- Botón centrado -->
+  <div class="flex justify-center">
+    <button class="loggin-button">
+      Iniciar Sesión
     </button>
   </div>
-  
+</div>
+</div>

@@ -1,25 +1,42 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { catchError, map, Observable, of } from 'rxjs';
+import { AuthService } from '../services/auth.service';
+import { AlbumService } from '../services/album.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router) {}
+  
+  constructor(private router: Router, private albumService: AlbumService, private authService: AuthService) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const currentUser = localStorage.getItem('currentUser');
+  canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
+    // Obtener el parámetro `albumId` de la URL
+    const albumId = route.paramMap.get('albumId');
 
-    if (!currentUser) {
-      // Guardar la URL que el usuario intentaba acceder
-      const attemptedUrl = state.url;
-
-      // tiene que ver el album como no dueño y no comprador, osea con posibilidad de comprarlo
-      this.router.navigate(['/login'], { queryParams: { returnUrl: attemptedUrl } });
-
-      return false;
+    if (!albumId) {
+      // Si no hay `albumId`, redirige al usuario
+      this.router.navigate(['/acceso-denegado']);
+      return of(false);
     }
 
-    return true; // Permitir acceso si el usuario está autenticado
+    // Verificar en el backend si el usuario tiene acceso al álbum
+    return this.albumService.isAlbumOwnerOrBuyer(Number(albumId)).pipe(
+      map((esValido: boolean) => {
+        if (!esValido) {
+          // Si no tiene acceso, redirige a una página de error
+          this.router.navigate([`/album-detail/${albumId}`]);
+          return false;
+        }
+       // this.router.navigate([`/albumContent/${albumId}`]);
+        return true; // Permite el acceso
+      }),
+      catchError(() => {
+        // En caso de error, redirige al usuario
+        this.router.navigate([`/album-detail/${albumId}`]);
+        return of(false);
+      })
+    );
   }
 }
