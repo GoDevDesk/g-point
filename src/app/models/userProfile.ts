@@ -1,6 +1,5 @@
 export interface UserProfile {
     aboutMe: string,
-    mainActivity:string,
     webSite: string,
     igSocialMedia: string,
     xSocialMedia: string,
@@ -11,5 +10,8 @@ export interface UserProfile {
     userName: string,
     emailAddress: string,
     firstName: string,
-    lastName: string
+    lastName: string,
+    followersCount: number,
+    followsCount: number,
+    postssCount: number
 }

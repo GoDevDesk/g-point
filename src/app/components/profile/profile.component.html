@@ -1,56 +1,75 @@
 <!-- component -->
 <div class="max-w-2xl mx-auto">
 
-    <div class="px-3 py-2">
-      <!--descripciopn-->
-        <div class="flex flex-col gap-1 text-center">
-            <a class="block mx-auto bg-center bg-no-repeat bg-cover w-20 h-20 rounded-full border border-gray-400 shadow-lg" href="" style="background-image: url('https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg')"></a>
-            <p class="font-serif font-semibold">{{ userProfile.userName }}</p>
-            <span class="text-sm text-gray-400">{{ userProfile.aboutMe }}</span>
+  <div class="px-3 py-2">
+    <!--descripciopn-->
+    <div class="flex flex-col gap-1 text-center">
+      <div class="relative w-20 h-20 mx-auto profile-container">
+        <!-- Foto de perfil -->
+        <div class="block bg-center bg-no-repeat bg-cover w-20 h-20 rounded-full border border-gray-400 shadow-lg"
+          href="" style="background-image: url({{currentPhoto}})">
         </div>
-         <!--informacion del usuario-->
-        <div class="flex justify-center items-center gap-2 my-3">
-            <div class="font-semibold text-center mx-4">
-                <p class="text-gray-400">102</p>
-                <span class="text-gray-400">Posts</span>
-            </div>
-            <div class="font-semibold text-center mx-4">
-                <p class="text-gray-400">102</p>
-                <span class="text-gray-400">Followers</span>
-            </div>
-            <div class="font-semibold text-center mx-4">
-                <p class="text-gray-400">102</p>
-                <span class="text-gray-400">Folowing</span>
-            </div>
-        </div>      
-
-       <!--boton seguir y mensaje-->
-        <div class="flex justify-center gap-2 my-5">
-            <button class="bg-pink-500 px-10 py-2 rounded-full text-white shadow-lg">Follow</button>
-            <button class="bg-white border border-gray-500 px-10 py-2 rounded-full shadow-lg">Message</button>
-        </div>
-        <!--botones tab-->
-        <div class="flex justify-between items-center">
-            <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'albums'" (click)="activeTab = 'albums'">
-              <!-- Ícono -->
-              Albums
-            </button>
-            <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'photos'" (click)="activeTab = 'photos'">
-              <!-- Ícono -->
-              Photos
-            </button>
-            <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'drinks'" (click)="activeTab = 'drinks'">
-              <!-- Ícono -->
-              Drinks
-            </button>
-          </div>
-        <app-albums-grid *ngIf="activeTab === 'albums'"></app-albums-grid>
-        <app-personal-photos *ngIf="activeTab === 'photos'"></app-personal-photos>
-        <app-drinks *ngIf="activeTab === 'drinks'"></app-drinks>
-
+        <!-- Ícono de lápiz -->
+        <a href="#" class="edit-icon" (click)="openModal($event)">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15.232 5.232l3.536 3.536M4 13v6a2 2 0 002 2h6M16.828 4.586a2 2 0 112.828 2.828L7 19l-4 1 1-4 12.828-12.828z" />
+          </svg>
+        </a>
+      </div>
+      <p class="font-serif font-semibold">{{ userProfile.userName }}</p>
+      <span class="text-sm text-gray-400">{{ userProfile.aboutMe }}</span>
     </div>
-    <!--menu inferior-->
-    <app-toolbar-footer></app-toolbar-footer>
-    
+    <!-- Modal -->
+    <app-edit-photo-modal
+    [isOpen]="isModalOpen"
+    [currentPhoto]="currentPhoto"
+    (close)="closeModal()"
+    (updatePhoto)="handlePhotoSelected($event)"
+  ></app-edit-photo-modal>
+    <!--informacion del usuario-->
+    <div class="flex justify-center items-center gap-2 my-3">
+      <div class="font-semibold text-center mx-4">
+        <p class="text-gray-400">{{userProfile.postsCount}}</p>
+        <span class="text-gray-400">Posts</span>
+      </div>
+      <div class="font-semibold text-center mx-4">
+        <p class="text-gray-400">{{userProfile.followersCount}}</p>
+        <span class="text-gray-400">Followers</span>
+      </div>
+      <div class="font-semibold text-center mx-4">
+        <p class="text-gray-400">{{userProfile.followsCount}}</p>
+        <span class="text-gray-400">Folowing</span>
+      </div>
+    </div>
 
+    <!--boton seguir y mensaje-->
+    <div class="flex justify-center gap-2 my-5">
+      <button class="bg-pink-500 px-10 py-2 rounded-full text-white shadow-lg">Follow</button>
+      <button class="bg-white border border-gray-500 px-10 py-2 rounded-full shadow-lg">Message</button>
+    </div>
+    <!--botones tab-->
+    <div class="flex justify-between items-center">
+      <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'albums'"
+        (click)="activeTab = 'albums'">
+        <!-- Ícono -->
+        Albums
+      </button>
+      <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'photos'"
+        (click)="activeTab = 'photos'">
+        <!-- Ícono -->
+        Photos
+      </button>
+      <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'drinks'"
+        (click)="activeTab = 'drinks'">
+        <!-- Ícono -->
+        Drinks
+      </button>
+    </div>
+    <app-albums-grid *ngIf="activeTab === 'albums'"></app-albums-grid>
+    <app-personal-photos *ngIf="activeTab === 'photos'"></app-personal-photos>
+    <app-drinks *ngIf="activeTab === 'drinks'"></app-drinks>
+
+  </div>
 </div>

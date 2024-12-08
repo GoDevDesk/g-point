@@ -1,0 +1,24 @@
+
+.profile-container {
+    position: relative;
+    width: 5rem;  /* Tamaño ancho del contenedor */
+    height: 5rem; /* Tamaño alto del contenedor */
+    margin: 0 auto;
+}
+
+.edit-icon {
+    position: absolute;
+    bottom: 0.25rem; /* bottom-1 */
+    right: 0.25rem;  /* right-1 */
+    background-color: white; /* bg-white */
+    border-radius: 9999px; /* rounded-full */
+    padding: 0.25rem; /* p-1 */
+    border: 1px solid #D1D5DB; /* border-gray-300 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+    opacity: 0; /* opacity-0 */
+    transition: opacity 0.2s ease-in-out; /* transition-opacity duration-200 */
+}
+
+.profile-container:hover .edit-icon {
+    opacity: 1; /* Visible al hacer hover en el contenedor */
+}

@@ -28,6 +28,7 @@ import { MensualSuscriptionComponent } from './components/mensual-suscription/me
 import { LooseDrinkComponent } from './components/loose-drink/loose-drink.component';
 import { AlbumContentComponent } from './components/album-content/album-content.component';
 import { AlbumDetailComponent } from './components/album-detail/album-detail.component';
+import { EditPhotoModalComponent } from './components/edit-photo-modal/edit-photo-modal.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { AlbumDetailComponent } from './components/album-detail/album-detail.com
     LooseDrinkComponent,
     AlbumContentComponent,
     AlbumDetailComponent,
+    EditPhotoModalComponent,
   ],
   imports: [
     SharedModule,
