@@ -1,0 +1,92 @@
+.relative.group:hover i {
+    cursor: pointer;
+  }
+  
+  i.fa-pencil-alt {
+    font-size: 1.5rem;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .object-cover {
+    object-fit: cover;
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+  
+  /* Contenedor de videos con diseño de cuadrícula responsiva */
+  .video-container {
+    margin: 70px auto 0; 
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Más espacio horizontal */
+    gap: 2rem;
+    justify-items: center;
+    padding: 0 1rem;
+    max-width: 1400px;
+  }
+  
+  /* Ajustes en el diseño para el tamaño en pantalla grande */
+  .wrap-video {
+    aspect-ratio: 16 / 9;
+    height: 500px; /* Más alto en la vista no responsive */
+    width: 100%; 
+    max-width: 600px; /* Más ancho en el diseño no responsive */
+    background-color: black;
+    border-radius: 8px;
+  }
+  
+
+
+  /* Ajuste de tamaño más grande para la tarjeta de agregar fotos */
+  .add-photo-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 9;
+    height: 100%;
+    width: 100%;
+    max-width: 600px; /* Más ancho en el diseño no responsive */
+    background-color: #080808; /* Color de fondo principal */
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-photo-card:hover {
+    background-color: #080808; /* Color de fondo principal */
+    transform: scale(1.05); /* Aumentar tamaño ligeramente al pasar el cursor */
+    cursor: pointer;
+}
+  
+  .add-photo-content {
+    color: white;
+    font-size: 72px; /* Aumentado para que sea más grande */
+    transition: transform 0.2s ease;
+  }
+  
+//   .add-photo-card:hover .add-photo-content {
+//     transform: scale(1.2);
+//   }
+  
+  /* Ajuste responsivo */
+  @media (max-width: 768px) {
+    .video-container {
+      grid-template-columns: 1fr; 
+    }
+  
+    .wrap-video,
+    .add-photo-card {
+      height: 300px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .wrap-video,
+    .add-photo-card {
+      height: 250px;
+    }
+  
+    .add-photo-content {
+      font-size: 30px;
+    }
+  }
+  
