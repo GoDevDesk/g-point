@@ -1,12 +1,19 @@
 .relative.group:hover i {
     cursor: pointer;
   }
-  
-  i.fa-pencil-alt {
-    font-size: 1.5rem;
-    transition: all 0.2s ease-in-out;
+  .group:hover .group-hover\:opacity-100 {
+    opacity: 1;
   }
-  
+  i.fa-pencil-alt {
+    font-size: 3rem; /* Aumenta el tamaño */
+    color: #ffffff; /* Asegúrate de que el color sea visible */
+    position: absolute; /* Posiciona adecuadamente */
+    right: 10px; /* Margen derecho */
+    top: 50%; /* Centra verticalmente */
+    transform: translateY(-50%); /* Ajusta el centro */
+    transition: all 0.2s ease-in-out; /* Transición para hover */
+    z-index: 10; /* Asegura que esté encima */
+  }
   .object-cover {
     object-fit: cover;
     display: block;

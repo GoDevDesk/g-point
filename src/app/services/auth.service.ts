@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { User } from '../models/user';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class AuthService {
   private apiUrl = 'https://localhost:44335/api'; // URL base del backend
   // private currentUser: any; // Almacena el usuario actual
   private visitedProfileId = 0; // Almacena el id del perfil visitado
-
+  private CurrentUserLoggedId = 0;
   constructor(private http: HttpClient) { }
 
   // Método para enviar el login y recibir el token
@@ -46,6 +46,12 @@ export class AuthService {
     return this.http.get<User>(`${this.apiUrl}/user/currentUser`);
   }
 
+  getCurrentUserIdLogged(): Observable<number> {
+    return this.getCurrentUserLogged().pipe(
+      map(user => user.id) // Extrae el ID del usuario
+    );
+  }
+  
   isProfileOwner(profileId: string): boolean {
     
     // Obtener el currentUser del localStorage

@@ -29,6 +29,7 @@ import { LooseDrinkComponent } from './components/loose-drink/loose-drink.compon
 import { AlbumContentComponent } from './components/album-content/album-content.component';
 import { AlbumDetailComponent } from './components/album-detail/album-detail.component';
 import { EditPhotoModalComponent } from './components/edit-photo-modal/edit-photo-modal.component';
+import { CreatePostModalComponent } from './components/create-post-modal/create-post-modal.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { EditPhotoModalComponent } from './components/edit-photo-modal/edit-phot
     AlbumContentComponent,
     AlbumDetailComponent,
     EditPhotoModalComponent,
+    CreatePostModalComponent,
   ],
   imports: [
     SharedModule,
