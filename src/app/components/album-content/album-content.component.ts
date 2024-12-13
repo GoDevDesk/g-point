@@ -22,7 +22,7 @@ export class AlbumContentComponent implements OnInit {
   totalItems: number = 0;
   posts: any;
   page: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 10;
   totalPages: number = 0;
 
   isModalOpen: boolean = false; // Controla la apertura del modal

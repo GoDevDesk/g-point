@@ -1,0 +1,21 @@
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #080808;/* Color de fondo */
+    padding: 10px 20px; /* Espaciado interno */
+    margin-bottom: 10px;
+    top: 0;
+    left: 0;
+    width: 100%; /* Ancho completo */
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.1); /* Sombra para dar profundidad */
+  }
+  
+  .back-button {
+    font-size: 4rem; /* Tamaño de la flecha */
+    font-weight: bold; /* Aumenta el grosor de la flecha */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    margin-left: 2%;
+  }
+  
+  
