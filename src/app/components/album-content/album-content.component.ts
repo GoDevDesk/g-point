@@ -24,6 +24,8 @@ export class AlbumContentComponent implements OnInit {
   page: number = 1;
   pageSize: number = 10;
   totalPages: number = 0;
+  isEditing: boolean = false;
+
 
   isModalOpen: boolean = false; // Controla la apertura del modal
 
@@ -39,7 +41,10 @@ export class AlbumContentComponent implements OnInit {
 
   ngOnInit(): void {
     this.albumId = this.route.snapshot.paramMap.get('albumId') || '';
-    this.loadPosts();
+    this.isEditing = this.albumId != "" ? true : false;
+    if (this.isEditing) {
+      this.loadPosts();
+    }
 
     this.authService.getCurrentUserIdLogged().subscribe(
       id => {

@@ -56,6 +56,10 @@ export class AlbumsGridComponent implements OnInit {
     }
   }
 
+  goToAlbumCreation(): void {
+    this.router.navigate(['/albumContent']);
+  }
+
   onPageChange(newPage: number): void {
     this.page = newPage;
     this.loadAlbums();

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, observable, Observable, of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { AlbumService } from '../services/album.service';
 
@@ -14,11 +14,8 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     // Obtener el parámetro `albumId` de la URL
     const albumId = route.paramMap.get('albumId');
-
     if (!albumId) {
-      // Si no hay `albumId`, redirige al usuario
-      this.router.navigate(['/acceso-denegado']);
-      return of(false);
+      return  of(true);
     }
 
     // Verificar en el backend si el usuario tiene acceso al álbum

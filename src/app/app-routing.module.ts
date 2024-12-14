@@ -30,6 +30,10 @@ const routes: Routes = [
     canActivate: [AuthGuard] 
   },
   {
+    path: 'albumContent', component: AlbumContentComponent,
+    canActivate: [AuthGuard] 
+  },
+  {
     path: 'album-detail/:id', component: AlbumDetailComponent
   }
 
