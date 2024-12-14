@@ -13,6 +13,10 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     // Obtener el parámetro `albumId` de la URL
+    var user = this.authService.getUserStorage();
+    if (!user)
+      return  of(false);
+
     const albumId = route.paramMap.get('albumId');
     if (!albumId) {
       return  of(true);
@@ -31,7 +35,7 @@ export class AuthGuard implements CanActivate {
       }),
       catchError(() => {
         // En caso de error, redirige al usuario
-        this.router.navigate([`/album-detail/${albumId}`]);
+     //   this.router.navigate([`/album-detail/${albumId}`]);
         return of(false);
       })
     );

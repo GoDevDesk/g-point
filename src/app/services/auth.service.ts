@@ -10,7 +10,7 @@ export class AuthService {
   private apiUrl = 'https://localhost:44335/api'; // URL base del backend
   // private currentUser: any; // Almacena el usuario actual
   private visitedProfileId = 0; // Almacena el id del perfil visitado
-  private CurrentUserLoggedId = 0;
+  public CurrentUserLoggedId = 0;
   constructor(private http: HttpClient) { }
 
   // Método para enviar el login y recibir el token
@@ -28,19 +28,15 @@ export class AuthService {
     return localStorage.getItem('authToken');
   }
 
+  getUserStorage(): string | null {
+    return localStorage.getItem('currentUser');
+  }
+
   // Eliminar el token al cerrar sesión
   logout(): void {
     localStorage.removeItem('authToken');
   }
 
-  // setCurrentUser(user: any): void {
-  //   this.currentUser = user;
-  // }
-
-  // // Obtener el usuario actual almacenado
-  // getCurrentUserLocal(): Observable<User> {
-  //   return this.currentUser;
-  // }
 
   getCurrentUserLogged(): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/user/currentUser`);

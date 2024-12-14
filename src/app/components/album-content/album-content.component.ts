@@ -1,9 +1,11 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ActivatedRoute, Route } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AlbumRequest } from 'src/app/models/albumRequest';
 import { PaginatedResultResponse } from 'src/app/models/paginatedResultResponse';
 import { Post } from 'src/app/models/Post';
 import { authUser, User } from 'src/app/models/user';
+import { AlbumService } from 'src/app/services/album.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { PostService } from 'src/app/services/post.service';
 
@@ -35,11 +37,12 @@ export class AlbumContentComponent implements OnInit {
   @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
   @ViewChild('title') titleElement!: ElementRef<HTMLHeadingElement>;
 
-  constructor(private postService: PostService, private route: ActivatedRoute, private authService: AuthService) { }
+  constructor(private postService: PostService, private albumService: AlbumService, private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
   hoverAddPhoto = false;
 
 
   ngOnInit(): void {
+    debugger;
     this.albumId = this.route.snapshot.paramMap.get('albumId') || '';
     this.isEditing = this.albumId != "" ? true : false;
     if (this.isEditing) {
@@ -111,7 +114,6 @@ export class AlbumContentComponent implements OnInit {
 
   // Método para abrir el modal
   openModal(): void {
-    debugger;
     this.isModalOpen = true;
   }
 
@@ -121,20 +123,52 @@ export class AlbumContentComponent implements OnInit {
   }
 
   handlePhotoSelected(file: File): void {
-    if (this.loggedUserId != 0) {
-      this.postService.createPost(file, this.albumId, this.loggedUserId.toString()).subscribe({
-        next: (response) => {
-          console.log('Foto subida correctamente:', response);
-
-          this.currentPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
-          this.closeModal();
-          this.loadPosts();
-        },
-        error: (error) => {
-          console.error('Error al enviar foto al servidor:', error);
-        },
-      });
-
+    if (!this.isEditing) {
+      this.createAlbum(file);
     }
+    else {
+      this.createPost(file);
+    }
+  }
+
+  createAlbum(file: File): void {
+    const newAlbum: AlbumRequest = {
+      name: 'Mi Álbum',
+      price: 50,
+      userId: this.loggedUserId
+    };
+
+    this.albumService.createAlbum(newAlbum).subscribe({
+      next: (albumId) => {
+        if (albumId) {
+
+          this.albumId = albumId.toString();
+          this.createPost(file);
+          this.router.navigate([`/albumContent/${this.albumId}`]);
+
+        }
+      },
+      error: (err) => {
+        console.error('Error al crear el álbum:', err);
+      },
+    });
+  }
+
+
+  createPost(file: File): void {
+    this.postService.createPost(file, this.albumId, this.loggedUserId.toString()).subscribe({
+      next: (response) => {
+        console.log('Foto subida correctamente:', response);
+
+        this.currentPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
+        this.closeModal();
+        if (this.isEditing) {
+          this.loadPosts();
+        }
+      },
+      error: (error) => {
+        console.error('Error al enviar foto al servidor:', error);
+      },
+    });
   }
 }

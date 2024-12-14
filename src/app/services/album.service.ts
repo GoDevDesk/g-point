@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { PaginatedResultResponse } from '../models/paginatedResultResponse';
 import { Album } from '../models/album';
 import { Observable } from 'rxjs';
+import { AlbumRequest } from '../models/albumRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,19 @@ export class AlbumService {
     // Realizar la petición GET a la API con los parámetros de paginación
     return this.http.get<PaginatedResultResponse<Album>>(url, { params });
   }
+
+  createAlbum(newAlbum: AlbumRequest): Observable<number> {
+    const url = `${this.apiUrl}`;
+
+    // Crear un objeto FormData
+    const formData = new FormData();
+    formData.append('name', newAlbum.name);
+    formData.append('price', newAlbum.price.toString());
+    formData.append('userId', newAlbum.userId.toString());
+    // Enviar el FormData
+    return this.http.post<number>(url, formData);
+  }
+
 
   isAlbumOwnerOrBuyer(userId: number): Observable<boolean> {
       const url = `${this.apiUrl}/access/${userId}`;

@@ -63,7 +63,6 @@ export class ProfileComponent implements OnInit {
   }
 
   handlePhotoSelected(file: File): void {
-    debugger;
     if (!this.haveProfilePicture) {
       this.profileService.createPhoto(file, this.profileId).subscribe({
         next: (response) => {

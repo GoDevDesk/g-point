@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
 
         try {
           const userId = await this.fetchCurrentUser(); // Esperar el ID del usuario
+          this.authService.CurrentUserLoggedId = userId;
           this.router.navigate(['/profile', userId]);
         } catch (error) {
           console.error('Error durante el proceso de login:', error);
