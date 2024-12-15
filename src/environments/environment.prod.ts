@@ -9,6 +9,6 @@ export const environment = {
     appId: "1:10824653281:web:ea5a49cca70ea627c4daa0",
     measurementId: "G-9R7MLH67KB"
 },
-apiPtUsersBaseUrl: 'http://www.gpoint.somee.com',  // URL de tu API en desarrollo
-apiPtFilesBaseUrl: 'http://www.ptfiles.somee.com',  // URL de tu API en desarrollo
+apiPtUsersBaseUrl: 'https://www.gpoint.somee.com',  // URL de tu API en desarrollo
+apiPtFilesBaseUrl: 'https://www.ptfiles.somee.com',  // URL de tu API en desarrollo
 };
