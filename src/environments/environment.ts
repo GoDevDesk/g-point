@@ -12,14 +12,7 @@ export const environment = {
     messagingSenderId: "10824653281",
     appId: "1:10824653281:web:ea5a49cca70ea627c4daa0",
     measurementId: "G-9R7MLH67KB"
-}
+},
+apiPtUsersBaseUrl: 'http://www.gpoint.somee.com',  // URL de tu API en desarrollo
+apiPtFilesBaseUrl: 'http://www.ptfiles.somee.com',  // URL de tu API en desarrollo
 };
-
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
