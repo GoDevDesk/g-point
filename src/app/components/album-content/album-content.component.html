@@ -3,7 +3,7 @@
   <div class="min-h-28">
     <div class="mx-auto py-12">
       <!-- Editable Title -->
-      <div class="relative text-center group">
+      <div id="title-container" class="relative text-center group">
         <!-- Título visible -->
         <h2 *ngIf="!isEditingTitle"
           class="font-black text-5xl text-white uppercase cursor-pointer inline-block relative"
@@ -19,13 +19,27 @@
             </svg>
           </a>
         </h2>
-
         <!-- Input editable, tamaño dinámico -->
         <input *ngIf="isEditingTitle" #titleInput [(ngModel)]="title"
           class="text-center text-5xl font-black text-white uppercase bg-black border border-gray-500 rounded py-1  relative"
           [style.width.px]="calculatedInputWidth || 500" (blur)="saveTitle()" (keyup.enter)="saveTitle()" />
       </div>
+            <!--informacion del usuario-->
+    <div class="flex justify-center items-center gap-2 my-3">
+      <div class="font-semibold text-center mx-4">
+        <p class="text-gray-400">{{album?.price}}</p>
+        <span class="text-gray-400">Posts</span>
+      </div>
+      <div class="font-semibold text-center mx-4">
+        <p class="text-gray-400"></p>
+        <span class="text-gray-400">Followers</span>
+      </div>
+
     </div>
+
+
+
+
 
 
     <div class="gap-6 mt-8 mx-4 video-container">
@@ -37,7 +51,7 @@
       <div class="wrap-video" *ngFor="let post of posts">
         <div class="object-cover h-96 w-full bg-black">
           <img class="object-cover" [src]="post.url_File" [alt]="post.description || 'Imagen sin descripción'" />
-          <h2 class="text-lg font-bold text-pink-500">asdas</h2>
+          <h1 class="text-lg font-bold text-pink-500">asdas</h1>
         </div>
       </div>
     <!-- Modal -->

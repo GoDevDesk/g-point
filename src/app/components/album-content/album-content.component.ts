@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { Album } from 'src/app/models/album';
 import { AlbumRequest } from 'src/app/models/albumRequest';
 import { PaginatedResultResponse } from 'src/app/models/paginatedResultResponse';
 import { Post } from 'src/app/models/Post';
@@ -23,6 +24,7 @@ export class AlbumContentComponent implements OnInit {
   albumId = '';
   totalItems: number = 0;
   posts: any;
+  album: Album | null = null; // Puede ser null al inicio
   page: number = 1;
   pageSize: number = 10;
   totalPages: number = 0;
@@ -42,7 +44,6 @@ export class AlbumContentComponent implements OnInit {
 
 
   ngOnInit(): void {
-    debugger;
     this.albumId = this.route.snapshot.paramMap.get('albumId') || '';
     this.isEditing = this.albumId != "" ? true : false;
     if (this.isEditing) {
