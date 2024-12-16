@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class ProfileService {
  // private apiUrl = 'https://localhost:44306/api/profile-picture'; // Cambia la URL según la ruta de tu servidor.
 
-  private apiUrl = `${environment.apiPtUsersBaseUrl}/api/profile-picture`;  // Concatenar el subpath
+  private apiUrl = `${environment.apiPtFilesBaseUrl}/api/profile-picture`;  // Concatenar el subpath
   
 
   constructor(private http: HttpClient) {}
