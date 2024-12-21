@@ -82,6 +82,7 @@
   
     .wrap-video,
     .add-photo-card {
+      max-width: 450px;
       height: 300px;
     }
   }
@@ -95,5 +96,8 @@
     .add-photo-content {
       font-size: 30px;
     }
+
+    .custom-card-bg {
+      background-color: #080808; /* Reemplaza con tu color personalizado */
+    }
   }
-  
