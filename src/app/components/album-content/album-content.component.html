@@ -24,60 +24,59 @@
           class="text-center text-5xl font-black text-white uppercase bg-black border border-gray-500 rounded py-1  relative"
           [style.width.px]="calculatedInputWidth || 500" (blur)="saveTitle()" (keyup.enter)="saveTitle()" />
       </div>
-            <!--informacion del usuario-->
-    <div class="flex justify-center items-center gap-2 my-3">
-      <div class="font-semibold text-center mx-4">
-        <p class="text-gray-400">{{album?.price}}</p>
-        <span class="text-gray-400">Posts</span>
-      </div>
-      <div class="font-semibold text-center mx-4">
-        <p class="text-gray-400"></p>
-        <span class="text-gray-400">Followers</span>
-      </div>
-    </div>
-    <div class="gap-6 mt-8 mx-4 video-container">
-<!-- Posts -->
-<div class="wrap-video" *ngFor="let post of posts">
-  <div class="card border border-gray-400 rounded-lg shadow-lg overflow-hidden bg-white h-[500px] flex flex-col">
-    <!-- Encabezado de la tarjeta con el menú de elipsis -->
-    <div class="h-14 flex justify-between items-center px-4 py-2 bg-gray-100">
-      <h2 class="text-sm font-medium text-gray-700">Post</h2>
-      <div class="relative">
-        <button
-          class="text-gray-500 hover:text-gray-800"
-          (click)="toggleMenu(post.id)">
-          &#x22EE;
-        </button>
-        <!-- Menú desplegable -->
-        <div *ngIf="isMenuOpen(post.id)" class="absolute top-6 right-0 bg-gray-700 text-white text-sm rounded shadow-md z-10">
-          <ul>
-            <li class="px-4 py-2 hover:bg-gray-600 cursor-pointer" (click)="editPost(post)">Editar</li>
-            <li class="px-4 py-2 hover:bg-gray-600 cursor-pointer" (click)="deletePost(post)">Eliminar</li>
-          </ul>
+      <!--informacion del usuario-->
+      <div class="flex justify-center items-center gap-2 my-3">
+        <div class="font-semibold text-center mx-4">
+          <p class="text-gray-400">{{album?.price}}</p>
+          <span class="text-gray-400">Posts</span>
+        </div>
+        <div class="font-semibold text-center mx-4">
+          <p class="text-gray-400"></p>
+          <span class="text-gray-400">Followers</span>
         </div>
       </div>
-    </div>
+      <div class="gap-6 mt-8 mx-4 video-container">
+        <!-- Primera tarjeta especial en gris con el color #080808 -->
+        <div class="wrap-video add-photo-card" (click)="openModal()">
+          <div class="add-photo-content">+</div>
+        </div>
+        <!-- Posts -->
+        <div class="wrap-video" *ngFor="let post of posts">
+          <div
+            class="card border border-gray-400 rounded-lg shadow-lg overflow-hidden bg-white h-[500px] flex flex-col">
+            <!-- Encabezado de la tarjeta con el menú de elipsis -->
+            <div class="h-14 flex justify-between items-center px-4 py-2 bg-gray-100">
+              <h2 class="text-sm font-medium text-gray-700">Post</h2>
+              <div class="relative">
+                <button class="text-gray-500 hover:text-gray-800" (click)="toggleMenu(post.id)">
+                  &#x22EE;
+                </button>
+                <!-- Menú desplegable -->
+                <div *ngIf="isMenuOpen(post.id)"
+                  class="absolute top-6 right-0 bg-gray-700 text-white text-sm rounded shadow-md z-10">
+                  <ul>
+                    <li class="px-4 py-2 hover:bg-gray-600 cursor-pointer" (click)="editPost(post)">Editar</li>
+                    <li class="px-4 py-2 hover:bg-gray-600 cursor-pointer" (click)="deletePost(post)">Eliminar</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
 
-    <!-- Contenido principal de la tarjeta (imagen) -->
-    <div class="h-[375px] relative bg-gray-200">
-      <img
-        class="object-cover w-full h-full"
-        [src]="post.url_File"
-        [alt]="post.description || 'Imagen sin descripción'" />
-    </div>
+            <!-- Contenido principal de la tarjeta (imagen) -->
+            <div class="h-[375px] relative bg-gray-200">
+              <img class="object-cover w-full h-full" [src]="post.url_File"
+                [alt]="post.description || 'Imagen sin descripción'" />
+            </div>
 
-    <!-- Pie de la tarjeta -->
-    <div class="h-16 p-4 bg-gray-50 flex items-center">
-      <h1 class="text-lg font-bold text-pink-500 truncate">{{ post.description || 'Sin descripción' }}</h1>
+            <!-- Pie de la tarjeta -->
+            <div class="h-16 p-4 bg-gray-50 flex items-center">
+              <h1 class="text-lg font-bold text-pink-500 truncate">{{ post.description || 'Sin descripción' }}</h1>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <app-create-post-modal [isOpen]="isModalOpen" (close)="closeModal()"
+          (updatePhoto)="handlePhotoSelected($event)"></app-create-post-modal>
+      </div>
     </div>
   </div>
-</div>
-    <!-- Modal -->
-    <app-create-post-modal
-    [isOpen]="isModalOpen"
-    (close)="closeModal()"
-    (updatePhoto)="handlePhotoSelected($event)"
-  ></app-create-post-modal>
-    </div>
-  </div>
-</div>
