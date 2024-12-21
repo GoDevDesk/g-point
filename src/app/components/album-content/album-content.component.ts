@@ -36,6 +36,8 @@ export class AlbumContentComponent implements OnInit {
   defaultPhoto = 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg';
   currentPhoto = this.defaultPhoto; // URL de la foto actual
 
+  menuStates: { [key: string]: boolean } = {}; // Controla los estados de los menús
+
   @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
   @ViewChild('title') titleElement!: ElementRef<HTMLHeadingElement>;
 
@@ -171,5 +173,23 @@ export class AlbumContentComponent implements OnInit {
         console.error('Error al enviar foto al servidor:', error);
       },
     });
+  }
+
+  toggleMenu(postId: string): void {
+    this.menuStates[postId] = !this.menuStates[postId];
+  }
+
+  isMenuOpen(postId: string): boolean {
+    return !!this.menuStates[postId];
+  }
+
+  editPost(post: any): void {
+    console.log('Editar', post);
+    // Implementa tu lógica aquí
+  }
+
+  deletePost(post: any): void {
+    console.log('Eliminar', post);
+    // Implementa tu lógica aquí
   }
 }
