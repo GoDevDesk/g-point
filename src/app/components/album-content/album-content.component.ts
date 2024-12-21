@@ -100,7 +100,7 @@ export class AlbumContentComponent implements OnInit {
    * Calcula el tamaño dinámico del campo de texto para coincidir con el tamaño real del título visible.
    */
   setInputWidth() {
-    const titleEl = document.querySelector('h2');
+    const titleEl = document.getElementById('title-container');
     if (titleEl) {
       this.calculatedInputWidth = titleEl.offsetWidth;
     }
@@ -173,6 +173,10 @@ export class AlbumContentComponent implements OnInit {
         console.error('Error al enviar foto al servidor:', error);
       },
     });
+  }
+
+  toggleLike(post: any): void {
+    post.isLiked = !post.isLiked;
   }
 
   toggleMenu(postId: string): void {

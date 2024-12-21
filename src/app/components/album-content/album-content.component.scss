@@ -97,7 +97,11 @@
       font-size: 30px;
     }
 
-    .custom-card-bg {
+    *, *::before, *::after {
+      border-color: #e98e8e !important; /* Cambia este color al que prefieras */
+  }
+
+    .bg-custom-card-bg {
       background-color: #080808; /* Reemplaza con tu color personalizado */
     }
   }

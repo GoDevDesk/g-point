@@ -3,7 +3,7 @@
   <div class="min-h-28">
     <div class="mx-auto py-12">
       <!-- Editable Title -->
-      <div id="title-container" class="relative text-center group">
+      <div id="title-container" class="relative text-center group max-w-[600px] mx-auto">
         <!-- Título visible -->
         <h2 *ngIf="!isEditingTitle"
           class="font-black text-5xl text-white uppercase cursor-pointer inline-block relative"
@@ -18,12 +18,11 @@
             </svg>
           </a>
         </h2>
-        <!-- Input editable -->
+        <!-- Input editable, tamaño dinámico -->
         <input *ngIf="isEditingTitle" #titleInput [(ngModel)]="title"
-          class="text-center text-5xl font-black text-white uppercase bg-black border border-gray-500 rounded py-1"
+          class="text-center text-5xl font-black text-white uppercase bg-black border border-gray-500 rounded py-1  relative"
           [style.width.px]="calculatedInputWidth || 500" (blur)="saveTitle()" (keyup.enter)="saveTitle()" />
       </div>
-
       <!-- Informacion del usuario -->
       <div class="flex justify-center items-center gap-2 my-3">
         <div class="font-semibold text-center mx-4">
@@ -46,20 +45,20 @@
         <!-- Posts -->
         <div class="wrap-video" *ngFor="let post of posts"
           class="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 p-2 min-w-[450px] max-w-[470px]">
-          <div class="card border border-gray-400 rounded-lg shadow-lg overflow-hidden h-[500px] flex flex-col bg-custom-card-bg">
+          <div class="card border border-gray-400 rounded-lg shadow-lg overflow-hidden h-[500px] flex flex-col">
             <!-- Encabezado de la tarjeta -->
-            <div class="h-14 flex justify-between items-center px-4 py-2 ">
-              <h2 class="text-sm font-medium text-pink-500">Post</h2>
+            <div class="h-14 flex justify-between items-center px-4 py-2">
+              <h1 class="text-sm font-medium text-pink-500">Post</h1>
               <div class="relative">
-                <button class="text-gray-500 hover:text-gray-800" (click)="toggleMenu(post.id)">
+                <button class="text-gray-300 hover:text-white" (click)="toggleMenu(post.id)">
                   &#x22EE;
                 </button>
                 <!-- Menú desplegable -->
                 <div *ngIf="isMenuOpen(post.id)"
                   class="absolute top-6 right-0 bg-gray-700 text-white text-sm rounded shadow-md z-10">
                   <ul>
-                    <li class="px-4 py-2 hover:bg-gray-600 cursor-pointer" (click)="editPost(post)">Editar</li>
-                    <li class="px-4 py-2 hover:bg-gray-600 cursor-pointer" (click)="deletePost(post)">Eliminar</li>
+                    <li class="px-4 py-2 hover:bg-white cursor-pointer" (click)="editPost(post)">Editar</li>
+                    <li class="px-4 py-2 hover:bg-white cursor-pointer" (click)="deletePost(post)">Eliminar</li>
                   </ul>
                 </div>
               </div>
@@ -71,10 +70,28 @@
                 [alt]="post.description || 'Imagen sin descripción'" />
             </div>
 
-            <!-- Pie de la tarjeta -->
-            <div class="h-16 flex justify-between items-center px-4 py-2 ">
-              <h1 class="text-lg font-bold text-pink-500 truncate">{{ post.description || 'Sin descripción' }}</h1>
-            </div>
+<!-- Pie de la tarjeta -->
+<div class="h-16 flex justify-between items-center px-4 py-2">
+  <h1 class="text-lg font-bold text-pink-500 truncate">
+    {{ post.description || 'Sin descripción' }}
+  </h1>
+  <!-- Icono de corazón -->
+  <button (click)="toggleLike(post)" class="focus:outline-none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      [ngClass]="post.isLiked ? 'text-red-500' : 'text-gray-400'"
+      class="w-6 h-6 transition duration-300"
+      fill="currentColor"
+      viewBox="0 0 24 24">
+      <path
+        *ngIf="post.isLiked"
+        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+      <path
+        *ngIf="!post.isLiked"
+        d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-6.4 16.55L12 20.35l1.9-1.72C17.78 15.17 20 12.39 20 8.5 20 6.5 18.5 5 16.5 5c-1.54 0-3.04.99-3.57 2.36h-1.86C10.54 5.99 9.04 5 7.5 5 5.5 5 4 6.5 4 8.5c0 3.89 2.22 6.67 6.1 10.05z" />
+    </svg>
+  </button>
+</div>
           </div>
         </div>
       </div>
