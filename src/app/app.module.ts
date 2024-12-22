@@ -31,6 +31,7 @@ import { AlbumDetailComponent } from './components/album-detail/album-detail.com
 import { EditPhotoModalComponent } from './components/edit-photo-modal/edit-photo-modal.component';
 import { CreatePostModalComponent } from './components/create-post-modal/create-post-modal.component';
 import { GoBackComponent } from './components/go-back/go-back.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { GoBackComponent } from './components/go-back/go-back.component';
     EditPhotoModalComponent,
     CreatePostModalComponent,
     GoBackComponent,
+    ChatComponent,
   ],
   imports: [
     SharedModule,
@@ -57,7 +59,7 @@ import { GoBackComponent } from './components/go-back/go-back.component';
     BrowserAnimationsModule,
     FormsModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     PrimeNgModule,
     HttpClientModule

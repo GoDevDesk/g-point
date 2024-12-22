@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { catchError, tap } from 'rxjs';
+import { User } from 'src/app/models/user';
 import { UserProfile } from 'src/app/models/userProfile';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProfileService } from 'src/app/services/profile.service';
@@ -28,9 +29,13 @@ export class ProfileComponent implements OnInit {
   isModalOpen = false; // Control del estado del modal
   defaultPhoto = 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg';
   currentPhoto = this.defaultPhoto; // URL de la foto actual
-  profilePictureId : number = 0;  // URL de la foto actual
+  profilePictureId: number = 0;  // URL de la foto actual
 
   private haveProfilePicture: boolean = false;
+  isChatOpen = false;
+
+  senderId = ''; // Cambia esto al ID del usuario actual (por ejemplo, desde un servicio de autenticación)
+  receiverId = ''; // Cambia esto al ID del usuario con el que se desea chatea
 
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private userService: UserService, private profileService: ProfileService) { }
@@ -43,11 +48,14 @@ export class ProfileComponent implements OnInit {
     ]
     // Obtener el ID del perfil desde la URL
     this.profileId = this.route.snapshot.paramMap.get('id') || '';
+    this.receiverId = this.profileId;
     // Verificar si el usuario logueado es dueño del perfil
     this.isOwner = this.authService.isProfileOwner(this.profileId);
     this.fetchUserProfile();
     this.fetchProfilePhoto(); // Cargar la foto de perfil
     this.authService.setVisitedProfileId(Number(this.profileId));
+
+    this.getCurrentLoggedIdUser();
   }
 
 
@@ -76,7 +84,7 @@ export class ProfileComponent implements OnInit {
         },
       });
     }
-    else{
+    else {
       this.profileService.updatePhoto(file, this.profilePictureId).subscribe({
         next: (response) => {
           console.log('Foto modificada correctamente:', response);
@@ -130,5 +138,28 @@ export class ProfileComponent implements OnInit {
     } else {
       console.error('El ID de usuario no es válido');
     }
+  }
+
+  getCurrentLoggedIdUser(): void {
+    this.authService.getCurrentUserLogged().subscribe({
+      next: (response: User) => {
+        console.log('Obtenido correctamente:', response);
+        this.authService.CurrentUserLoggedId = response.id;
+        this.senderId = response.id.toString(); // Asignar el id del usuario a senderId
+      },
+      error: (error) => {
+        console.error('Error al conseguir usuario logueado', error);
+      },
+    });
+  }
+
+
+
+  openChat() {
+    this.isChatOpen = true;
+  }
+
+  closeChat() {
+    this.isChatOpen = false;
   }
 }
