@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService } from 'src/app/services/chat.service';
 
@@ -16,6 +16,8 @@ export class ChatComponent {
    @Input() senderId!: string; // ID del usuario actual
   @Input() receiverId!: string; // ID del receptor
   @Output() close = new EventEmitter<void>(); // Evento para cerrar el chat
+  @ViewChild('messageContainer') private messageContainer!: ElementRef;
+
 
   // @Output() close = new EventEmitter<void>(); // Emite cuando se cierra el chat
 
@@ -30,6 +32,7 @@ export class ChatComponent {
     loadMessages(): void {
       this.chatService.getMessages(this.senderId, this.receiverId).subscribe((messages: any[]) => {
         this.messages = messages;
+        this.scrollToBottom();
       });
     }
 
@@ -43,8 +46,22 @@ export class ChatComponent {
     if (this.newMessage.trim()) {
       this.chatService.sendMessage(this.senderId, this.receiverId, this.newMessage);
       this.newMessage = '';  // Limpiar el campo del mensaje
+      this.scrollToBottom();
     }
   }
+
+  ngAfterViewInit() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom(): void {
+    if (this.messageContainer) {
+    //  this.cdr.detectChanges();
+      setTimeout(() => {
+        this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+      }, 50);    }
+  }
+
 
   closeChat() {
     this.close.emit();

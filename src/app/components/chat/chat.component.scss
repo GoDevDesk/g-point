@@ -1,82 +1,66 @@
-/* Posicionamiento y diseño general */
+/* General del contenedor */
+#messageContainer {
+  z-index: 9999; /* Asegura que esté por encima de otros componentes */
+  overflow-y: auto;
+  height: 300px; /* Altura mínima o fija del contenedor */
+  max-height: 500px; /* Altura máxima si quieres hacer el diseño responsivo */
+  scrollbar-width: none; /* Oculta la barra de scroll en Firefox */
+  -ms-overflow-style: none; /* Oculta la barra de scroll en IE y Edge */
+}
+
+#messageContainer::-webkit-scrollbar {
+  display: none; /* Oculta la barra de scroll en Chrome y Safari */
+}
+
+/* Diseño general */
 .fixed {
-    position: fixed;
+  position: fixed;
+}
+.bottom-4 {
+  bottom: 1rem;
+}
+.right-4 {
+  right: 1rem;
+}
+.max-w-sm {
+  max-width: 20rem; /* Ajusta según tus necesidades */
+}
+.flex-1 {
+  flex: 1;
+}
+
+/* Mensajes propios */
+.my-message {
+  align-self: flex-end;
+  text-align: left;
+}
+.my-message p {
+  background-color: #d1e7ff;
+  color: #0d6efd;
+}
+.my-message span {
+  color: #0d6efd;
+}
+
+/* Mensajes de otros */
+.other-message {
+  align-self: flex-start;
+  text-align: right;
+}
+.other-message p {
+  background-color: #e9ecef;
+  color: #495057;
+}
+.other-message span {
+  color: #495057;
+}
+
+@media (max-width: 768px) {
+  #messageContainer {
+    width: 100%; /* Ocupa todo el ancho */
+    max-width: none; /* Sin límite de ancho */
+    right: 0; /* Alineado al borde derecho */
+    bottom: 0; /* Alineado al borde inferior */
+    height: 40vh; /* Usa la mitad de la altura de la pantalla */
   }
-  .bottom-4 {
-    bottom: 1rem;
-  }
-  .right-4 {
-    right: 1rem;
-  }
-  .max-w-sm {
-    max-width: 20rem; /* Ajusta según tus necesidades */
-  }
-  .flex-1 {
-    flex: 1;
-  }
-  .overflow-y-auto {
-    overflow-y: auto;
-  }
-  
-  /* Estilos de fondo y texto */
-  .bg-gray-100 {
-    background-color: #f3f4f6;
-  }
-  .bg-gray-50 {
-    background-color: #f9fafb;
-  }
-  .text-gray-700 {
-    color: #4b5563;
-  }
-  .text-gray-600 {
-    color: #6b7280;
-  }
-  .border-gray-300 {
-    border-color: #d1d5db;
-  }
-  
-  /* Estilos para mensajes propios y ajenos */
-  .my-message {
-    align-self: flex-end; /* Alinea a la derecha */
-    text-align: left;
-  }
-  
-  .other-message {
-    align-self: flex-start; /* Alinea a la izquierda */
-    text-align: right;
-  }
-  
-  /* Estilos para mensajes propios */
-  .my-message p {
-    background-color: #d1e7ff; /* Azul claro */
-    color: #0d6efd; /* Texto azul oscuro */
-  }
-  
-  .my-message span {
-    color: #0d6efd; /* Azul oscuro */
-  }
-  
-  /* Estilos para mensajes de otros */
-  .other-message p {
-    background-color: #e9ecef; /* Gris claro */
-    color: #495057; /* Texto gris oscuro */
-  }
-  
-  .other-message span {
-    color: #495057; /* Gris oscuro */
-  }
-  
-  /* Bordes redondeados y espaciado */
-  .my-message p, .other-message p {
-    border-radius: 15px; /* Redondear esquinas */
-    padding: 10px;
-  }
-  
-  /* Flexbox para alinear los mensajes */
-  .my-message, .other-message {
-    display: flex;
-    flex-direction: column;
-    max-width: 70%;
-    margin: 5px 0;
-  }
-  
+}

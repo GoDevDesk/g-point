@@ -6,4 +6,49 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
     border-radius: 0.5rem; /* Bordes redondeados (equivale a rounded-lg) */
     cursor: pointer; /* Cambia el cursor a "pointer" para indicar clic */
+    z-index: 1; /* Baja prioridad en el apilamiento */
+
+    position: relative; /* Asegura que el contenido absoluto esté dentro de este contenedor */
+    overflow: hidden;   /* Evita que el contenido sobresalga */
   }
+
+  
+  .album-card {
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  }
+  
+  .album-card:hover,
+  .album-card:active {
+    transform: scale(1.05);
+    background-color: #e9a0c6; /* Cambia por tu color hover */
+  }
+
+  /* Contenedor del símbolo "+" */
+.plus-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10; /* Asegura que esté por encima del fondo */
+}
+
+/* Símbolo "+" */
+.plus-symbol {
+  font-size: 6rem; /* Ajusta el tamaño si es necesario */
+  color: white;
+  font-weight: 300;
+  opacity: 0.3;
+  transition: opacity 0.2s ease-in-out;
+}
+  
+  @media (max-width: 768px) {
+    .album-card {
+      transform: none; /* Elimina la escala en dispositivos móviles */
+    }
+  
+    .plus-container {
+      top: 50%; /* Mantiene el contenido centrado */
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }}

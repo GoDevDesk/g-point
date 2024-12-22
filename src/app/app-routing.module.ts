@@ -35,13 +35,13 @@ const routes: Routes = [
     canActivate: [AuthGuard] 
   },
   {
-    path: 'album-detail/:id', component: AlbumDetailComponent
-  },
-  {
-    path:"*",
-    //component: PageNotFoundComponent,
+    path: 'album-detail/:id', component: AlbumDetailComponent}
+  // },
+  // {
+  //   path:"*",
+  //   //component: PageNotFoundComponent,
 
-  }
+  // }
 
 ];
 

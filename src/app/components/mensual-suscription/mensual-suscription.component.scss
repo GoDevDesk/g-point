@@ -3,5 +3,6 @@
     background-color: #080808;/* Fondo blanco */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
     border-radius: 0.5rem; /* Bordes redondeados (8px, equivalente a rounded-lg) */
-    position: relative; /* Posicionamiento relativo */
+    z-index: 1;
+   // position: relative; /* Posicionamiento relativo */
   }
