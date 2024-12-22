@@ -28,7 +28,6 @@ export class ChatComponent {
 
     // Método para cargar los mensajes entre los dos usuarios
     loadMessages(): void {
-      debugger;
       this.chatService.getMessages(this.senderId, this.receiverId).subscribe((messages: any[]) => {
         this.messages = messages;
       });

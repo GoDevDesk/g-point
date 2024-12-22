@@ -35,6 +35,7 @@ export class AuthService {
   // Eliminar el token al cerrar sesión
   logout(): void {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('currentUser');
   }
 
 
