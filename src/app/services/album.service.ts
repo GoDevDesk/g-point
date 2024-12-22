@@ -4,12 +4,15 @@ import { PaginatedResultResponse } from '../models/paginatedResultResponse';
 import { Album } from '../models/album';
 import { Observable } from 'rxjs';
 import { AlbumRequest } from '../models/albumRequest';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlbumService {
-  private apiUrl = 'https://localhost:44306/api/album'; // URL base del backend
+  //private apiUrl = 'https://localhost:44306/api/album'; // URL base del backend
+  private apiUrl = `${environment.apiPtFilesBaseUrl}/api/album`;  // Concatenar el subpath
+
 
   constructor(private http: HttpClient) { }
 

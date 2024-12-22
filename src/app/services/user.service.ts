@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserProfile } from '../models/userProfile';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'https://localhost:44335/api'; // URL base del backend
+  //private apiUrl = 'https://localhost:44335/api'; // URL base del backend
+  private apiUrl = `${environment.apiPtUsersBaseUrl}/api`;  // Concatenar el subpath
+
 
   constructor(private http: HttpClient) {}
 

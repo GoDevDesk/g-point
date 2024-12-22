@@ -7,6 +7,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AlbumContentComponent } from './components/album-content/album-content.component';
 import { AlbumDetailComponent } from './components/album-detail/album-detail.component';
 import { AuthGuard } from './guard/auth.guard';
+import { NotFoundError } from 'rxjs';
 
 
 const routes: Routes = [
@@ -35,6 +36,11 @@ const routes: Routes = [
   },
   {
     path: 'album-detail/:id', component: AlbumDetailComponent
+  },
+  {
+    path:"*",
+    //component: PageNotFoundComponent,
+
   }
 
 ];

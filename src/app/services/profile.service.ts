@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileService {
-  private apiUrl = 'https://localhost:44306/api/profile-picture'; // Cambia la URL según la ruta de tu servidor.
+ // private apiUrl = 'https://localhost:44306/api/profile-picture'; // Cambia la URL según la ruta de tu servidor.
+
+  private apiUrl = `${environment.apiPtFilesBaseUrl}/api/profile-picture`;  // Concatenar el subpath
+  
 
   constructor(private http: HttpClient) {}
 
