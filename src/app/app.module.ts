@@ -32,6 +32,7 @@ import { EditPhotoModalComponent } from './components/edit-photo-modal/edit-phot
 import { CreatePostModalComponent } from './components/create-post-modal/create-post-modal.component';
 import { GoBackComponent } from './components/go-back/go-back.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { ChatBoxComponent } from './components/chat-box/chat-box.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { ChatComponent } from './components/chat/chat.component';
     CreatePostModalComponent,
     GoBackComponent,
     ChatComponent,
+    ChatBoxComponent,
   ],
   imports: [
     SharedModule,

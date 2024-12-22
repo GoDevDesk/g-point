@@ -1,9 +1,15 @@
 /* General del contenedor */
 #messageContainer {
+
+  display: flex;
+//  flex-direction: column;
+
+  // height: 50%; /* Usa la mitad de la altura de la pantalla */
+  // width:  100%; /* Usa la mitad de la altura de la pantalla */
+
   z-index: 9999; /* Asegura que esté por encima de otros componentes */
   overflow-y: auto;
-  height: 300px; /* Altura mínima o fija del contenedor */
-  max-height: 500px; /* Altura máxima si quieres hacer el diseño responsivo */
+  flex-grow: 1; /* Permite que el contenedor crezca para ocupar el espacio disponible */
   scrollbar-width: none; /* Oculta la barra de scroll en Firefox */
   -ms-overflow-style: none; /* Oculta la barra de scroll en IE y Edge */
 }
@@ -14,7 +20,7 @@
 
 /* Diseño general */
 .fixed {
-  position: fixed;
+ // position: fixed;
 }
 .bottom-4 {
   bottom: 1rem;

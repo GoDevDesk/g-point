@@ -8,6 +8,7 @@ import { AlbumContentComponent } from './components/album-content/album-content.
 import { AlbumDetailComponent } from './components/album-detail/album-detail.component';
 import { AuthGuard } from './guard/auth.guard';
 import { NotFoundError } from 'rxjs';
+import { ChatBoxComponent } from './components/chat-box/chat-box.component';
 
 
 const routes: Routes = [
@@ -35,7 +36,12 @@ const routes: Routes = [
     canActivate: [AuthGuard] 
   },
   {
-    path: 'album-detail/:id', component: AlbumDetailComponent}
+    path: 'album-detail/:id', component: AlbumDetailComponent
+  },
+  {
+    path: 'chat', component: ChatBoxComponent
+
+  }
   // },
   // {
   //   path:"*",
