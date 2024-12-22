@@ -4,12 +4,15 @@ import { PaginatedResultResponse } from '../models/paginatedResultResponse';
 import { Album } from '../models/album';
 import { Observable } from 'rxjs';
 import { Post } from '../models/Post';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
-  private apiUrl = 'https://localhost:44306/api/post'; // URL base del backend
+ // private apiUrl = 'https://localhost:44306/api/post'; // URL base del backend
+  private apiUrl = `${environment.apiPtFilesBaseUrl}/api/post`;  // Concatenar el subpath
+  
 
   constructor(private http: HttpClient) { }
 

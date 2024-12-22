@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { User } from '../models/user';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:44335/api'; // URL base del backend
+  //private apiUrl = 'https://localhost:44335/api'; // URL base del backend
+    private apiUrl = `${environment.apiPtUsersBaseUrl}/api`;  // Concatenar el subpath
+
+  
   // private currentUser: any; // Almacena el usuario actual
   private visitedProfileId = 0; // Almacena el id del perfil visitado
   public CurrentUserLoggedId = 0;
