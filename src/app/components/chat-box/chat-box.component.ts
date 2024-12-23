@@ -1,42 +1,124 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
+import { ChatService } from 'src/app/services/chat.service';
 
 @Component({
   selector: 'app-chat-box',
   templateUrl: './chat-box.component.html',
   styleUrls: ['./chat-box.component.scss']
 })
-export class ChatBoxComponent implements OnInit {
+export class ChatBoxComponent {
+  currentUserLoggedId: string = '';
+  senderId: string = '';
+  receiverId: string = '';
 
+  @ViewChild('messageContainer') messageContainer!: ElementRef;
+  constructor(private chatService: ChatService, private authService: AuthService) {
+    
+  }
   // Lista de contactos
   contacts = [
-    { id: 17, name: 'Alice', avatar: 'https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato', message: 'Hoorayy!!' },
-    { id: 2, name: 'Martin', avatar: 'https://placehold.co/200x/ad922e/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato', message: 'That pizza place was amazing! 🍕' },
-    { id: 3, name: 'Charlie', avatar: 'https://placehold.co/200x/2e83ad/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato', message: 'Any good movie recommendations?' },
-    // Agrega más contactos según sea necesario
+    {
+      id: 18,
+      name: 'John Doe',
+      avatar: 'https://via.placeholder.com/48',
+      lastMessage: 'Hey! How are you?'
+    },
+    {
+      id: 17,
+      name: 'Jane Smith',
+      avatar: 'https://via.placeholder.com/48',
+      lastMessage: 'Are we still on for tomorrow?'
+    },
+    {
+      id: 3,
+      name: 'Alex Johnson',
+      avatar: 'https://via.placeholder.com/48',
+      lastMessage: 'I’ll call you later.'
+    }
   ];
 
-  // Contacto seleccionado
-  selectedContact: any = null;
-  receiverId = 0;  // ID del receptor si lo necesitas
-  senderId = 17;  // ID del emisor (tu propio ID)
+  // Mensajes del chat
+  messages: any[] = [];
 
+  // Contacto seleccionado
+  selectedContact: { id: number; name: string; avatar: string; lastMessage: string } | null = null;
+
+  // Nuevo mensaje
+  newMessage = '';
 
   ngOnInit(): void {
-    // Selecciona el primer contacto de la lista al iniciar
-    if (this.contacts.length > 0) {
-      this.selectedContact = this.contacts[0];  // Asigna el primer contacto
-      this.receiverId = this.selectedContact.id;  // Asigna el ID del receptor
-      debugger;
+    debugger;
+    this.currentUserLoggedId = this.authService.getCurrentUserLoggedId().toString();
+    this.senderId = this.currentUserLoggedId;
+    this.loadMessages();
+  }
+
+  ngAfterViewInit() {
+ //   this.scrollToBottom();
+  }
+  // Método para cargar los mensajes entre los dos usuarios
+  loadMessages(): void {
+    debugger;
+    this.chatService.getMessages(this.senderId, this.receiverId).subscribe((messages: any[]) => {
+      this.messages = messages;
+      this.scrollToBottom(); // Desplaza el scroll después de cargar mensajes
+
+    });
+  }
+
+  scrollToBottom(): void {
+    if (this.messageContainer) {
+      try {
+        setTimeout(() => {
+          this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+        }, 50);
+      } catch (err) {
+        console.error('Error al desplazar el scroll:', err);
+      }
     }
   }
 
+
+  // scrollToBottom(): void {
+  //   if (this.messageContainer) {
+  //     //  this.cdr.detectChanges();
+  //     setTimeout(() => {
+  //       this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+  //     }, 50);
+  //   }
+  // }
+
   // Método para seleccionar un contacto
-  selectContact(contact: any) {
+  selectContact(contact: { id: number; name: string; avatar: string; lastMessage: string }) {
+    debugger;
     this.selectedContact = contact;
-    this.receiverId = contact.id;  // Asignamos el ID del receptor
+    this.receiverId = contact.id.toString();
+    this.loadMessages();
+
+    // Ejemplo: cargar mensajes de este contacto (simulado)
+    this.messages = [
+      {
+        content: 'Hello!',
+        isOutgoing: false,
+        avatar: this.selectedContact?.avatar || 'https://via.placeholder.com/48',
+      },
+      {
+        content: 'Hi! How are you?',
+        isOutgoing: true,
+        avatar: 'https://via.placeholder.com/48', // Tu avatar
+      },
+    ];
   }
 
-  closeChatBox() {
-    this.selectedContact = null;  // Cerrar el chat
+  // Método para enviar un mensaje
+  sendMessage(): void {
+    if (this.newMessage.trim()) {
+      this.chatService.sendMessage(this.senderId, this.receiverId, this.newMessage);
+      this.newMessage = '';  // Limpiar el campo del mensaje
+      this.scrollToBottom(); // Desplaza el scroll después de cargar mensajes
+
+   //   this.scrollToBottom();
+    }
   }
 }

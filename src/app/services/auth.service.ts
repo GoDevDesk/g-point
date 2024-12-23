@@ -22,6 +22,24 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, credentials, { responseType: 'text' });
   }
 
+  // setCurrentUserLoggedId(id: number): void {
+  //   localStorage.setItem('currentUserLoggedId', String(id));
+  // }
+  
+  getCurrentUserLoggedId(): number {
+    const user = this.getUserStorage();
+    if (user) {
+      try {
+        const parsedUser = JSON.parse(user); // Convierte el JSON string a un objeto
+        return parsedUser.id || 0; // Devuelve el ID o 0 si no existe
+      } catch (error) {
+        console.error('Error al parsear el usuario almacenado:', error);
+        return 0; // Devuelve 0 en caso de error
+      }
+    }
+    return 0; // Devuelve 0 si no hay usuario almacenado
+  }
+  
   // Guardar el token en localStorage
   setToken(token: string): void {
     localStorage.setItem('authToken', token);
