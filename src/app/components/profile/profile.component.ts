@@ -2,10 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { catchError, tap } from 'rxjs';
+import { ForeignProfileData } from 'src/app/models/foreignProfileData';
 import { User } from 'src/app/models/user';
 import { UserProfile } from 'src/app/models/userProfile';
 import { AuthService } from 'src/app/services/auth.service';
+import { FollowsService } from 'src/app/services/follows.service';
 import { ProfileService } from 'src/app/services/profile.service';
+import { SubscriptionsService } from 'src/app/services/subscriptions.service';
 import { UserService } from 'src/app/services/user.service';
 
 
@@ -37,25 +40,34 @@ export class ProfileComponent implements OnInit {
   senderId = ''; // Cambia esto al ID del usuario actual (por ejemplo, desde un servicio de autenticación)
   receiverId = ''; // Cambia esto al ID del usuario con el que se desea chatea
 
+  isFollowed = false; // Estado inicial para follow
+  isSubscribed = false; // Estado inicial para subscribe
 
-  constructor(private route: ActivatedRoute, private authService: AuthService, private userService: UserService, private profileService: ProfileService) { }
+
+  constructor(private route: ActivatedRoute, private authService: AuthService, private userService: UserService, private profileService: ProfileService,
+    private subscriptionsService: SubscriptionsService, private followsService: FollowsService) { }
 
   ngOnInit(): void {
+    this.getCurrentLoggedIdUser();
+    this.profileId = this.route.snapshot.paramMap.get('id') || '';
+
     this.items = [
       { label: 'Dashboard' },
       { label: 'Transactions' },
       { label: 'Products' }
     ]
-    // Obtener el ID del perfil desde la URL
-    this.profileId = this.route.snapshot.paramMap.get('id') || '';
-    this.receiverId = this.profileId;
+
     // Verificar si el usuario logueado es dueño del perfil
     this.isOwner = this.authService.isProfileOwner(this.profileId);
+    if (!this.isOwner){
+      this.receiverId = this.profileId;
+      this.GetForeignProfileData(Number(this.profileId));
+
+    }
     this.fetchUserProfile();
-    this.fetchProfilePhoto(); // Cargar la foto de perfil
+    this.fetchProfilePhoto(); 
     this.authService.setVisitedProfileId(Number(this.profileId));
 
-    this.getCurrentLoggedIdUser();
   }
 
 
@@ -153,7 +165,50 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  GetForeignProfileData(userId: number): void {
+    this.userService.GetForeignProfileData(userId).subscribe({
+      next: (response: ForeignProfileData) => {
+        console.log('Obtenido correctamente:', response);
+        this.isFollowed = response.hasFollow;
+        this.isSubscribed = response.hasSubscription
+      },
+      error: (error) => {
+        console.error('Error al conseguir usuario logueado', error);
+      },
+    });
+  }
 
+    toggleFollow(): void {
+      // Cambiar el estado en el backend
+      this.isFollowed = !this.isFollowed;
+      this.followsService.updateFollowStatus(Number(this.profileId) ,this.isFollowed).subscribe({
+        next: () => console.log('Follow status updated successfully'),
+        error: (error) => console.error('Error updating follow status:', error)
+      });
+    }
+
+   toggleSubscribe(): void {
+     // Cambiar el estado en el backend
+     this.isSubscribed = !this.isSubscribed;
+     this.subscriptionsService.updateSubscribeStatus(Number(this.profileId) ,this.isSubscribed).subscribe({
+       next: () => console.log('Subscribe status updated successfully'),
+       error: (error) => console.error('Error updating subscribe status:', error)
+     });
+   }
+
+
+  // subscribeUser() {
+  //   this.subscriptionService.subscribeToUser().subscribe({
+  //     next: (response) => {
+  //       console.log('User subscribed successfully:', response);
+  //       alert('You have successfully subscribed!');
+  //     },
+  //     error: (error) => {
+  //       console.error('Error subscribing the user:', error);
+  //       alert('There was an error. Please try again.');
+  //     }
+  //   });
+  // }
 
   openChat() {
     this.isChatOpen = true;

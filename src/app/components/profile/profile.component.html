@@ -42,12 +42,23 @@
 
     <!--boton seguir y mensaje-->
     <div class="flex justify-center gap-2 my-5">
-      <button class="bg-pink-500 px-10 py-2 rounded-full text-white shadow-lg">Follow</button>
+      <div class="flex justify-center gap-2 my-5">
+        <button
+          [ngClass]="{'bg-pink-500 text-white': isFollowed, 'bg-white text-gray-500 border-gray-500': !isFollowed}"
+          class="px-10 py-2 rounded-full shadow-lg" (click)="toggleFollow()">
+          Follow
+        </button>
+        <button
+          [ngClass]="{'bg-pink-500 text-white': isSubscribed, 'bg-white text-gray-500 border-gray-500': !isSubscribed}"
+          class="px-10 py-2 rounded-full shadow-lg" (click)="toggleSubscribe()">
+          Subscribe
+        </button>
+      </div>
       <!-- <button class="bg-white border border-gray-500 px-10 py-2 rounded-full shadow-lg">Message</button> -->
       <button class="bg-white border border-gray-500 px-4 py-2 rounded-full shadow-lg" (click)="openChat()">Abrir
         Chat</button>
-
     </div>
+
     <app-chat *ngIf="isChatOpen" [senderId]="senderId" [receiverId]="receiverId" (close)="closeChat()">
     </app-chat>
 
