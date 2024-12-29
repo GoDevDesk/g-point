@@ -12,38 +12,18 @@ export class ChatBoxComponent {
   senderId: string = '';
   receiverId: string = '';
   recentChats: any[] = [];
+  user: any;
 
   @ViewChild('messageContainer') messageContainer!: ElementRef;
   constructor(private chatService: ChatService, private authService: AuthService) {
     
   }
-  // Lista de contactos
-  contacts = [
-    {
-      id: 18,
-      name: 'John Doe',
-      avatar: 'https://via.placeholder.com/48',
-      lastMessage: 'Hey! How are you?'
-    },
-    {
-      id: 17,
-      name: 'Jane Smith',
-      avatar: 'https://via.placeholder.com/48',
-      lastMessage: 'Are we still on for tomorrow?'
-    },
-    {
-      id: 3,
-      name: 'Alex Johnson',
-      avatar: 'https://via.placeholder.com/48',
-      lastMessage: 'I’ll call you later.'
-    }
-  ];
 
   // Mensajes del chat
   messages: any[] = [];
 
   // Contacto seleccionado
-  selectedContact: { id: number; name: string; avatar: string; lastMessage: string } | null = null;
+  selectedChat: { id: number; name: string; avatar: string; lastMessage: string; otherUserId: string } | null = null;
 
   // Nuevo mensaje
   newMessage = '';
@@ -51,6 +31,7 @@ export class ChatBoxComponent {
   ngOnInit(): void {
     debugger;
     this.currentUserLoggedId = this.authService.getCurrentUserLoggedId().toString();
+    this.user = JSON.parse(this.authService.getUserStorage());
     this.getRecentUserChats(this.currentUserLoggedId, 10);
     this.senderId = this.currentUserLoggedId;
     this.loadMessages(); //validar q haya ids antes de hacer esto
@@ -90,21 +71,10 @@ export class ChatBoxComponent {
       }
   }
 
-
-  // scrollToBottom(): void {
-  //   if (this.messageContainer) {
-  //     //  this.cdr.detectChanges();
-  //     setTimeout(() => {
-  //       this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
-  //     }, 50);
-  //   }
-  // }
-
   // Método para seleccionar un contacto
-  selectContact(contact: { id: number; name: string; avatar: string; lastMessage: string }) {
-    debugger;
-    this.selectedContact = contact;
-    this.receiverId = contact.id.toString();
+  selectChat(chat: { id: number; name: string; avatar: string; lastMessage: string; otherUserId: string }) {
+    this.selectedChat = chat;
+    this.receiverId = chat.otherUserId;
     this.loadMessages();
 
     // Ejemplo: cargar mensajes de este contacto (simulado)
@@ -112,12 +82,12 @@ export class ChatBoxComponent {
       {
         content: 'Hello!',
         isOutgoing: false,
-        avatar: this.selectedContact?.avatar || 'https://via.placeholder.com/48',
+     //   avatar: this.selectedContact?.avatar || 'https://via.placeholder.com/48',
       },
       {
         content: 'Hi! How are you?',
         isOutgoing: true,
-        avatar: 'https://via.placeholder.com/48', // Tu avatar
+   //     avatar: 'https://via.placeholder.com/48', // Tu avatar
       },
     ];
   }
@@ -126,7 +96,7 @@ export class ChatBoxComponent {
   async sendMessage() {
     if (this.newMessage.trim()) {
       this.chatService.sendMessage(this.senderId, this.receiverId, this.newMessage);
-      this.updateUserChats(this.senderId, this.receiverId, this.newMessage);
+      this.updateUserChats(this.senderId,this.user.userName, this.receiverId, this.newMessage);
       this.getRecentUserChats(this.currentUserLoggedId, 10);
       this.newMessage = '';  // Limpiar el campo del mensaje
       this.scrollToBottom(); // Desplaza el scroll después de cargar mensajes
@@ -134,14 +104,14 @@ export class ChatBoxComponent {
     }
   }
 
-  async updateUserChats(senderId: string, receiverId:string, message: string){
+  async updateUserChats(senderId: string, senderName: string, receiverId:string, message: string){
 
     const timestamp = new Date();
 
     try {
       // Enviar el mensaje a Firestore (puedes usar otra lógica para almacenarlo)
       // Aquí solo actualizamos los chats de usuario como ejemplo
-      await this.chatService.updateUserChats(senderId, receiverId, message, timestamp);
+      await this.chatService.updateUserChats(senderId,senderName, receiverId, message, timestamp);
   
       console.log('Mensaje enviado y chats actualizados.');
     } catch (error) {

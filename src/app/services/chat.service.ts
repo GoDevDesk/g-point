@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
-import { combineLatest, map, Observable } from 'rxjs';
+import { combineLatest, firstValueFrom, map, Observable } from 'rxjs';
 import { Message } from '../models/message';
 import { User } from '../models/user';
 import { ChatData } from '../models/chatData';
@@ -46,29 +46,26 @@ export class ChatService {
   }
 
   async getRecentUserChats(userId: string, limitResults: number): Promise<any[]> {
-    // const chatsRef = this.firestore.collection<ChatData>(`users/${userId}/chats`, ref =>
-    //   ref.orderBy('lastMessageTimestamp', 'desc').limit(limitResults)
-    // );
-
     const chatsRef = this.firestore.collection<ChatData>(
       `users/${userId}/chats`,
       ref => ref.orderBy('lastMessageTimestamp', 'desc').limit(limitResults)
     );
-
-    const snapshot = await chatsRef.snapshotChanges().toPromise();
-
+  
+    // Usa `firstValueFrom` en lugar de `toPromise`
+    const snapshot = await firstValueFrom(chatsRef.snapshotChanges());
+  
     if (!snapshot || snapshot.length === 0) {
       // Retorna un array vacío si no hay resultados
       return [];
     }
-
+  
     // Procesa los documentos en el snapshot
     return snapshot.map(change => {
       const data = change.payload.doc.data(); // Obtén los datos del documento
       if (!data) {
         return { otherUserId: change.payload.doc.id }; // Si no hay datos, retorna solo el ID
       }
-
+  
       return {
         otherUserId: change.payload.doc.id, // ID del documento
         ...data, // Propaga los datos del documento
@@ -78,17 +75,20 @@ export class ChatService {
 
   async updateUserChats(
     senderId: string,
+    lastSenderName: string,
     receiverId: string,
     message: string,
     timestamp: Date
   ): Promise<void> {
     // Referencia al chat del remitente
     const senderChatRef = this.firestore.doc(`users/${senderId}/chats/${receiverId}`);
+    debugger;
     await senderChatRef.set(
       {
         lastMessage: message,
         lastMessageTimestamp: timestamp,
         lastSenderId: senderId,
+        lastSenderName: lastSenderName
       },
       { merge: true }
     );

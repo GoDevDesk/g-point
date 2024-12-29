@@ -50,7 +50,7 @@ export class AuthService {
     return localStorage.getItem('authToken');
   }
 
-  getUserStorage(): string | null {
+  getUserStorage(): any | null {
     return localStorage.getItem('currentUser');
   }
 

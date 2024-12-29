@@ -24,13 +24,16 @@
 
     <!-- Contact List -->
     <div class="overflow-y-auto h-screen p-3 mb-9 pb-20">
-      <div *ngFor="let contact of contacts"
-        class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md" (click)="selectContact(contact)">
+      <div *ngFor="let recentChat of recentChats"
+        class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md" (click)="selectChat(recentChat)">
         <div class="w-12 h-12 bg-gray-300 rounded-full mr-3">
-          <img [src]="contact.avatar" alt="User Avatar" class="w-12 h-12 rounded-full">
+          <img [src]="recentChat.avatar" alt="User Avatar" class="w-12 h-12 rounded-full">
         </div>
         <div class="flex-1">
-          <h2 class="text-lg font-semibold">{{ contact.name }}</h2>
+          <h2 class="text-lg font-semibold">{{ recentChat.lastSenderName }}</h2>
+        </div>
+        <div class="flex-1">
+          <h2 class="text-lg font-semibold">{{ recentChat.lastMessage }}</h2>
         </div>
       </div>
     </div>
@@ -40,7 +43,7 @@
   <div class="flex-1">
     <!-- Chat Header -->
     <header class="bg-white p-4 text-gray-700">
-      <h1 class="text-2xl font-semibold">{{ selectedContact?.name }}</h1>
+      <h1 class="text-2xl font-semibold">{{ selectedChat?.otherUserId }}</h1>
     </header>
 
     <!-- Chat Messages -->
