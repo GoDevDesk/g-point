@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService } from 'src/app/services/chat.service';
 
@@ -14,6 +15,15 @@ export class ChatBoxComponent {
   recentChats: any[] = [];
   user: any;
 
+  selectedChat: { id: number; name: string; avatar: string; lastMessage: string; otherUserId: string;  otherUserName: string; } = {
+    id: 0,
+    name: '',
+    avatar: '',
+    lastMessage: '',
+    otherUserId: '',
+    otherUserName: 'Ajeno'
+  };
+
   @ViewChild('messageContainer') messageContainer!: ElementRef;
   constructor(private chatService: ChatService, private authService: AuthService) {
     
@@ -23,7 +33,7 @@ export class ChatBoxComponent {
   messages: any[] = [];
 
   // Contacto seleccionado
-  selectedChat: { id: number; name: string; avatar: string; lastMessage: string; otherUserId: string } | null = null;
+
 
   // Nuevo mensaje
   newMessage = '';
@@ -64,7 +74,10 @@ export class ChatBoxComponent {
   async getRecentUserChats(userId: string,limitResults: number ){
       try {
         debugger;
-        this.recentChats = await this.chatService.getRecentUserChats(userId, limitResults);
+        this.chatService.getRecentUserChats(userId, limitResults).subscribe(chats => {
+          debugger;
+          this.recentChats = chats; // Actualiza la lista de chats en tiempo real
+        });
         console.log('Recent chats:', this.recentChats);
       } catch (error) {
         console.error('Error fetching recent chats:', error);
@@ -72,46 +85,37 @@ export class ChatBoxComponent {
   }
 
   // Método para seleccionar un contacto
-  selectChat(chat: { id: number; name: string; avatar: string; lastMessage: string; otherUserId: string }) {
+  selectChat(chat: { id: number; name: string; avatar: string; lastMessage: string; otherUserId: string; otherUserName: string }) {
     this.selectedChat = chat;
     this.receiverId = chat.otherUserId;
     this.loadMessages();
 
-    // Ejemplo: cargar mensajes de este contacto (simulado)
-    this.messages = [
-      {
-        content: 'Hello!',
-        isOutgoing: false,
-     //   avatar: this.selectedContact?.avatar || 'https://via.placeholder.com/48',
-      },
-      {
-        content: 'Hi! How are you?',
-        isOutgoing: true,
-   //     avatar: 'https://via.placeholder.com/48', // Tu avatar
-      },
-    ];
   }
 
   // Método para enviar un mensaje
   async sendMessage() {
     if (this.newMessage.trim()) {
       this.chatService.sendMessage(this.senderId, this.receiverId, this.newMessage);
-      this.updateUserChats(this.senderId,this.user.userName, this.receiverId, this.newMessage);
-      this.getRecentUserChats(this.currentUserLoggedId, 10);
+
+
+        this.updateUserChats(this.senderId, this.user.userName, this.receiverId,this.selectedChat.otherUserName, this.newMessage);
+
+
+   //   this.getRecentUserChats(this.currentUserLoggedId, 10);
       this.newMessage = '';  // Limpiar el campo del mensaje
       this.scrollToBottom(); // Desplaza el scroll después de cargar mensajes
       console.log(this.recentChats);
     }
   }
 
-  async updateUserChats(senderId: string, senderName: string, receiverId:string, message: string){
+  async updateUserChats(senderId: string, senderName: string, receiverId:string,receiverName:string, message: string){
 
     const timestamp = new Date();
-
+    debugger;
     try {
       // Enviar el mensaje a Firestore (puedes usar otra lógica para almacenarlo)
       // Aquí solo actualizamos los chats de usuario como ejemplo
-      await this.chatService.updateUserChats(senderId,senderName, receiverId, message, timestamp);
+      await this.chatService.updateUserChats(senderId,senderName, receiverId,receiverName, message, timestamp);
   
       console.log('Mensaje enviado y chats actualizados.');
     } catch (error) {

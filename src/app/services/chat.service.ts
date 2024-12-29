@@ -45,38 +45,31 @@ export class ChatService {
     );
   }
 
-  async getRecentUserChats(userId: string, limitResults: number): Promise<any[]> {
-    const chatsRef = this.firestore.collection<ChatData>(
+  getRecentUserChats(userId: string, limitResults: number): Observable<any[]> {
+    const chatsRef = this.firestore.collection<any>(
       `users/${userId}/chats`,
       ref => ref.orderBy('lastMessageTimestamp', 'desc').limit(limitResults)
     );
   
-    // Usa `firstValueFrom` en lugar de `toPromise`
-    const snapshot = await firstValueFrom(chatsRef.snapshotChanges());
-  
-    if (!snapshot || snapshot.length === 0) {
-      // Retorna un array vacío si no hay resultados
-      return [];
-    }
-  
-    // Procesa los documentos en el snapshot
-    return snapshot.map(change => {
-      const data = change.payload.doc.data(); // Obtén los datos del documento
-      if (!data) {
-        return { otherUserId: change.payload.doc.id }; // Si no hay datos, retorna solo el ID
-      }
-  
-      return {
-        otherUserId: change.payload.doc.id, // ID del documento
-        ...data, // Propaga los datos del documento
-      };
-    });
+    // Escucha los cambios en tiempo real
+    return chatsRef.snapshotChanges().pipe(
+      map(snapshot =>
+        snapshot.map(change => {
+          const data = change.payload.doc.data();
+          return {
+            otherUserId: change.payload.doc.id,
+            ...data
+          };
+        })
+      )
+    );
   }
 
   async updateUserChats(
     senderId: string,
     lastSenderName: string,
     receiverId: string,
+    receiverName: string,
     message: string,
     timestamp: Date
   ): Promise<void> {
@@ -88,7 +81,12 @@ export class ChatService {
         lastMessage: message,
         lastMessageTimestamp: timestamp,
         lastSenderId: senderId,
-        lastSenderName: lastSenderName
+        lastSenderName: lastSenderName,
+        participants: [
+          { id: senderId, name: lastSenderName },
+          { id: receiverId, name: receiverName }
+        ],
+        otherUserName: receiverName
       },
       { merge: true }
     );
@@ -100,6 +98,11 @@ export class ChatService {
         lastMessage: message,
         lastMessageTimestamp: timestamp,
         lastSenderId: senderId,
+        participants: [
+          { id: senderId, name: lastSenderName },
+          { id: receiverId, name: receiverName }
+        ],
+        otherUserName: lastSenderName
       },
       { merge: true }
     );
