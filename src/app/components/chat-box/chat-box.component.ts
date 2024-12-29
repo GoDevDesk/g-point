@@ -11,6 +11,7 @@ export class ChatBoxComponent {
   currentUserLoggedId: string = '';
   senderId: string = '';
   receiverId: string = '';
+  recentChats: any[] = [];
 
   @ViewChild('messageContainer') messageContainer!: ElementRef;
   constructor(private chatService: ChatService, private authService: AuthService) {
@@ -50,8 +51,9 @@ export class ChatBoxComponent {
   ngOnInit(): void {
     debugger;
     this.currentUserLoggedId = this.authService.getCurrentUserLoggedId().toString();
+    this.getRecentUserChats(this.currentUserLoggedId, 10);
     this.senderId = this.currentUserLoggedId;
-    this.loadMessages();
+    this.loadMessages(); //validar q haya ids antes de hacer esto
   }
 
   ngAfterViewInit() {
@@ -59,7 +61,6 @@ export class ChatBoxComponent {
   }
   // Método para cargar los mensajes entre los dos usuarios
   loadMessages(): void {
-    debugger;
     this.chatService.getMessages(this.senderId, this.receiverId).subscribe((messages: any[]) => {
       this.messages = messages;
       this.scrollToBottom(); // Desplaza el scroll después de cargar mensajes
@@ -77,6 +78,16 @@ export class ChatBoxComponent {
         console.error('Error al desplazar el scroll:', err);
       }
     }
+  }
+
+  async getRecentUserChats(userId: string,limitResults: number ){
+      try {
+        debugger;
+        this.recentChats = await this.chatService.getRecentUserChats(userId, limitResults);
+        console.log('Recent chats:', this.recentChats);
+      } catch (error) {
+        console.error('Error fetching recent chats:', error);
+      }
   }
 
 
@@ -112,13 +123,30 @@ export class ChatBoxComponent {
   }
 
   // Método para enviar un mensaje
-  sendMessage(): void {
+  async sendMessage() {
     if (this.newMessage.trim()) {
       this.chatService.sendMessage(this.senderId, this.receiverId, this.newMessage);
+      this.updateUserChats(this.senderId, this.receiverId, this.newMessage);
+      this.getRecentUserChats(this.currentUserLoggedId, 10);
       this.newMessage = '';  // Limpiar el campo del mensaje
       this.scrollToBottom(); // Desplaza el scroll después de cargar mensajes
-
-   //   this.scrollToBottom();
+      console.log(this.recentChats);
     }
   }
+
+  async updateUserChats(senderId: string, receiverId:string, message: string){
+
+    const timestamp = new Date();
+
+    try {
+      // Enviar el mensaje a Firestore (puedes usar otra lógica para almacenarlo)
+      // Aquí solo actualizamos los chats de usuario como ejemplo
+      await this.chatService.updateUserChats(senderId, receiverId, message, timestamp);
+  
+      console.log('Mensaje enviado y chats actualizados.');
+    } catch (error) {
+      console.error('Error al enviar el mensaje:', error);
+    }
+  }
+
 }
