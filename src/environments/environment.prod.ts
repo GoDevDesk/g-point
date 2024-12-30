@@ -1,14 +1,14 @@
 export const environment = {
   production: true,
-  firebase: {
-    apiKey: "AIzaSyD3A0E-0j3TTzuSUV2Myi8gkyBSyx9_ynU",
-    authDomain: "backstore00-e87f9.firebaseapp.com",
-    projectId: "backstore00-e87f9",
-    storageBucket: "backstore00-e87f9.appspot.com",
-    messagingSenderId: "10824653281",
-    appId: "1:10824653281:web:ea5a49cca70ea627c4daa0",
-    measurementId: "G-9R7MLH67KB"
-},
+  firebaseConfig: {
+    apiKey: "AIzaSyDrSFdvpidAVcSAw0Mt2lxFubuA0LEHcPk",
+    authDomain: "chat-6954e.firebaseapp.com",
+    projectId: "chat-6954e",
+    storageBucket: "chat-6954e.firebasestorage.app",
+    messagingSenderId: "259194079279",
+    appId: "1:259194079279:web:14108d32015b75e2bc1eda",
+    measurementId: "G-5MS5EFD8EY"
+  },
 apiPtUsersBaseUrl: 'https://www.gpoint.somee.com',  // URL de tu API en desarrollo
 apiPtFilesBaseUrl: 'https://www.ptfiles.somee.com',  // URL de tu API en desarrollo
 };
