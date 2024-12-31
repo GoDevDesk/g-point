@@ -4,8 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AngularFireModule } from '@angular/fire/compat'; // Cambié esta línea
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore'; // Cambié esta línea
+
 
 import { environment } from 'src/environments/environment';
 import { LoginComponent } from './components/login/login.component';
@@ -34,6 +33,8 @@ import { CreatePostModalComponent } from './components/create-post-modal/create-
 import { GoBackComponent } from './components/go-back/go-back.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatBoxComponent } from './components/chat-box/chat-box.component';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 @NgModule({
   declarations: [
