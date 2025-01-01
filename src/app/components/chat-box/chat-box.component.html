@@ -47,7 +47,7 @@
     </header>
 
     <!-- Chat Messages -->
-    <div #messageContainer class="h-screen overflow-y-auto p-4 pb-36 bg-gray-500">
+    <div #messageContainer class="h-screen overflow-y-auto p-4 pb-36 bg-gray-900">
       <div *ngFor="let message of messages">
         <!-- Incoming Message -->
         <div *ngIf="message.senderId !== currentUserLoggedId" class="flex mb-4 cursor-pointer">
@@ -62,7 +62,7 @@
         <!-- Outgoing Message -->
         <div *ngIf="message.senderId === currentUserLoggedId" class="flex justify-end mb-4 cursor-pointer">
           <div class="flex max-w-96 bg-pink-500 text-white rounded-lg p-3 gap-3"> <span
-              class="block text-sm font-bold white-700">{{ message.senderId }}</span>
+              class="block text-sm font-bold white-700">Yo-</span>
             <p>{{ message.message }}</p>
           </div>
           <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2">
