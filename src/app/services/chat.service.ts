@@ -75,7 +75,6 @@ export class ChatService {
   ): Promise<void> {
     // Referencia al chat del remitente
     const senderChatRef = this.firestore.doc(`users/${senderId}/chats/${receiverId}`);
-    debugger;
     await senderChatRef.set(
       {
         lastMessage: message,

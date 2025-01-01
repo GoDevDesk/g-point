@@ -16,6 +16,8 @@ export class AlbumsGridComponent implements OnInit {
   page: number = 1;
   pageSize: number = 5;
   totalPages: number = 0;
+  isLoading = true; // Simula la carga inicial
+
 
   constructor(private albumService: AlbumService, private authService: AuthService, private router: Router) { }
 

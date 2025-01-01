@@ -39,7 +39,6 @@ export class ChatBoxComponent {
   newMessage = '';
 
   ngOnInit(): void {
-    debugger;
     this.currentUserLoggedId = this.authService.getCurrentUserLoggedId().toString();
     this.user = JSON.parse(this.authService.getUserStorage());
     this.getRecentUserChats(this.currentUserLoggedId, 10);
@@ -73,9 +72,7 @@ export class ChatBoxComponent {
 
   async getRecentUserChats(userId: string,limitResults: number ){
       try {
-        debugger;
         this.chatService.getRecentUserChats(userId, limitResults).subscribe(chats => {
-          debugger;
           this.recentChats = chats; // Actualiza la lista de chats en tiempo real
         });
         console.log('Recent chats:', this.recentChats);
@@ -111,7 +108,6 @@ export class ChatBoxComponent {
   async updateUserChats(senderId: string, senderName: string, receiverId:string,receiverName:string, message: string){
 
     const timestamp = new Date();
-    debugger;
     try {
       // Enviar el mensaje a Firestore (puedes usar otra lógica para almacenarlo)
       // Aquí solo actualizamos los chats de usuario como ejemplo

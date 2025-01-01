@@ -1,5 +1,7 @@
-<div class="bg-white lg:w-4/12 md:6/12 w-10/12 m-auto my-10 shadow-md">
-    <div class="py-8 px-8 rounded-xl">
+<div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner color="primary"></mat-spinner>
+  </div><div [class.opacity-50]="isLoading" class="bg-white lg:w-4/12 md:6/12 w-10/12 m-auto my-10 shadow-md">
+    <div class="py-8 px-8 rounded-xl">         
         <h1 class="font-medium text-2xl mt-3 text-center">Login</h1>
         <form (ngSubmit)="onLogin()" class="mt-6">
             <div class="my-5 text-sm">

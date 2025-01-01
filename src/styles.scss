@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-@import "primeng/resources/themes/lara-light-blue/theme.css";
 //@import "primeng/resources/primeng.css";
 
 @tailwind base;
@@ -15,3 +14,6 @@ html body {
 .gray-cards {
     background-color: #363636; /* Cambia este valor según lo que necesites */
   }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

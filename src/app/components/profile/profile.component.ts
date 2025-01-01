@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, tap } from 'rxjs';
 import { ForeignProfileData } from 'src/app/models/foreignProfileData';
 import { User } from 'src/app/models/user';
@@ -20,7 +19,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 
 export class ProfileComponent implements OnInit {
-  items: MenuItem[] = [];
+  items: any[] = [];
   activeTab: string = 'albums';
 
   profileId: string = ''; // ID del perfil visitado
@@ -45,7 +44,7 @@ export class ProfileComponent implements OnInit {
 
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private userService: UserService, private profileService: ProfileService,
-    private subscriptionsService: SubscriptionsService, private followsService: FollowsService) { }
+    private subscriptionsService: SubscriptionsService, private followsService: FollowsService, private router: Router) { }
 
   ngOnInit(): void {
     this.getCurrentLoggedIdUser();
@@ -211,7 +210,8 @@ export class ProfileComponent implements OnInit {
   // }
 
   openChat() {
-    this.isChatOpen = true;
+    this.router.navigate(['/chat']);
+    //this.isChatOpen = true;
   }
 
   closeChat() {

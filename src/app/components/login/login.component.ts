@@ -10,12 +10,15 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent implements OnInit {
   credentials = { username: '', password: '' };
+  isLoading = false; // Simula la carga inicial
+
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void { }
 
   async onLogin(): Promise<void> {
+    this.isLoading = true;
     this.authService.login(this.credentials).subscribe({
       next: async (response) => {
         this.authService.setToken(response.token || response);
@@ -24,12 +27,15 @@ export class LoginComponent implements OnInit {
           const userId = await this.fetchCurrentUser(); // Esperar el ID del usuario
           this.authService.CurrentUserLoggedId = userId;
           this.router.navigate(['/profile', userId]);
+          this.isLoading = false;
         } catch (error) {
           console.error('Error durante el proceso de login:', error);
+          this.isLoading = false;
         }
       },
       error: (error) => {
         console.error('Error al iniciar sesión', error);
+        this.isLoading = false;
       },
     });
   }

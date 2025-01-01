@@ -1,4 +1,3 @@
-import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -22,9 +21,6 @@ const routes: Routes = [
     path: 'register', component: RegisterComponent
   },
   {
-    path: 'home', component: HomeComponent
-  },
-  {
     path: 'profile/:id', component: ProfileComponent
   },
   {
@@ -40,7 +36,6 @@ const routes: Routes = [
   },
   {
     path: 'chat', component: ChatBoxComponent
-
   }
   // },
   // {

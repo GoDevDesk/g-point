@@ -58,10 +58,6 @@
       <button class="bg-white border border-gray-500 px-4 py-2 rounded-full shadow-lg" (click)="openChat()">Abrir
         Chat</button>
     </div>
-
-    <app-chat *ngIf="isChatOpen" [senderId]="senderId" [receiverId]="receiverId" (close)="closeChat()">
-    </app-chat>
-
     <!--botones tab-->
     <div class="flex justify-between items-center">
       <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'albums'"
