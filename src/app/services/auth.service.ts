@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { User } from '../models/user';
 import { environment } from 'src/environments/environment';
 
@@ -15,6 +15,8 @@ export class AuthService {
   // private currentUser: any; // Almacena el usuario actual
   private visitedProfileId = 0; // Almacena el id del perfil visitado
   public CurrentUserLoggedId = 0;
+  private currentUserIdBehavior = new BehaviorSubject<number>(0); // Inicialmente no hay usuario logueado
+
   constructor(private http: HttpClient) { }
 
   // Método para enviar el login y recibir el token
@@ -39,6 +41,13 @@ export class AuthService {
     }
     return 0; // Devuelve 0 si no hay usuario almacenado
   }
+
+  setCurrentUserIdBehavior(userId: number): void {
+    this.currentUserIdBehavior.next(userId); // Actualiza el BehaviorSubject
+  }
+  getCurrentUserIdLoggedBehavior(): Observable<number> {
+    return this.currentUserIdBehavior.asObservable(); // Devuelve el estado como observable
+  }
   
   // Guardar el token en localStorage
   setToken(token: string): void {
@@ -59,11 +68,17 @@ export class AuthService {
     localStorage.removeItem('authToken');
     localStorage.removeItem('currentUser');
     this.CurrentUserLoggedId = 0;
+    this.setCurrentUserIdBehavior(0);
   }
 
 
   getCurrentUserLogged(): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/user/currentUser`);
+    return this.http.get<User>(`${this.apiUrl}/user/currentUser`).pipe(
+      tap(user => {
+        // Aquí se configura el ID del usuario una vez que se recibe la respuesta
+        this.setCurrentUserIdBehavior(user.id);
+      })
+    );
   }
 
   getCurrentUserIdLogged(): Observable<number> {

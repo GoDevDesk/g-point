@@ -1,0 +1,21 @@
+.app-toolbar {
+    position: fixed;
+     top: 0;
+     margin-bottom: 60px; /* Asegura que el contenido empiece debajo de la toolbar */
+
+    // left: 0;
+    // right: 0;
+     z-index: 1000; /* Asegura que la barra se quede encima */
+     height: 60px; /* Ajusta según la altura de tu toolbar */
+  }
+  
+  /* Contenedor principal de contenido */
+  .content {
+     margin-top: 60px; /* Asegura que el contenido empiece debajo de la toolbar */
+   //  height: 100vh;
+    // height: calc(100vh - 60px); /* Restamos la altura de la barra */
+    // height: calc(100vh - 60px); /* Resta la altura de la toolbar del 100vh */
+    // display: flex;
+     //flex-direction: column;
+  }
+  

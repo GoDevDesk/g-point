@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.authService.getCurrentUserLogged().subscribe({
         next: (user: User) => {
+          this.authService.setCurrentUserIdBehavior(user.id);
           console.log('Usuario actual:', user);
           //     this.authService.setCurrentUser(user);
 

@@ -35,6 +35,15 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ChatBoxComponent } from './components/chat-box/chat-box.component';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
+
 
 @NgModule({
   declarations: [
@@ -55,6 +64,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     GoBackComponent,
     ChatComponent,
     ChatBoxComponent,
+    ToolbarComponent,
   ],
   imports: [
     SharedModule,
@@ -65,7 +75,15 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     HttpClientModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   bootstrap: [AppComponent],
   providers: [AuthService,

@@ -1,0 +1,41 @@
+<mat-toolbar color="primary" class="app-toolbar">
+    <!-- Icono de la aplicación -->
+    <button mat-button>
+      <mat-icon>home</mat-icon>
+    </button>
+  
+    <!-- Espacio para centrar la barra de búsqueda -->
+    <span class="spacer"></span>
+  
+    <!-- Barra de búsqueda -->
+    <mat-form-field class="search-bar" appearance="outline">
+        <!-- <mat-label>Buscar</mat-label> -->
+        <input matInput  placeholder="Escribe aquí..."/>
+        <button mat-icon-button matSuffix aria-label="Buscar">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+  
+    <!-- Espacio para separar -->
+    <span class="spacer"></span>
+  
+    <!-- Imagen de usuario con menú desplegable -->
+    <button mat-button [matMenuTriggerFor]="userMenu">
+      <img src="assets/user-placeholder.jpg" alt="Usuario" class="user-avatar" />
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="navigateToProfile()">
+        <mat-icon>account_circle</mat-icon>
+        Perfil
+      </button>
+      <button mat-menu-item (click)="navigateTo('settings')">
+        <mat-icon>settings</mat-icon>
+        Configuración
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Cerrar sesión
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+  
