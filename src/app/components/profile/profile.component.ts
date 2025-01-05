@@ -52,7 +52,6 @@ export class ProfileComponent implements OnInit {
 
       // Escuchar cambios en la URL
   this.route.paramMap.subscribe(params => {
-    debugger;
     this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
     console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId);
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Album } from 'src/app/models/album';
 import { PaginatedResultResponse } from 'src/app/models/paginatedResultResponse';
 import { AlbumService } from 'src/app/services/album.service';
@@ -17,12 +17,16 @@ export class AlbumsGridComponent implements OnInit {
   pageSize: number = 5;
   totalPages: number = 0;
   isLoading = true; // Simula la carga inicial
+  profileId = '';
 
-
-  constructor(private albumService: AlbumService, private authService: AuthService, private router: Router) { }
+  constructor(private route: ActivatedRoute,private albumService: AlbumService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.loadAlbums();
+    this.route.paramMap.subscribe(params => {
+      this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
+      console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId); 
+      this.loadAlbums();
+    });
   }
 
   loadAlbums(): void {
