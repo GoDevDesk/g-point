@@ -21,7 +21,7 @@
   
     <!-- Imagen de usuario con menú desplegable -->
     <button mat-button [matMenuTriggerFor]="userMenu">
-      <img src="assets/user-placeholder.jpg" alt="Usuario" class="user-avatar" />
+      <img [src]="currentAvatarPhoto" alt="Usuario" class="user-avatar" />
     </button>
     <mat-menu #userMenu="matMenu">
       <button mat-menu-item (click)="navigateToProfile()">

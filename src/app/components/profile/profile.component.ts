@@ -101,6 +101,7 @@ export class ProfileComponent implements OnInit {
           console.log('Foto modificada correctamente:', response);
 
           this.currentPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
+          this.profileService.setAvatarPhoto(this.currentPhoto);
           this.closeModal();
         },
         error: (error) => {
@@ -136,8 +137,10 @@ export class ProfileComponent implements OnInit {
     if (!isNaN(userId)) {
       this.profileService.getProfilePhoto(userId).subscribe({
         next: (profilePicture: any) => {
+          debugger;
           this.currentPhoto = profilePicture.url_File; // Actualiza la foto de perfil
           this.profilePictureId = profilePicture.id;
+          this.profileService.setAvatarPhoto(this.currentPhoto);
           console.log('Foto de perfil obtenida:', this.currentPhoto);
           this.haveProfilePicture = true;
         },
