@@ -8,7 +8,6 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-width: 11vh;
    // height: 100vh; /* Limita el alto al viewport */
 
   }
@@ -38,6 +37,13 @@
   footer {
     position: relative;
     bottom: 0;
+  }
+
+  .chat-web-title {
+   // font-family: 'Georgia', serif; /* Cambia la fuente a una serif específica */
+    font-size: 18px; /* Cambia el tamaño del texto */
+    font-weight: bold; /* Cambia el grosor del texto */
+    color: white; /* Asegura que el color sea blanco */
   }
 
   @media (max-width: 768px) {

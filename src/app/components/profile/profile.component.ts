@@ -50,22 +50,22 @@ export class ProfileComponent implements OnInit {
     this.getCurrentLoggedIdUser();
     this.profileId = this.route.snapshot.paramMap.get('id') || '';
 
+      // Escuchar cambios en la URL
+  this.route.paramMap.subscribe(params => {
+    debugger;
+    this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
+    console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId);
+
+    // Llama al método reloadPage para actualizar todo el estado del componente
+    this.reloadPage();
+  });
+
     this.items = [
       { label: 'Dashboard' },
       { label: 'Transactions' },
       { label: 'Products' }
     ]
-
-    // Verificar si el usuario logueado es dueño del perfil
-    this.isOwner = this.authService.isProfileOwner(this.profileId);
-    if (!this.isOwner){
-      this.receiverId = this.profileId;
-      this.GetForeignProfileData(Number(this.profileId));
-
-    }
-    this.fetchUserProfile();
-    this.fetchProfilePhoto(); 
-    this.authService.setVisitedProfileId(Number(this.profileId));
+  //  this.reloadPage();
 
   }
 
@@ -210,6 +210,18 @@ export class ProfileComponent implements OnInit {
   //     }
   //   });
   // }
+
+  reloadPage(){
+    this.isOwner = this.authService.isProfileOwner(this.profileId);
+    if (!this.isOwner){
+      this.receiverId = this.profileId;
+      this.GetForeignProfileData(Number(this.profileId));
+
+    }
+    this.fetchUserProfile();
+    this.fetchProfilePhoto(); 
+    this.authService.setVisitedProfileId(Number(this.profileId));
+  }
 
   openChat() {
     this.router.navigate(['/chat']);
