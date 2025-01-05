@@ -30,11 +30,10 @@ export class ToolbarComponent implements OnInit {
     }
   }
   navigateToProfile(): void {
-    this.router.navigate([`profile/${this.currentUserLoggedId}`]);
+    this.router.navigateByUrl(`/profile/${this.currentUserLoggedId}`);
   }
 
   navigateTo(route: string): void {
-    debugger
     this.router.navigate([`/${route}`]);
   }
 

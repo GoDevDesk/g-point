@@ -9,9 +9,9 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
   //private apiUrl = 'https://localhost:44335/api'; // URL base del backend
-    private apiUrl = `${environment.apiPtUsersBaseUrl}/api`;  // Concatenar el subpath
+  private apiUrl = `${environment.apiPtUsersBaseUrl}/api`;  // Concatenar el subpath
 
-  
+
   // private currentUser: any; // Almacena el usuario actual
   private visitedProfileId = 0; // Almacena el id del perfil visitado
   public CurrentUserLoggedId = 0;
@@ -24,10 +24,6 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, credentials, { responseType: 'text' });
   }
 
-  // setCurrentUserLoggedId(id: number): void {
-  //   localStorage.setItem('currentUserLoggedId', String(id));
-  // }
-  
   getCurrentUserLoggedId(): number {
     const user = this.getUserStorage();
     if (user) {
@@ -48,7 +44,7 @@ export class AuthService {
   getCurrentUserIdLoggedBehavior(): Observable<number> {
     return this.currentUserIdBehavior.asObservable(); // Devuelve el estado como observable
   }
-  
+
   // Guardar el token en localStorage
   setToken(token: string): void {
     localStorage.setItem('authToken', token);
@@ -65,10 +61,15 @@ export class AuthService {
 
   // Eliminar el token al cerrar sesión
   logout(): void {
+    this.CurrentUserLoggedId = 0;
+    this.cleanStorage();
+    this.setCurrentUserIdBehavior(0);
+  }
+
+  cleanStorage() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('currentUser');
-    this.CurrentUserLoggedId = 0;
-    this.setCurrentUserIdBehavior(0);
+    localStorage.removeItem('avatarUrl');
   }
 
 
@@ -86,20 +87,20 @@ export class AuthService {
       map(user => user.id) // Extrae el ID del usuario
     );
   }
-  
+
   isProfileOwner(profileId: string): boolean {
-    
+
     // Obtener el currentUser del localStorage
     const storedUser = localStorage.getItem('currentUser');
-    
+
     // Si no existe el usuario en el localStorage, devolver false
     if (!storedUser) {
       return false;
     }
-    
+
     // Parsear el objeto JSON almacenado en localStorage
     const currentUser = JSON.parse(storedUser);
-  
+
     // Comparar el ID del perfil con el ID del currentUser
     return String(currentUser.id) === profileId;
   }

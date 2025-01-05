@@ -15,7 +15,13 @@ export class ProfileService {
   currentPhotoUrl$ = this.currentPhotoUrlSubject.asObservable();
 
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+        // Recuperamos la URL del avatar desde localStorage (si existe)
+        const storedAvatar = localStorage.getItem('avatarUrl');
+    
+        // Si hay una URL almacenada, la usamos. Si no, asignamos un valor vacío.
+        this.currentPhotoUrlSubject = new BehaviorSubject<string>(storedAvatar || '');
+  }
 
   // /**
   //  * Envía la foto al servidor mediante un POST.
@@ -43,16 +49,22 @@ export class ProfileService {
     // Realiza la solicitud HTTP y ejecuta setAvatarPhoto cuando llegue la respuesta
     return this.http.get<ProfilePicture>(`${this.apiUrl}/user/${userId}`).pipe(
       tap((photoUrl: ProfilePicture) => {
+        const newPhotoUrl = photoUrl.url_File;
+
         // Aquí se ejecuta setAvatarPhoto cuando se reciba la respuesta
-        this.setAvatarPhoto(photoUrl.url_File);
+        localStorage.setItem('avatarUrl', newPhotoUrl);
+
+        this.setAvatarPhoto(newPhotoUrl);
       })
     );
   }
 
   setAvatarPhoto(profilePicture: string) {
     this.currentPhotoUrlSubject.next(profilePicture);  // Emitir el nuevo valor
+    localStorage.setItem('avatarUrl', profilePicture); // Guardamos la nueva URL en el localStorage
   }
 
+  // Método para obtener la URL de la foto de perfil
   getAvatarPhoto(): Observable<string> {
     return this.currentPhotoUrlSubject.asObservable();  // Regresar el observable para suscripción
   }

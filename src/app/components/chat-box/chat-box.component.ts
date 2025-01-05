@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService } from 'src/app/services/chat.service';
+import { ProfileService } from 'src/app/services/profile.service';
 
 @Component({
   selector: 'app-chat-box',
@@ -14,6 +15,7 @@ export class ChatBoxComponent {
   receiverId: string = '';
   recentChats: any[] = [];
   user: any;
+  currentAvatarPhoto = '';
 
   selectedChat: { id: number; name: string; avatar: string; lastMessage: string; otherUserId: string;  otherUserName: string; } = {
     id: 0,
@@ -25,7 +27,7 @@ export class ChatBoxComponent {
   };
 
   @ViewChild('messageContainer') messageContainer!: ElementRef;
-  constructor(private chatService: ChatService, private authService: AuthService) {
+  constructor(private chatService: ChatService, private authService: AuthService, private profileService: ProfileService) {
     
   }
 
@@ -41,6 +43,12 @@ export class ChatBoxComponent {
   ngOnInit(): void {
     this.currentUserLoggedId = this.authService.getCurrentUserLoggedId().toString();
     this.user = JSON.parse(this.authService.getUserStorage());
+
+    this.profileService.getAvatarPhoto().subscribe(photoUrl => {
+      this.currentAvatarPhoto = photoUrl;
+      console.log('Foto cargada:', this.currentAvatarPhoto);
+    });
+
     this.getRecentUserChats(this.currentUserLoggedId, 10);
     this.senderId = this.currentUserLoggedId;
     this.loadMessages(); //validar q haya ids antes de hacer esto

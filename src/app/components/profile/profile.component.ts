@@ -137,7 +137,6 @@ export class ProfileComponent implements OnInit {
     if (!isNaN(userId)) {
       this.profileService.getProfilePhoto(userId).subscribe({
         next: (profilePicture: any) => {
-          debugger;
           this.currentPhoto = profilePicture.url_File; // Actualiza la foto de perfil
           this.profilePictureId = profilePicture.id;
           this.profileService.setAvatarPhoto(this.currentPhoto);
