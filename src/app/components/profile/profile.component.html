@@ -34,29 +34,24 @@
         <p class="text-gray-400">{{userProfile.followersCount}}</p>
         <span class="text-gray-400">Followers</span>
       </div>
-      <div class="font-semibold text-center mx-4">
-        <p class="text-gray-400">{{userProfile.followsCount}}</p>
-        <span class="text-gray-400">Folowing</span>
-      </div>
     </div>
 
     <!--boton seguir y mensaje-->
     <div class="flex justify-center gap-2 my-5">
       <div class="flex justify-center gap-2 my-5">
         <button
-          [ngClass]="{'bg-pink-500 text-white': isFollowed, 'bg-white text-gray-500 border-gray-500': !isFollowed}"
+          [ngClass]="{'bg-pink-500 text-white': isFollowed, 'bg-white text-black border-gray-500': !isFollowed}"
           class="px-10 py-2 rounded-full shadow-lg" (click)="toggleFollow()">
           Follow
         </button>
         <button
-          [ngClass]="{'bg-pink-500 text-white': isSubscribed, 'bg-white text-gray-500 border-gray-500': !isSubscribed}"
+          [ngClass]="{'bg-pink-500 text-white': isSubscribed, 'bg-white text-black border-gray-500': !isSubscribed}"
           class="px-10 py-2 rounded-full shadow-lg" (click)="toggleSubscribe()">
           Subscribe
         </button>
+        <button class="bg-white border border-gray-500 px-4 py-1 rounded-full shadow-lg" (click)="openChat()">Envíame un Mensaje</button>
       </div>
       <!-- <button class="bg-white border border-gray-500 px-10 py-2 rounded-full shadow-lg">Message</button> -->
-      <button class="bg-white border border-gray-500 px-4 py-2 rounded-full shadow-lg" (click)="openChat()">Abrir
-        Chat</button>
     </div>
     <!--botones tab-->
     <div class="flex justify-between items-center">
