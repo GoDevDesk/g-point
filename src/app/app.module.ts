@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { SharedModule } from './shared/shared.module';
@@ -42,6 +42,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 
@@ -64,7 +65,7 @@ import { MatInputModule } from '@angular/material/input';
     GoBackComponent,
     ChatComponent,
     ChatBoxComponent,
-    ToolbarComponent,
+    ToolbarComponent
   ],
   imports: [
     SharedModule,
@@ -83,7 +84,9 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule,
     MatMenuModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule
   ],
   bootstrap: [AppComponent],
   providers: [AuthService,

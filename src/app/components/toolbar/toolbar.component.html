@@ -9,13 +9,25 @@
   
     <!-- Barra de búsqueda -->
     <mat-form-field class="search-bar" appearance="outline">
-        <!-- <mat-label>Buscar</mat-label> -->
-        <input matInput  placeholder="Escribe aquí..."/>
-        <button mat-icon-button matSuffix aria-label="Buscar">
-          <mat-icon>search</mat-icon>
-        </button>
-      </mat-form-field>
-  
+      <input
+        [formControl]="searchControl"
+        matInput
+        [matAutocomplete]="auto"
+        placeholder="Escribe aquí..."
+      />
+      <button mat-icon-button matSuffix aria-label="Buscar">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+    
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let result of results" (click)="navigateToOtherProfile(result)">
+        <div class="result-item">
+          <img class="avatar" [src]="result.miniatureUrl" alt="Avatar" />
+          <span class="user-name">{{ result.userName }}</span>
+        </div>
+      </mat-option>
+    </mat-autocomplete>
     <!-- Espacio para separar -->
     <span class="spacer"></span>
   

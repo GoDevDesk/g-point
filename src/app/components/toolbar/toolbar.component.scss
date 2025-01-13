@@ -22,6 +22,26 @@
     border-radius: 50%;
     object-fit: cover;
   }
+
+  .result-item {
+    display: flex; /* Utiliza flexbox para alinear el avatar y el nombre */
+    align-items: center; /* Centra verticalmente el avatar y el nombre */
+    padding: 8px; /* Espaciado entre los elementos */
+  }
+  
+  .avatar {
+    width: 26px; /* Establece el tamaño del avatar */
+    height: 26px; /* Establece el tamaño del avatar */
+    border-radius: 50%; /* Hace el avatar circular */
+    margin-right: 12px; /* Espaciado entre el avatar y el nombre */
+  }
+  
+  .user-name {
+    font-size: 14px; /* Tamaño del texto */
+    color: white; /* Color del texto */
+    font-weight: 500; /* Peso del texto */
+  }
+
   .mat-form-field-appearance-outline .mat-form-field-outline-thick {
     border-color: blue !important;
   }
