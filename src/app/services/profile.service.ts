@@ -54,7 +54,7 @@ export class ProfileService {
         // Aquí se ejecuta setAvatarPhoto cuando se reciba la respuesta
         localStorage.setItem('avatarUrl', newPhotoUrl);
 
-        this.setAvatarPhoto(newPhotoUrl);
+     //   this.setAvatarPhoto(newPhotoUrl);
       })
     );
   }

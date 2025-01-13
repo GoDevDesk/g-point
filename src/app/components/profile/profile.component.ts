@@ -138,7 +138,9 @@ export class ProfileComponent implements OnInit {
         next: (profilePicture: any) => {
           this.currentPhoto = profilePicture.url_File; // Actualiza la foto de perfil
           this.profilePictureId = profilePicture.id;
-          this.profileService.setAvatarPhoto(this.currentPhoto);
+          if (this.isOwner){
+            this.profileService.setAvatarPhoto(this.currentPhoto);
+          }
           console.log('Foto de perfil obtenida:', this.currentPhoto);
           this.haveProfilePicture = true;
         },
