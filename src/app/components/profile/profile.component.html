@@ -10,7 +10,7 @@
           href="" style="background-image: url({{currentPhoto}})">
         </div>
         <!-- Ícono de lápiz -->
-        <a href="#" class="edit-icon" (click)="openModal($event)">
+        <a *ngIf="isOwner" href="#" class="edit-icon" (click)="openModal($event)">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24"
             stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -37,7 +37,7 @@
     </div>
 
     <!--boton seguir y mensaje-->
-    <div class="flex justify-center gap-2 my-5">
+    <div *ngIf="!isOwner" class="flex justify-center gap-2 my-5">
       <div class="flex justify-center gap-2 my-5">
         <button
           [ngClass]="{'bg-pink-500 text-white': isFollowed, 'bg-white text-black border-gray-500': !isFollowed}"

@@ -52,7 +52,7 @@ export class ProfileService {
         const newPhotoUrl = photoUrl.url_File;
 
         // Aquí se ejecuta setAvatarPhoto cuando se reciba la respuesta
-        localStorage.setItem('avatarUrl', newPhotoUrl);
+      //  localStorage.setItem('avatarUrl', newPhotoUrl);
 
      //   this.setAvatarPhoto(newPhotoUrl);
       })

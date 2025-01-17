@@ -83,4 +83,9 @@ export class ToolbarComponent implements OnInit {
   navigateToOtherProfile(user: any): void {
     this.router.navigate(['/profile', user.id]); // Navega al perfil del usuario
   }
+
+  openChat() {
+    this.router.navigate(['/chat']);
+    //this.isChatOpen = true;
+  }
 }
