@@ -77,6 +77,7 @@ export class ToolbarComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     // Lógica de cierre de sesión
+    this.router.navigate(['/login']);
     console.log('Cerrando sesión...');
   }
 

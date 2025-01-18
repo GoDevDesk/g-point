@@ -10,6 +10,10 @@ import { ProfileService } from 'src/app/services/profile.service';
   styleUrls: ['./chat-box.component.scss']
 })
 export class ChatBoxComponent {
+  // @Input() currentUserId!: string;
+  // @Input() otherUserId!: string;
+  // @Input() otherUserName!: string;
+
   currentUserLoggedId: string = '';
   senderId: string = '';
   receiverId: string = '';
@@ -17,7 +21,7 @@ export class ChatBoxComponent {
   user: any;
   currentAvatarPhoto = '';
 
-  selectedChat: { id: number; name: string; avatar: string; lastMessage: string; otherUserId: string;  otherUserName: string; } = {
+  selectedChat: { id: number; name: string; avatar: string; lastMessage: string; otherUserId: string; otherUserName: string; } = {
     id: 0,
     name: '',
     avatar: '',
@@ -28,14 +32,15 @@ export class ChatBoxComponent {
 
   @ViewChild('messageContainer') messageContainer!: ElementRef;
   constructor(private chatService: ChatService, private authService: AuthService, private profileService: ProfileService) {
-    
+
   }
 
   // Mensajes del chat
   messages: any[] = [];
 
   // Contacto seleccionado
-
+  otherUserId!: string;
+  otherUserName!: string;
 
   // Nuevo mensaje
   newMessage = '';
@@ -43,6 +48,16 @@ export class ChatBoxComponent {
   ngOnInit(): void {
     this.currentUserLoggedId = this.authService.getCurrentUserLoggedId().toString();
     this.user = JSON.parse(this.authService.getUserStorage());
+
+    // Obtener datos del estado de navegación
+    const state = history.state;
+
+    this.otherUserId = state.otherUserId || ''; // ID del usuario actual
+    this.otherUserName = state.otherUserName || ''; // Nombre del otro usuario
+
+    if (this.otherUserId || this.otherUserName) {
+      this.createNewChat(this.otherUserName, this.otherUserId,);
+    }
 
     this.profileService.getAvatarPhoto().subscribe(photoUrl => {
       this.currentAvatarPhoto = photoUrl;
@@ -52,10 +67,13 @@ export class ChatBoxComponent {
     this.getRecentUserChats(this.currentUserLoggedId, 10);
     this.senderId = this.currentUserLoggedId;
     this.loadMessages(); //validar q haya ids antes de hacer esto
+
+    console.log(this.recentChats);
+    // Si los datos se pasaron, intenta cargarlos desde otro lugar
   }
 
   ngAfterViewInit() {
- //   this.scrollToBottom();
+    //   this.scrollToBottom();
   }
   // Método para cargar los mensajes entre los dos usuarios
   loadMessages(): void {
@@ -78,15 +96,27 @@ export class ChatBoxComponent {
     }
   }
 
-  async getRecentUserChats(userId: string,limitResults: number ){
-      try {
-        this.chatService.getRecentUserChats(userId, limitResults).subscribe(chats => {
-          this.recentChats = chats; // Actualiza la lista de chats en tiempo real
-        });
+  async getRecentUserChats(userId: string, limitResults: number) {
+    try {
+      this.chatService.getRecentUserChats(userId, limitResults).subscribe(chats => {
+        this.recentChats.push(...chats); // Agrega los nuevos chats sin reemplazar los existentes
         console.log('Recent chats:', this.recentChats);
-      } catch (error) {
-        console.error('Error fetching recent chats:', error);
-      }
+      });
+    } catch (error) {
+      console.error('Error fetching recent chats:', error);
+    }
+  }
+
+  //abrir una nueva conversacion
+  createNewChat(UserNameForChat: String, otherUserId: string) {
+    var newChat = {
+      lastMessage: '',
+      lastSenderId: '',
+      lastSenderName: '',
+      otherUserId: otherUserId,
+      otherUserName: UserNameForChat
+    }
+    this.recentChats.push(newChat)
   }
 
   // Método para seleccionar un contacto
@@ -103,24 +133,24 @@ export class ChatBoxComponent {
       this.chatService.sendMessage(this.senderId, this.receiverId, this.newMessage);
 
 
-        this.updateUserChats(this.senderId, this.user.userName, this.receiverId,this.selectedChat.otherUserName, this.newMessage);
+      this.updateUserChats(this.senderId, this.user.userName, this.receiverId, this.selectedChat.otherUserName, this.newMessage);
 
 
-   //   this.getRecentUserChats(this.currentUserLoggedId, 10);
+      //   this.getRecentUserChats(this.currentUserLoggedId, 10);
       this.newMessage = '';  // Limpiar el campo del mensaje
       this.scrollToBottom(); // Desplaza el scroll después de cargar mensajes
       console.log(this.recentChats);
     }
   }
 
-  async updateUserChats(senderId: string, senderName: string, receiverId:string,receiverName:string, message: string){
+  async updateUserChats(senderId: string, senderName: string, receiverId: string, receiverName: string, message: string) {
 
     const timestamp = new Date();
     try {
       // Enviar el mensaje a Firestore (puedes usar otra lógica para almacenarlo)
       // Aquí solo actualizamos los chats de usuario como ejemplo
-      await this.chatService.updateUserChats(senderId,senderName, receiverId,receiverName, message, timestamp);
-  
+      await this.chatService.updateUserChats(senderId, senderName, receiverId, receiverName, message, timestamp);
+
       console.log('Mensaje enviado y chats actualizados.');
     } catch (error) {
       console.error('Error al enviar el mensaje:', error);

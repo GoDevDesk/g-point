@@ -5,6 +5,7 @@ import { ForeignProfileData } from 'src/app/models/foreignProfileData';
 import { User } from 'src/app/models/user';
 import { UserProfile } from 'src/app/models/userProfile';
 import { AuthService } from 'src/app/services/auth.service';
+import { ChatService } from 'src/app/services/chat.service';
 import { FollowsService } from 'src/app/services/follows.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { SubscriptionsService } from 'src/app/services/subscriptions.service';
@@ -44,7 +45,8 @@ export class ProfileComponent implements OnInit {
 
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private userService: UserService, private profileService: ProfileService,
-    private subscriptionsService: SubscriptionsService, private followsService: FollowsService, private router: Router) { }
+    private subscriptionsService: SubscriptionsService, private followsService: FollowsService, private router: Router,
+    private chatService: ChatService) { }
 
   ngOnInit(): void {
     this.getCurrentLoggedIdUser();
@@ -231,5 +233,22 @@ export class ProfileComponent implements OnInit {
 
   closeChat() {
     this.isChatOpen = false;
+  }
+
+  async setChats(){
+    try {
+      const userJson = this.authService.getUserStorage();
+      const user: User = JSON.parse(userJson); // Define el tipo si es posible  
+
+      await this.chatService.setChats(user.id.toString(), this.userProfile.id, this.userProfile.userName, user.userName);  
+      console.log('Chats creados.');
+
+      this.router.navigate(['/chat'], {
+        state: { otherUserName: this.userProfile.userName, otherUserId: this.userProfile.id.toString() }
+      });
+
+    } catch (error) {
+      console.error('Error al enviar el mensaje:', error);
+    }
   }
 }
