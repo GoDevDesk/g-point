@@ -75,9 +75,15 @@
     <!-- Chat Input -->
     <footer class="border-t border-gray-300 bg-black p-4">
       <div class="flex items-center gap-2">
-        <input type="text" placeholder="Type a message..." [(ngModel)]="newMessage"
+        <input 
+          type="text" 
+          placeholder="Type a message..." 
+          [(ngModel)]="newMessage"
+          (keydown.enter)="sendMessage()"
           class="flex-1 p-2 rounded-md border border-gray-400 focus:outline-none focus:border-blue-500">
-        <button class="bg-indigo-500 text-white px-4 py-2 rounded-md" (click)="sendMessage()">Send</button>
+        <button 
+          class="bg-indigo-500 text-white px-4 py-2 rounded-md" 
+          (click)="sendMessage()">Send</button> <!-- Envía el mensaje al hacer clic -->
       </div>
     </footer>
   </div>

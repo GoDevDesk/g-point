@@ -55,6 +55,8 @@ export class ChatBoxComponent {
     this.otherUserId = state.otherUserId || ''; // ID del usuario actual
     this.otherUserName = state.otherUserName || ''; // Nombre del otro usuario
 
+    this.getRecentUserChats(this.currentUserLoggedId, 10);
+    
     if (this.otherUserId || this.otherUserName) {
       this.createNewChat(this.otherUserName, this.otherUserId,);
     }
@@ -64,7 +66,6 @@ export class ChatBoxComponent {
       console.log('Foto cargada:', this.currentAvatarPhoto);
     });
 
-    this.getRecentUserChats(this.currentUserLoggedId, 10);
     this.senderId = this.currentUserLoggedId;
     this.loadMessages(); //validar q haya ids antes de hacer esto
 
@@ -99,7 +100,22 @@ export class ChatBoxComponent {
   async getRecentUserChats(userId: string, limitResults: number) {
     try {
       this.chatService.getRecentUserChats(userId, limitResults).subscribe(chats => {
-        this.recentChats.push(...chats); // Agrega los nuevos chats sin reemplazar los existentes
+        chats.forEach(newChat => {
+          const newOtherUserId = newChat.otherUserId; // Obtiene el otherUserId del nuevo chat
+  
+          const existingIndex = this.recentChats.findIndex(existingChat => {
+            return existingChat.otherUserId === newOtherUserId; // Compara por otherUserId
+          });
+  
+          if (existingIndex !== -1) {
+            // Reemplaza el chat existente con el mismo otherUserId
+            this.recentChats[existingIndex] = newChat;
+          } else {
+            // Agrega el nuevo chat si no existe
+            this.recentChats.push(newChat);
+          }
+        });
+  
         console.log('Recent chats:', this.recentChats);
       });
     } catch (error) {

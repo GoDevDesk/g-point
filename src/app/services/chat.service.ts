@@ -127,19 +127,19 @@ export class ChatService {
       { merge: true }
     );
 
-    // Referencia al chat del receptor
-    const receiverChatRef = this.firestore.doc(`users/${receiverId}/chats/${senderId}`);
-    await receiverChatRef.set(
-      {
-        lastSenderId: senderId,
-        participants: [
-          { id: senderId, name: senderName },
-          { id: receiverId, name: receiverName }
-        ],
-        otherUserName: senderName
-      },
-      { merge: true }
-    );
+    // // Referencia al chat del receptor
+    // const receiverChatRef = this.firestore.doc(`users/${receiverId}/chats/${senderId}`);
+    // await receiverChatRef.set(
+    //   {
+    //     lastSenderId: senderId,
+    //     participants: [
+    //       { id: senderId, name: senderName },
+    //       { id: receiverId, name: receiverName }
+    //     ],
+    //     otherUserName: senderName
+    //   },
+    //   { merge: true }
+    // );
   }
 
 }
