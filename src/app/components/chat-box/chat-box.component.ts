@@ -56,7 +56,7 @@ export class ChatBoxComponent {
     this.otherUserName = state.otherUserName || ''; // Nombre del otro usuario
 
     this.getRecentUserChats(this.currentUserLoggedId, 10);
-    
+
     if (this.otherUserId || this.otherUserName) {
       this.createNewChat(this.otherUserName, this.otherUserId,);
     }
@@ -123,6 +123,20 @@ export class ChatBoxComponent {
     }
   }
 
+  sortRecentChatsByTimestamp(): void {
+    // Ordena colocando el chat más reciente al inicio de la lista
+    this.recentChats.sort((a, b) => {
+      const timestampA = a.lastMessageTimestamp.seconds * 1000 + a.lastMessageTimestamp.nanoseconds / 1000000;
+      const timestampB = b.lastMessageTimestamp.seconds * 1000 + b.lastMessageTimestamp.nanoseconds / 1000000;
+      return timestampB - timestampA; // Ordena en orden descendente
+    });
+  
+    // Reasignación para garantizar detección de cambios en Angular
+    this.recentChats = [...this.recentChats];
+  
+    console.log('Sorted recent chats:', this.recentChats);
+  }
+
   //abrir una nueva conversacion
   createNewChat(UserNameForChat: String, otherUserId: string) {
     var newChat = {
@@ -146,16 +160,28 @@ export class ChatBoxComponent {
   // Método para enviar un mensaje
   async sendMessage() {
     if (this.newMessage.trim()) {
+      // Enviar el mensaje al servidor
       this.chatService.sendMessage(this.senderId, this.receiverId, this.newMessage);
+  
+      // Actualizar el timestamp localmente
+      const timestamp = new Date();
+      const updatedTimestamp = {
+        seconds: Math.floor(timestamp.getTime() / 1000),
+        nanoseconds: (timestamp.getTime() % 1000) * 1000000
+      };
+  
+      // Actualiza el chat correspondiente en recentChats
+      const chatIndex = this.recentChats.findIndex(chat => chat.otherUserId === this.receiverId);
+      if (chatIndex !== -1) {
+        this.recentChats[chatIndex].lastMessage = this.newMessage;
+        this.recentChats[chatIndex].lastMessageTimestamp = updatedTimestamp;
+      }
 
-
-      this.updateUserChats(this.senderId, this.user.userName, this.receiverId, this.selectedChat.otherUserName, this.newMessage);
-
-
-      //   this.getRecentUserChats(this.currentUserLoggedId, 10);
-      this.newMessage = '';  // Limpiar el campo del mensaje
-      this.scrollToBottom(); // Desplaza el scroll después de cargar mensajes
-      console.log(this.recentChats);
+      // Ordena los chats inmediatamente
+      this.sortRecentChatsByTimestamp();
+      this.newMessage = '';
+  
+      console.log('Recent chats después de enviar mensaje:', this.recentChats);
     }
   }
 
