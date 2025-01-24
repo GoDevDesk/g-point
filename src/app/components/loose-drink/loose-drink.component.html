@@ -1,15 +1,15 @@
 <div class="content-box">
     <!-- Sección plegada -->
     <div class="flex items-center justify-between cursor-pointer" (click)="toggleCard()">
-        <h2 class="text-lg font-bold text-pink-500">Convidame un trago</h2>
+        <h2 class="text-lg font-bold text-pink-500">Doname un tip</h2>
         <span class="text-pink-500 text-xl font-bold">{{ isExpanded ? 'v' : '>' }}</span>
     </div>
 
     <!-- Contenido desplegable -->
     <div *ngIf="isExpanded" class="mt-4">
         <!-- Descripción -->
-        <p class="text-white mb-4">La invitacion de tragos no otorga acceso a contenido.</p>
-
+        <p class="text-white mb-4">La donación de tips no otorga acceso a contenido.</p>
+    
         <!-- Inputs -->
         <div class="flex flex-col gap-4 mb-4">
             <input 
@@ -22,36 +22,25 @@
                 class="w-full p-2 border rounded-md focus:ring-2 focus:ring-pink-500"
             ></textarea>
         </div>
-
-        <!-- Slider -->
-        <div class="px-12"> <!-- Más margen para reducir ancho del slider -->
-            <div class="flex justify-between mb-2">
-                <span class="text-white font-semibold">{{ sliderValue }} trago{{ sliderValue > 1 ? 's' : '' }}</span>
-            </div>
+    
+        <!-- Donación -->
+        <div class="mb-4">
+            <label class="text-white font-semibold block mb-2" for="donationAmount">Donación (ARS o USD):</label>
             <input 
-                type="range" 
-                min="1" 
-                max="10" 
-                [(ngModel)]="sliderValue"
-                class="w-full appearance-none h-3 bg-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                style="--thumb-size: 24px; cursor: pointer;"
+                type="number" 
+                id="donationAmount" 
+                placeholder="Ingresa el monto" 
+                class="w-full p-2 border rounded-md text-pink-500 focus:ring-2 focus:ring-pink-500"
             >
         </div>
-
-        <!-- Botones -->
-        <div class="flex flex-col gap-2 mt-4">
+    
+        <!-- Botón Enviar -->
+        <div class="flex justify-end">
             <button 
                 class="w-full p-2 bg-pink-500 text-white font-semibold rounded-lg hover:bg-pink-600">
-                10000 ARS
-            </button>
-            <button 
-                class="w-full p-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600">
-                10 USD
-            </button>
-            <button 
-                class="w-full p-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600">
-                10 USD
+                Enviar Donación
             </button>
         </div>
     </div>
+    
 </div>
