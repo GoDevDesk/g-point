@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router) {
     this.router.events.subscribe(() => {
-      this.isUserLoggedIn = this.router.url !== '/login';  // O la ruta que tengas para el login
+      this.isUserLoggedIn = this.router.url !== '/login' && this.router.url !== '/register';  // O la ruta que tengas para el login
     });
   }
   ngOnInit(): void {

@@ -1,21 +1,95 @@
-<div class="container h-screen w-full flex justify-content-center align-items-center">
-    <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
-        <div class="text-center mb-5">
-            <div class="text-900 text-3xl font-medium mb-3">Create account</div>
-            <a href="login" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Login</a>
+<div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner color="primary"></mat-spinner>
+  </div>
+  <div [class.opacity-50]="isLoading" class="bg-white lg:w-4/12 md:6/12 w-10/12 m-auto my-10 shadow-md">
+    <div class="py-8 px-8 rounded-xl">
+      <h1 class="font-medium text-2xl mt-3 text-center">Register</h1>
+      <form (ngSubmit)="onRegister()" class="mt-6">
+        <div class="my-5 text-sm">
+          <label for="username" class="block text-black">Username</label>
+          <input
+            type="text"
+            id="username"
+            [(ngModel)]="user.UserName"
+            name="username"
+            class="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+            placeholder="Username"
+            required
+          />
         </div>
-    
-        <div>
-            <label for="email1" class="block text-900 font-medium mb-2">Email</label>
-            <input id="email" name="email" type="text"  [(ngModel)]="registerUser.email" pInputText class="w-full mb-3">
-    
-            <label for="password1" class="block text-900 font-medium mb-2">Password</label>
-            <input id="password1" name="password" [(ngModel)]="registerUser.password" type="password" pInputText class="w-full mb-3">
-            
-    
-            <!-- <button (click)="register(registerUser)" pButton pRipple label="Register" icon="pi pi-user" class="w-full"></button> -->
+        <div class="my-5 text-sm">
+          <label for="email" class="block text-black">Email</label>
+          <input
+            type="email"
+            id="email"
+            [(ngModel)]="user.EmailAddress"
+            name="email"
+            class="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+            placeholder="Email"
+            required
+          />
         </div>
+        <div class="my-5 text-sm">
+            <label for="firstName" class="block text-black">FirstName</label>
+            <input
+              type="firstName"
+              id="firstName"
+              [(ngModel)]="user.FirstName"
+              name="firstName"
+              class="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+              placeholder="firstName"
+              required
+            />
+          </div>
+          <div class="my-5 text-sm">
+            <label for="lastName" class="block text-black">LastName</label>
+            <input
+              type="lastName"
+              id="lastName"
+              [(ngModel)]="user.LastName"
+              name="lastName"
+              class="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+              placeholder="lastName"
+              required
+            />
+          </div>
+        <div class="my-5 text-sm">
+          <label for="password" class="block text-black">Password</label>
+          <input
+            type="password"
+            id="password"
+            [(ngModel)]="user.Password"
+            name="password"
+            class="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+            placeholder="Password"
+            required
+          />
+        </div>
+        <div class="my-5 text-sm">
+          <label for="confirmPassword" class="block text-black">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            name="confirmPassword"
+            class="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+            placeholder="Confirm Password"
+            required
+          />
+        </div>
+  
+        <button
+          type="submit"
+          class="block text-center text-white bg-gray-800 p-3 duration-300 rounded-sm hover:bg-black w-full"
+        >
+          Register
+        </button>
+      </form>
+  
+      <p class="mt-12 text-xs text-center font-light text-gray-400">
+        Already have an account?
+        <a [routerLink]="'/login'" class="text-black font-medium"> Login here </a>
+      </p>
     </div>
-</div>
-
-
+  </div>
+  

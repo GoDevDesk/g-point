@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { User } from '../models/user';
 import { environment } from 'src/environments/environment';
+import { UserRegister } from '../models/userRegister';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,10 @@ export class AuthService {
   // Método para enviar el login y recibir el token
   login(credentials: { username: string; password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials, { responseType: 'text' });
+  }
+
+  register(data: UserRegister) {
+    return this.http.post(`${this.apiUrl}/user`, data);
   }
 
   getCurrentUserLoggedId(): number {
