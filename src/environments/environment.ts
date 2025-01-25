@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  token: 'clave-secreta',
   firebaseConfig: {
     apiKey: "AIzaSyDrSFdvpidAVcSAw0Mt2lxFubuA0LEHcPk",
     authDomain: "chat-6954e.firebaseapp.com",

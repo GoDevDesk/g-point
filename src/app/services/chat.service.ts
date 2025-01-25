@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
-import { combineLatest, firstValueFrom, map, Observable } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { Message } from '../models/message';
-import { User } from '../models/user';
-import { ChatData } from '../models/chatData';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  constructor(private firestore: AngularFirestore) { }
+  private token = environment.token; // Token obtenido desde environment
+
+  constructor(private firestore: AngularFirestore) {}
 
   // Enviar un mensaje
   sendMessage(senderId: string, receiverId: string, message: string): void {
@@ -19,7 +20,8 @@ export class ChatService {
       senderId: senderId,
       receiverId: receiverId,
       message: message,
-      timestamp: new Date()
+      timestamp: new Date(),
+      token: this.token // Token añadido
     });
   }
 
@@ -28,12 +30,14 @@ export class ChatService {
     const messagesSent = this.firestore.collection<Message>('messages', ref =>
       ref.where('senderId', '==', senderId)
         .where('receiverId', '==', receiverId)
+        .where('token', '==', this.token) // Validar el token en la consulta
         .orderBy('timestamp')
     ).valueChanges();
 
     const messagesReceived = this.firestore.collection<Message>('messages', ref =>
       ref.where('senderId', '==', receiverId)
         .where('receiverId', '==', senderId)
+        .where('token', '==', this.token) // Validar el token en la consulta
         .orderBy('timestamp')
     ).valueChanges();
 
@@ -45,12 +49,17 @@ export class ChatService {
     );
   }
 
+  // Obtener los chats recientes de un usuario
   getRecentUserChats(userId: string, limitResults: number): Observable<any[]> {
     const chatsRef = this.firestore.collection<any>(
       `users/${userId}/chats`,
-      ref => ref.orderBy('lastMessageTimestamp', 'desc').limit(limitResults)
+      ref =>
+        ref
+          .where('token', '==', this.token) // Validar el token en la consulta
+          .orderBy('lastMessageTimestamp', 'desc')
+          .limit(limitResults)
     );
-  
+
     // Escucha los cambios en tiempo real
     return chatsRef.snapshotChanges().pipe(
       map(snapshot =>
@@ -65,6 +74,7 @@ export class ChatService {
     );
   }
 
+  // Actualizar chats de usuario
   async updateUserChats(
     senderId: string,
     lastSenderName: string,
@@ -85,7 +95,8 @@ export class ChatService {
           { id: senderId, name: lastSenderName },
           { id: receiverId, name: receiverName }
         ],
-        otherUserName: receiverName
+        otherUserName: receiverName,
+        token: this.token // Añadir token
       },
       { merge: true }
     );
@@ -101,13 +112,14 @@ export class ChatService {
           { id: senderId, name: lastSenderName },
           { id: receiverId, name: receiverName }
         ],
-        otherUserName: lastSenderName
+        otherUserName: lastSenderName,
+        token: this.token // Añadir token
       },
       { merge: true }
     );
   }
 
-
+  // Crear o inicializar chats entre usuarios
   async setChats(
     senderId: string,
     receiverId: string,
@@ -122,24 +134,24 @@ export class ChatService {
           { id: senderId, name: senderName },
           { id: receiverId, name: receiverName }
         ],
-        otherUserName: receiverName
+        otherUserName: receiverName,
+        token: this.token // Añadir token
       },
       { merge: true }
     );
 
-    // // Referencia al chat del receptor
-    // const receiverChatRef = this.firestore.doc(`users/${receiverId}/chats/${senderId}`);
-    // await receiverChatRef.set(
-    //   {
-    //     lastSenderId: senderId,
-    //     participants: [
-    //       { id: senderId, name: senderName },
-    //       { id: receiverId, name: receiverName }
-    //     ],
-    //     otherUserName: senderName
-    //   },
-    //   { merge: true }
-    // );
+    // Referencia al chat del receptor
+    const receiverChatRef = this.firestore.doc(`users/${receiverId}/chats/${senderId}`);
+    await receiverChatRef.set(
+      {
+        participants: [
+          { id: senderId, name: senderName },
+          { id: receiverId, name: receiverName }
+        ],
+        otherUserName: senderName,
+        token: this.token // Añadir token
+      },
+      { merge: true }
+    );
   }
-
 }

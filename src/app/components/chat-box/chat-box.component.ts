@@ -80,6 +80,7 @@ export class ChatBoxComponent {
   loadMessages(): void {
     this.chatService.getMessages(this.senderId, this.receiverId).subscribe((messages: any[]) => {
       this.messages = messages;
+      console.log('aca',messages);
       this.scrollToBottom(); // Desplaza el scroll después de cargar mensajes
 
     });
