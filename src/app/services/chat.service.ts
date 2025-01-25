@@ -87,7 +87,7 @@ export class ChatService {
     const senderChatRef = this.firestore.doc(`users/${senderId}/chats/${receiverId}`);
     await senderChatRef.set(
       {
-        lastMessage: message,
+     //   lastMessage: message,
         lastMessageTimestamp: timestamp,
         lastSenderId: senderId,
         lastSenderName: lastSenderName,
@@ -105,7 +105,7 @@ export class ChatService {
     const receiverChatRef = this.firestore.doc(`users/${receiverId}/chats/${senderId}`);
     await receiverChatRef.set(
       {
-        lastMessage: message,
+    //    lastMessage: message,
         lastMessageTimestamp: timestamp,
         lastSenderId: senderId,
         participants: [

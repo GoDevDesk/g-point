@@ -27,7 +27,7 @@ export class ChatBoxComponent {
     avatar: '',
     lastMessage: '',
     otherUserId: '',
-    otherUserName: 'Ajeno'
+    otherUserName: 'Seleccione un chat'
   };
 
   @ViewChild('messageContainer') messageContainer!: ElementRef;
@@ -80,12 +80,18 @@ export class ChatBoxComponent {
   loadMessages(): void {
     this.chatService.getMessages(this.senderId, this.receiverId).subscribe((messages: any[]) => {
       this.messages = messages;
-      console.log('aca',messages);
+  
+      // Si el array tiene mensajes, asigna el mensaje del último objeto a `this.lastMessage`
+      if (messages.length > 0) {
+        this.selectedChat.lastMessage = messages[messages.length - 1].message;
+      } else {
+        this.selectedChat.lastMessage = ''; // Si no hay mensajes, establece un valor vacío
+      }
+  
+      console.log('aca', messages);
       this.scrollToBottom(); // Desplaza el scroll después de cargar mensajes
-
     });
   }
-
   scrollToBottom(): void {
     if (this.messageContainer) {
       try {
@@ -148,15 +154,22 @@ export class ChatBoxComponent {
       otherUserName: UserNameForChat
     }
     this.recentChats.push(newChat)
+    this.selectChatById(otherUserId);
   }
 
-  // Método para seleccionar un contacto
-  selectChat(chat: { id: number; name: string; avatar: string; lastMessage: string; otherUserId: string; otherUserName: string }) {
-    this.selectedChat = chat;
-    this.receiverId = chat.otherUserId;
-    this.loadMessages();
+// Método para seleccionar un contacto solo con el ID del chat
+selectChatById(otherUserId: string): void {
+  // Busca el chat en recentChats por su id
+  const chat = this.recentChats.find(c => c.otherUserId === otherUserId);
 
+  if (chat) {
+    this.selectedChat = chat; // Asigna el chat seleccionado
+    this.receiverId = chat.otherUserId; // Actualiza el ID del receptor
+    this.loadMessages(); // Carga los mensajes para este chat
+  } else {
+    console.error(`Chat con id ${otherUserId} no encontrado.`);
   }
+}
 
   // Método para enviar un mensaje
   async sendMessage() {

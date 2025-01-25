@@ -25,7 +25,7 @@
     <!-- Contact List -->
     <div class="overflow-y-auto h-screen p-3 mb-9 pb-20">
       <div *ngFor="let recentChat of recentChats"
-        class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md" (click)="selectChat(recentChat)">
+        class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md" (click)="selectChatById(recentChat.otherUserId)">
         <div class="w-12 h-12 bg-gray-300 rounded-full mr-3">
           <img [src]="recentChat.avatar" alt="User Avatar" class="w-12 h-12 rounded-full">
         </div>
