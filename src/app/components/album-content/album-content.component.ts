@@ -49,7 +49,9 @@ export class AlbumContentComponent implements OnInit {
     this.albumId = this.route.snapshot.paramMap.get('albumId') || '';
     this.isEditing = this.albumId != "" ? true : false;
     if (this.isEditing) {
-      this.loadPosts();
+      setTimeout(() => {
+        this.loadPosts();
+      }, 1000); // Timeout de 1 segundo
     }
 
     this.authService.getCurrentUserIdLogged().subscribe(

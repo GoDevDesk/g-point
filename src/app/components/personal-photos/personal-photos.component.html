@@ -1,14 +1,57 @@
-      <!--fotos-->
-      <div class="flex flex-col gap-2 my-3">
-        <a class="block bg-center bg-no-repeat bg-cover h-40 w-full rounded-lg" href="" style="background-image: url('https://images.pexels.com/photos/458766/pexels-photo-458766.jpeg')"></a>
-        <a class="block bg-center bg-no-repeat bg-cover h-40 w-full rounded-lg" href="" style="background-image: url('https://images.pexels.com/photos/247287/pexels-photo-247287.jpeg')"></a>
-        <a class="block bg-center bg-no-repeat bg-cover h-40 w-full rounded-lg" href="" style="background-image: url('https://images.pexels.com/photos/6169/woman-hand-girl-professional.jpg')"></a>
+<div class="reels-container flex overflow-x-scroll snap-x snap-mandatory w-full max-w-3xl mx-auto">
+  <div *ngFor="let reel of reels; let reelIndex = index" class="reel-container flex-shrink-0 snap-center flex flex-col items-center justify-center w-full mb-8">
+    <!-- Reel Header -->
+    <div class="reel-header flex items-center justify-between w-full p-4">
+      <div class="flex items-center gap-2">
+        <img
+          src="https://via.placeholder.com/40"
+          alt="User Avatar"
+          class="w-10 h-10 rounded-full"
+        />
+        <span class="font-bold text-gray-800">Usuario {{ reelIndex + 1 }}</span>
+      </div>
+      <button class="text-gray-500 hover:text-gray-800">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
 
-        <a class="block bg-center bg-no-repeat bg-cover h-40 w-full rounded-lg" href="" style="background-image: url('https://images.pexels.com/photos/3851790/pexels-photo-3851790.jpeg')"></a>
-        <a class="block bg-center bg-no-repeat bg-cover h-40 w-full rounded-lg" href="" style="background-image: url('https://images.pexels.com/photos/3852159/pexels-photo-3852159.jpeg')"></a>
-        <a class="block bg-center bg-no-repeat bg-cover h-40 w-full rounded-lg" href="" style="background-image: url('https://images.pexels.com/photos/4491173/pexels-photo-4491173.jpeg')"></a>
+    <!-- Reel Content -->
+    <div class="reel-content w-full h-96 relative">
+      <div *ngFor="let image of reel.images; let i = index" class="absolute w-full h-full" [hidden]="i !== reel.currentImageIndex">
+        <div
+          class="bg-center bg-no-repeat bg-cover w-full h-full rounded-lg"
+          [style.background-image]="'url(' + image + ')'"
+        ></div>
+      </div>
+    </div>
 
-        <a class="block bg-center bg-no-repeat bg-cover h-40 w-full rounded-lg" href="" style="background-image: url('https://images.pexels.com/photos/2294354/pexels-photo-2294354.jpeg')"></a>
-        <a class="block bg-center bg-no-repeat bg-cover h-40 w-full rounded-lg" href="" style="background-image: url('https://images.pexels.com/photos/6019812/pexels-photo-6019812.jpeg')"></a>
-        <a class="block bg-center bg-no-repeat bg-cover h-40 w-full rounded-lg" href="" style="background-image: url('https://images.pexels.com/photos/40751/running-runner-long-distance-fitness-40751.jpeg')"></a>
-   </div>
+    <!-- Navigation Buttons -->
+    <div class="flex justify-between w-full px-4 py-2">
+      <button (click)="prevImage(reelIndex)" class="text-gray-500">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button (click)="nextImage(reelIndex)" class="text-gray-500">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Reel Footer -->
+    <div class="reel-footer flex items-center justify-between w-full p-4">
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-4">
+        <button (click)="likeReel(reelIndex)" class="text-red-500">
+          <i class="fas" [ngClass]="reel.liked ? 'fa-heart' : 'fa-heart-o'"></i>
+        </button>
+        <button class="text-gray-500">
+          <i class="far fa-comment"></i>
+        </button>
+        <button class="text-gray-500">
+          <i class="fas fa-share"></i>
+        </button>
+      </div>
+
+      <!-- Like Count -->
+      <span class="text-gray-700">{{ reel.likes }} me gusta</span>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 <div *ngIf="isLoading" class="loading-overlay">
     <mat-spinner color="primary"></mat-spinner>
-  </div><div [class.opacity-50]="isLoading" class="bg-white lg:w-4/12 md:6/12 w-10/12 m-auto my-10 shadow-md">
+</div>
+<div [class.opacity-50]="isLoading" class="bg-white lg:w-4/12 md:6/12 w-10/12 m-auto my-10 shadow-md">
     <div class="py-8 px-8 rounded-xl">         
         <h1 class="font-medium text-2xl mt-3 text-center">Login</h1>
         <form (ngSubmit)="onLogin()" class="mt-6">
@@ -10,6 +11,7 @@
                     type="text"
                     id="username"
                     [(ngModel)]="credentials.username"
+                    (ngModelChange)="onInputChange()"
                     name="username"
                     class="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
                     placeholder="Username"
@@ -22,6 +24,7 @@
                     type="password"
                     id="password"
                     [(ngModel)]="credentials.password"
+                    (ngModelChange)="onInputChange()"
                     name="password"
                     class="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
                     placeholder="Password"
@@ -62,7 +65,7 @@
         <p class="mt-12 text-xs text-center font-light text-gray-400">
             Don't have an account?
             <a [routerLink]="'/register'" class="text-black font-medium"> Create One </a>
-          </p>
+        </p>
           
     </div>
 </div>

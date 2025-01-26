@@ -15,8 +15,14 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router) { }
 
+  
   ngOnInit(): void { }
+  
+  onInputChange() {
+    console.log('Valores actuales:', this.credentials);
+  }
 
+  
   async onLogin(): Promise<void> {
     this.isLoading = true;
     this.authService.login(this.credentials).subscribe({
