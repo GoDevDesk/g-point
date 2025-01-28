@@ -108,6 +108,7 @@ export class ChatBoxComponent {
     try {
       this.chatService.getRecentUserChats(userId, limitResults).subscribe(chats => {
         chats.forEach(newChat => {
+          console.log(chats);
           const newOtherUserId = newChat.otherUserId; // Obtiene el otherUserId del nuevo chat
   
           const existingIndex = this.recentChats.findIndex(existingChat => {

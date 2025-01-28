@@ -1,57 +1,29 @@
-<div class="reels-container flex overflow-x-scroll snap-x snap-mandatory w-full max-w-3xl mx-auto">
-  <div *ngFor="let reel of reels; let reelIndex = index" class="reel-container flex-shrink-0 snap-center flex flex-col items-center justify-center w-full mb-8">
-    <!-- Reel Header -->
-    <div class="reel-header flex items-center justify-between w-full p-4">
-      <div class="flex items-center gap-2">
-        <img
-          src="https://via.placeholder.com/40"
-          alt="User Avatar"
-          class="w-10 h-10 rounded-full"
-        />
-        <span class="font-bold text-gray-800">Usuario {{ reelIndex + 1 }}</span>
-      </div>
-      <button class="text-gray-500 hover:text-gray-800">
-        <i class="fas fa-ellipsis-h"></i>
-      </button>
-    </div>
-
-    <!-- Reel Content -->
-    <div class="reel-content w-full h-96 relative">
-      <div *ngFor="let image of reel.images; let i = index" class="absolute w-full h-full" [hidden]="i !== reel.currentImageIndex">
-        <div
-          class="bg-center bg-no-repeat bg-cover w-full h-full rounded-lg"
-          [style.background-image]="'url(' + image + ')'"
-        ></div>
+  <div *ngFor="let post of posts" class="bg-white p-4 mt-12 rounded-lg shadow-md">
+    <div class="flex items-center px-4 py-3">
+      <img class="h-8 w-8 rounded-full" [src]="post.profilePictureUrl || 'https://picsum.photos/id/1027/150/150'" />
+      <div class="ml-3">
+        <span class="text-sm font-semibold antialiased block leading-tight">{{ post.username }}</span>
+        <span class="text-gray-600 text-xs block">{{ post.location || 'Unknown Location' }}</span>
       </div>
     </div>
-
-    <!-- Navigation Buttons -->
-    <div class="flex justify-between w-full px-4 py-2">
-      <button (click)="prevImage(reelIndex)" class="text-gray-500">
-        <i class="fas fa-chevron-left"></i>
-      </button>
-      <button (click)="nextImage(reelIndex)" class="text-gray-500">
-        <i class="fas fa-chevron-right"></i>
-      </button>
-    </div>
-
-    <!-- Reel Footer -->
-    <div class="reel-footer flex items-center justify-between w-full p-4">
-      <!-- Action Buttons -->
-      <div class="flex items-center gap-4">
-        <button (click)="likeReel(reelIndex)" class="text-red-500">
-          <i class="fas" [ngClass]="reel.liked ? 'fa-heart' : 'fa-heart-o'"></i>
-        </button>
-        <button class="text-gray-500">
-          <i class="far fa-comment"></i>
-        </button>
-        <button class="text-gray-500">
-          <i class="fas fa-share"></i>
-        </button>
+    <img [src]="post.imageUrl || 'https://picsum.photos/id/244/900/900'" class="w-full rounded-lg" />
+    <div class="flex items-center justify-between mx-4 mt-3 mb-2">
+      <div class="flex gap-5">
+        <!-- Iconos de acción -->
+        <svg fill="#262626" height="24" viewBox="0 0 48 48" width="24">
+          <path d="M34.6 6.1c5.7 0 10.4 5.2 10.4 11.5 ..."></path>
+        </svg>
+        <svg fill="#262626" height="24" viewBox="0 0 48 48" width="24">
+          <path d="M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 ..."></path>
+        </svg>
       </div>
-
-      <!-- Like Count -->
-      <span class="text-gray-700">{{ reel.likes }} me gusta</span>
+      <div class="flex">
+        <svg fill="#262626" height="24" viewBox="0 0 48 48" width="24">
+          <path d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 29 ..."></path>
+        </svg>
+      </div>
+    </div>
+    <div class="font-semibold text-sm mx-4 mt-2 mb-4">
+      {{ post.likes || 0 }} likes
     </div>
   </div>
-</div>
