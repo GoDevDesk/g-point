@@ -76,20 +76,32 @@ export class ChatBoxComponent {
   ngAfterViewInit() {
     //   this.scrollToBottom();
   }
-  // Método para cargar los mensajes entre los dos usuarios
   loadMessages(): void {
-    this.chatService.getMessages(this.senderId, this.receiverId).subscribe((messages: any[]) => {
-      this.messages = messages;
+    const receiverId = this.selectedChat.otherUserId; // Usamos `selectedChat` para obtener el `receiverId`
   
-      // Si el array tiene mensajes, asigna el mensaje del último objeto a `this.lastMessage`
-      if (messages.length > 0) {
-        this.selectedChat.lastMessage = messages[messages.length - 1].message;
+    // Verifica que el `receiverId` esté correctamente definido
+    if (!receiverId) {
+      console.error('No se ha seleccionado un chat válido');
+      return;
+    }
+  
+    this.chatService.getMessages(this.senderId, receiverId).subscribe((messages: any[]) => {
+      // Verifica que los mensajes solo se asignen si el `receiverId` sigue siendo el mismo
+      if (this.selectedChat.otherUserId === receiverId) {
+        this.messages = messages;
+  
+        // Si hay mensajes, asigna el último mensaje
+        if (messages.length > 0) {
+          this.selectedChat.lastMessage = messages[messages.length - 1].message;
+        } else {
+          this.selectedChat.lastMessage = ''; // Si no hay mensajes, establece un valor vacío
+        }
+  
+        console.log('Mensajes cargados para el chat seleccionado:', messages);
+        this.scrollToBottom(); // Desplaza el scroll después de cargar los mensajes
       } else {
-        this.selectedChat.lastMessage = ''; // Si no hay mensajes, establece un valor vacío
+        console.log('Nuevo mensaje recibido de un chat diferente.');
       }
-  
-      console.log('aca', messages);
-      this.scrollToBottom(); // Desplaza el scroll después de cargar mensajes
     });
   }
   scrollToBottom(): void {
@@ -191,6 +203,14 @@ selectChatById(otherUserId: string): void {
         this.recentChats[chatIndex].lastMessage = this.newMessage;
         this.recentChats[chatIndex].lastMessageTimestamp = updatedTimestamp;
       }
+      await this.updateUserChats(
+        this.senderId,
+        this.user.userName,
+        this.receiverId,
+        this.selectedChat.otherUserName,
+        this.newMessage
+      );
+  
 
       // Ordena los chats inmediatamente
       this.sortRecentChatsByTimestamp();

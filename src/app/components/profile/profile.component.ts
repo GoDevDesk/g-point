@@ -239,8 +239,9 @@ export class ProfileComponent implements OnInit {
     try {
       const userJson = this.authService.getUserStorage();
       const user: User = JSON.parse(userJson); // Define el tipo si es posible  
+      const timestamp = new Date(); // O usa Date.now() si prefieres un número
 
-      await this.chatService.setChats(user.id.toString(), this.userProfile.id, this.userProfile.userName, user.userName);  
+      await this.chatService.setChats(user.id.toString(), this.userProfile.id, this.userProfile.userName, user.userName, timestamp);  
       console.log('Chats creados.');
 
       this.router.navigate(['/chat'], {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
-import { combineLatest, map, Observable } from 'rxjs';
+import { combineLatest, map, Observable, switchMap } from 'rxjs';
 import { Message } from '../models/message';
 import { environment } from 'src/environments/environment';
 
@@ -30,22 +30,28 @@ export class ChatService {
     const messagesSent = this.firestore.collection<Message>('messages', ref =>
       ref.where('senderId', '==', senderId)
         .where('receiverId', '==', receiverId)
-        .where('token', '==', this.token) // Validar el token en la consulta
+        .where('token', '==', this.token)
         .orderBy('timestamp')
     ).valueChanges();
-
+  
     const messagesReceived = this.firestore.collection<Message>('messages', ref =>
       ref.where('senderId', '==', receiverId)
         .where('receiverId', '==', senderId)
-        .where('token', '==', this.token) // Validar el token en la consulta
+        .where('token', '==', this.token)
         .orderBy('timestamp')
     ).valueChanges();
-
-    return combineLatest([messagesSent, messagesReceived]).pipe(
-      map(([sent, received]) => {
-        // Asegúrate de que `timestamp` esté definido y puedas hacer la comparación
-        return [...sent, ...received].sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
-      })
+  
+    // Usar switchMap para manejar solo el chat seleccionado
+    return messagesSent.pipe(
+      switchMap(sentMessages => 
+        messagesReceived.pipe(
+          map(receivedMessages => {
+            const allMessages = [...sentMessages, ...receivedMessages];
+            // Ordenar por timestamp
+            return allMessages.sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
+          })
+        )
+      )
     );
   }
 
@@ -87,7 +93,7 @@ export class ChatService {
     const senderChatRef = this.firestore.doc(`users/${senderId}/chats/${receiverId}`);
     await senderChatRef.set(
       {
-     //   lastMessage: message,
+        lastMessage: message,
         lastMessageTimestamp: timestamp,
         lastSenderId: senderId,
         lastSenderName: lastSenderName,
@@ -105,7 +111,7 @@ export class ChatService {
     const receiverChatRef = this.firestore.doc(`users/${receiverId}/chats/${senderId}`);
     await receiverChatRef.set(
       {
-    //    lastMessage: message,
+        lastMessage: message,
         lastMessageTimestamp: timestamp,
         lastSenderId: senderId,
         participants: [
@@ -124,12 +130,14 @@ export class ChatService {
     senderId: string,
     receiverId: string,
     receiverName: string,
-    senderName: string
+    senderName: string,
+    timestamp: Date,
   ): Promise<void> {
     // Referencia al chat del remitente
     const senderChatRef = this.firestore.doc(`users/${senderId}/chats/${receiverId}`);
     await senderChatRef.set(
       {
+        lastMessageTimestamp: timestamp,
         participants: [
           { id: senderId, name: senderName },
           { id: receiverId, name: receiverName }
@@ -144,6 +152,7 @@ export class ChatService {
     const receiverChatRef = this.firestore.doc(`users/${receiverId}/chats/${senderId}`);
     await receiverChatRef.set(
       {
+        lastMessageTimestamp: timestamp,
         participants: [
           { id: senderId, name: senderName },
           { id: receiverId, name: receiverName }
