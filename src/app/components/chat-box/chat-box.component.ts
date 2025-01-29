@@ -73,30 +73,27 @@ export class ChatBoxComponent {
     // Si los datos se pasaron, intenta cargarlos desde otro lugar
   }
 
-  ngAfterViewInit() {
-    //   this.scrollToBottom();
-  }
   loadMessages(): void {
     const receiverId = this.selectedChat.otherUserId; // Usamos `selectedChat` para obtener el `receiverId`
-  
+
     // Verifica que el `receiverId` esté correctamente definido
     if (!receiverId) {
       console.error('No se ha seleccionado un chat válido');
       return;
     }
-  
+
     this.chatService.getMessages(this.senderId, receiverId).subscribe((messages: any[]) => {
       // Verifica que los mensajes solo se asignen si el `receiverId` sigue siendo el mismo
       if (this.selectedChat.otherUserId === receiverId) {
         this.messages = messages;
-  
+
         // Si hay mensajes, asigna el último mensaje
         if (messages.length > 0) {
           this.selectedChat.lastMessage = messages[messages.length - 1].message;
         } else {
           this.selectedChat.lastMessage = ''; // Si no hay mensajes, establece un valor vacío
         }
-  
+
         console.log('Mensajes cargados para el chat seleccionado:', messages);
         this.scrollToBottom(); // Desplaza el scroll después de cargar los mensajes
       } else {
@@ -104,6 +101,7 @@ export class ChatBoxComponent {
       }
     });
   }
+
   scrollToBottom(): void {
     if (this.messageContainer) {
       try {
@@ -122,11 +120,11 @@ export class ChatBoxComponent {
         chats.forEach(newChat => {
           console.log(chats);
           const newOtherUserId = newChat.otherUserId; // Obtiene el otherUserId del nuevo chat
-  
+
           const existingIndex = this.recentChats.findIndex(existingChat => {
             return existingChat.otherUserId === newOtherUserId; // Compara por otherUserId
           });
-  
+
           if (existingIndex !== -1) {
             // Reemplaza el chat existente con el mismo otherUserId
             this.recentChats[existingIndex] = newChat;
@@ -135,7 +133,7 @@ export class ChatBoxComponent {
             this.recentChats.push(newChat);
           }
         });
-  
+
         console.log('Recent chats:', this.recentChats);
       });
     } catch (error) {
@@ -150,10 +148,10 @@ export class ChatBoxComponent {
       const timestampB = b.lastMessageTimestamp.seconds * 1000 + b.lastMessageTimestamp.nanoseconds / 1000000;
       return timestampB - timestampA; // Ordena en orden descendente
     });
-  
+
     // Reasignación para garantizar detección de cambios en Angular
     this.recentChats = [...this.recentChats];
-  
+
     console.log('Sorted recent chats:', this.recentChats);
   }
 
@@ -170,33 +168,33 @@ export class ChatBoxComponent {
     this.selectChatById(otherUserId);
   }
 
-// Método para seleccionar un contacto solo con el ID del chat
-selectChatById(otherUserId: string): void {
-  // Busca el chat en recentChats por su id
-  const chat = this.recentChats.find(c => c.otherUserId === otherUserId);
+  // Método para seleccionar un contacto solo con el ID del chat
+  selectChatById(otherUserId: string): void {
+    // Busca el chat en recentChats por su id
+    const chat = this.recentChats.find(c => c.otherUserId === otherUserId);
 
-  if (chat) {
-    this.selectedChat = chat; // Asigna el chat seleccionado
-    this.receiverId = chat.otherUserId; // Actualiza el ID del receptor
-    this.loadMessages(); // Carga los mensajes para este chat
-  } else {
-    console.error(`Chat con id ${otherUserId} no encontrado.`);
+    if (chat) {
+      this.selectedChat = chat; // Asigna el chat seleccionado
+      this.receiverId = chat.otherUserId; // Actualiza el ID del receptor
+      this.loadMessages(); // Carga los mensajes para este chat
+    } else {
+      console.error(`Chat con id ${otherUserId} no encontrado.`);
+    }
   }
-}
 
   // Método para enviar un mensaje
   async sendMessage() {
     if (this.newMessage.trim()) {
       // Enviar el mensaje al servidor
       this.chatService.sendMessage(this.senderId, this.receiverId, this.newMessage);
-  
+
       // Actualizar el timestamp localmente
       const timestamp = new Date();
       const updatedTimestamp = {
         seconds: Math.floor(timestamp.getTime() / 1000),
         nanoseconds: (timestamp.getTime() % 1000) * 1000000
       };
-  
+
       // Actualiza el chat correspondiente en recentChats
       const chatIndex = this.recentChats.findIndex(chat => chat.otherUserId === this.receiverId);
       if (chatIndex !== -1) {
@@ -210,12 +208,12 @@ selectChatById(otherUserId: string): void {
         this.selectedChat.otherUserName,
         this.newMessage
       );
-  
+
 
       // Ordena los chats inmediatamente
       this.sortRecentChatsByTimestamp();
       this.newMessage = '';
-  
+
       console.log('Recent chats después de enviar mensaje:', this.recentChats);
     }
   }
@@ -233,5 +231,4 @@ selectChatById(otherUserId: string): void {
       console.error('Error al enviar el mensaje:', error);
     }
   }
-
 }
