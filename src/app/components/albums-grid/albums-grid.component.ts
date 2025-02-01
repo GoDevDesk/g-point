@@ -16,12 +16,13 @@ export class AlbumsGridComponent implements OnInit {
   page: number = 1;
   pageSize: number = 5;
   totalPages: number = 0;
-  isLoading = true; // Simula la carga inicial
+  isLoading = false; 
   profileId = '';
 
   constructor(private route: ActivatedRoute,private albumService: AlbumService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.route.paramMap.subscribe(params => {
       this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
       console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId); 
@@ -40,8 +41,10 @@ export class AlbumsGridComponent implements OnInit {
 
         // Calcular el total de páginas
         this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+        this.isLoading = false;
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Error loading albums', err);
       }
     });

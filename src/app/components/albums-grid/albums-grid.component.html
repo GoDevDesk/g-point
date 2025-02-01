@@ -1,3 +1,6 @@
+<div *ngIf="isLoading" class="loading-overlay">
+  <mat-spinner color="primary"></mat-spinner>
+</div>
 <div class="grid grid-cols-1 gap-4 my-6">
   <!-- Sección de suscripción -->
   <app-mensual-suscription></app-mensual-suscription>

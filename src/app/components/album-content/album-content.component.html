@@ -1,5 +1,8 @@
 <div class="relative flex min-h-screen flex-col">
   <app-go-back></app-go-back>
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner color="primary"></mat-spinner>
+  </div>
   <div class="min-h-28">
     <div class="mx-auto py-12">
       <!-- Editable Title -->

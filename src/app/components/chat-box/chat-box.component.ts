@@ -20,6 +20,7 @@ export class ChatBoxComponent {
   recentChats: any[] = [];
   user: any;
   currentAvatarPhoto = '';
+  isLoading = false; // Simula la carga inicial
 
   selectedChat: { id: number; name: string; avatar: string; lastMessage: string; otherUserId: string; otherUserName: string; } = {
     id: 0,
@@ -46,8 +47,9 @@ export class ChatBoxComponent {
   newMessage = '';
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.currentUserLoggedId = this.authService.getCurrentUserLoggedId().toString();
-    this.user = JSON.parse(this.authService.getUserStorage());
+    this.user = JSON.parse(this.authService.getUserStorage());  ///este no es el mismo de arriba??
 
     // Obtener datos del estado de navegación
     const state = history.state;
@@ -93,10 +95,11 @@ export class ChatBoxComponent {
         } else {
           this.selectedChat.lastMessage = ''; // Si no hay mensajes, establece un valor vacío
         }
-
+        this.isLoading = false;
         console.log('Mensajes cargados para el chat seleccionado:', messages);
         this.scrollToBottom(); // Desplaza el scroll después de cargar los mensajes
       } else {
+        this.isLoading = false;
         console.log('Nuevo mensaje recibido de un chat diferente.');
       }
     });
@@ -133,10 +136,11 @@ export class ChatBoxComponent {
             this.recentChats.push(newChat);
           }
         });
-
+        this.isLoading = false;
         console.log('Recent chats:', this.recentChats);
       });
     } catch (error) {
+      this.isLoading = false;
       console.error('Error fetching recent chats:', error);
     }
   }

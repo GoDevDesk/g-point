@@ -1,4 +1,22 @@
 
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+  z-index: 1000; /* Asegura que está sobre todo */
+}
+
+.opacity-50 {
+  opacity: 0.5;
+  pointer-events: none; /* Evita que se interactúe con los elementos detrás */
+}
+
 .profile-container {
     position: relative;
     width: 5rem;  /* Tamaño ancho del contenedor */

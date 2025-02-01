@@ -29,6 +29,7 @@ export class AlbumContentComponent implements OnInit {
   pageSize: number = 10;
   totalPages: number = 0;
   isEditing: boolean = false;
+  isLoading = false;
 
 
   isModalOpen: boolean = false; // Controla la apertura del modal
@@ -46,14 +47,9 @@ export class AlbumContentComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.albumId = this.route.snapshot.paramMap.get('albumId') || '';
     this.isEditing = this.albumId != "" ? true : false;
-    if (this.isEditing) {
-      setTimeout(() => {
-        this.loadPosts();
-      }, 1000); // Timeout de 1 segundo
-    }
-
     this.authService.getCurrentUserIdLogged().subscribe(
       id => {
         this.loggedUserId = id; // Asigna el ID a la variable
@@ -63,6 +59,14 @@ export class AlbumContentComponent implements OnInit {
         console.error('Error al obtener el ID del usuario:', error);
       }
     );
+
+    if (this.isEditing) {
+      setTimeout(() => {
+        this.loadPosts();
+      }, 1000); // Timeout de 1 segundo
+    } else {
+      this.isLoading = false;
+    }
   }
 
   loadPosts(): void {
@@ -75,8 +79,10 @@ export class AlbumContentComponent implements OnInit {
 
         // Calcular el total de páginas
         this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+        this.isLoading = false;
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Error loading posts', err);
       }
     });

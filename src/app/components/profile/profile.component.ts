@@ -42,13 +42,14 @@ export class ProfileComponent implements OnInit {
 
   isFollowed = false; // Estado inicial para follow
   isSubscribed = false; // Estado inicial para subscribe
-
+  isLoading = false; // Estado de carga
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private userService: UserService, private profileService: ProfileService,
     private subscriptionsService: SubscriptionsService, private followsService: FollowsService, private router: Router,
     private chatService: ChatService) { }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.getCurrentLoggedIdUser();
     this.profileId = this.route.snapshot.paramMap.get('id') || '';
 
@@ -162,8 +163,10 @@ export class ProfileComponent implements OnInit {
         console.log('Obtenido correctamente:', response);
         this.authService.CurrentUserLoggedId = response.id;
         this.senderId = response.id.toString(); // Asignar el id del usuario a senderId
+        this.isLoading = false;
       },
       error: (error) => {
+        this.isLoading = false;
         console.error('Error al conseguir usuario logueado', error);
       },
     });

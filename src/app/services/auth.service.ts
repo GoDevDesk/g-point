@@ -22,6 +22,7 @@ export class AuthService {
 
   // Método para enviar el login y recibir el token
   login(credentials: { username: string; password: string }): Observable<any> {
+    this.logout(); //me deslogueo para estar seguro q no hay nada de un user viejo
     return this.http.post(`${this.apiUrl}/login`, credentials, { responseType: 'text' });
   }
 
