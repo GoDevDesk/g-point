@@ -1,10 +1,11 @@
-<div *ngIf="isLoading" class="loading-overlay">
-  <mat-spinner color="primary"></mat-spinner>
-</div>
+
 <div class="grid grid-cols-1 gap-4 my-6">
   <!-- Sección de suscripción -->
   <app-mensual-suscription></app-mensual-suscription>
   <app-loose-drink></app-loose-drink>
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner color="primary"></mat-spinner>
+  </div>
 
   <div *ngFor="let album of albums" class="album-card" (click)="navigateToAlbum(album.id)">
     <div class="h-24 w-24 bg-center bg-cover rounded-lg" [style.background-image]="'url(' + album.miniature + ')'">

@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
   errorMessage: string = ''; // Mensaje de error a mostrar
 
   isModalOpen = false; // Control del estado del modal
-  defaultPhoto = 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg';
+  defaultPhoto = 'assets/defaultIcons/defaultProfilePhoto.png';
   currentPhoto = this.defaultPhoto; // URL de la foto actual
   profilePictureId: number = 0;  // URL de la foto actual
 
@@ -49,6 +49,8 @@ export class ProfileComponent implements OnInit {
     private chatService: ChatService) { }
 
   ngOnInit(): void {
+    debugger;
+    this.profileService.setAvatarPhoto(this.currentPhoto); //pongo foto default
     this.isLoading = true;
     this.getCurrentLoggedIdUser();
     this.profileId = this.route.snapshot.paramMap.get('id') || '';
@@ -58,8 +60,7 @@ export class ProfileComponent implements OnInit {
     this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
     console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId);
 
-    // Llama al método reloadPage para actualizar todo el estado del componente
-    this.reloadPage();
+    this.loadPage(); 
   });
 
     this.items = [
@@ -67,8 +68,6 @@ export class ProfileComponent implements OnInit {
       { label: 'Transactions' },
       { label: 'Products' }
     ]
-  //  this.reloadPage();
-
   }
 
 
@@ -217,7 +216,7 @@ export class ProfileComponent implements OnInit {
   //   });
   // }
 
-  reloadPage(){
+  loadPage(){
     this.isOwner = this.authService.isProfileOwner(this.profileId);
     if (!this.isOwner){
       this.receiverId = this.profileId;
