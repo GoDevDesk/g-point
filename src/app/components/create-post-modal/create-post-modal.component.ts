@@ -15,6 +15,7 @@ export class CreatePostModalComponent {
 
   previewPhoto: string | null = null; // Vista previa de la nueva foto
   selectedFile: File | null = null;
+  isLoading = false;
 
 
   constructor() {    

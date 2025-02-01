@@ -134,6 +134,7 @@ export class AlbumContentComponent implements OnInit {
   }
 
   handlePhotoSelected(file: File): void {
+    this.isLoading = true;
     if (!this.isEditing) {
       this.createAlbum(file);
     }
@@ -160,6 +161,7 @@ export class AlbumContentComponent implements OnInit {
         }
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Error al crear el álbum:', err);
       },
     });
@@ -178,6 +180,7 @@ export class AlbumContentComponent implements OnInit {
         }
       },
       error: (error) => {
+        this.isLoading = false;
         console.error('Error al enviar foto al servidor:', error);
       },
     });
