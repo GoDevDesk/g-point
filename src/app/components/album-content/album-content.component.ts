@@ -161,7 +161,7 @@ export class AlbumContentComponent implements OnInit {
 
   savePrice() {
     this.isEditingPrice = false;
-    this.albumService.updateAlbumInfo(Number(this.albumId), this.title, null)
+    this.albumService.updateAlbumInfo(Number(this.albumId),null, Number(this.price))
       .subscribe({
         next: () => {
           console.log('Álbum actualizado correctamente');
