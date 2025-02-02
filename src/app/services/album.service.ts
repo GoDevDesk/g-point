@@ -45,10 +45,10 @@ export class AlbumService {
   }
 
   updateAlbumInfo(albumId: number, title: string | null, price: number | null): Observable<void> {
-    const url = `${this.apiUrl}/${albumId}`; // URL con el ID del álbum
+    const url = `${this.apiUrl}`; // URL con el ID del álbum
     const body = {
       id: albumId,
-      title: title,
+      name: title,
       price: price
     };
   

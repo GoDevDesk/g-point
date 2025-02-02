@@ -49,7 +49,6 @@ export class ProfileComponent implements OnInit {
     private chatService: ChatService) { }
 
   ngOnInit(): void {
-    debugger;
     this.profileService.setAvatarPhoto(this.currentPhoto); //pongo foto default
     this.isLoading = true;
     this.getCurrentLoggedIdUser();
