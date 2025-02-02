@@ -18,7 +18,9 @@ import { PostService } from 'src/app/services/post.service';
 })
 export class AlbumContentComponent implements OnInit {
   title = 'Inserte un título';
+  price = 'Inserte un título';
   isEditingTitle = false;
+  isEditingPrice = false;
   calculatedInputWidth = 0;
   loggedUserId = 0;
 
@@ -43,6 +45,9 @@ export class AlbumContentComponent implements OnInit {
 
   @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
   @ViewChild('title') titleElement!: ElementRef<HTMLHeadingElement>;
+
+  
+  @ViewChild('priceInput') priceInput!: ElementRef<HTMLInputElement>;
 
   constructor(private postService: PostService, private albumService: AlbumService, private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
   hoverAddPhoto = false;
@@ -77,6 +82,7 @@ export class AlbumContentComponent implements OnInit {
       next: (albumData) => {
         this.albumData = albumData; // Guarda la respuesta en la variable
         this.title = albumData.title;
+        this.price = albumData.price.toString();
         console.log('Álbum recibido:', this.albumData);
       },
       error: (err) => {
@@ -120,6 +126,14 @@ export class AlbumContentComponent implements OnInit {
     });
   }
 
+  startEditingPrice() {
+    this.isEditingPrice= true;
+
+    setTimeout(() => {
+      this.setInputWidth();
+      this.priceInput?.nativeElement.focus();
+    });
+  }
   /**
    * Calcula el tamaño dinámico del campo de texto para coincidir con el tamaño real del título visible.
    */
@@ -137,7 +151,22 @@ export class AlbumContentComponent implements OnInit {
     this.isEditingTitle = false;
     this.albumService.updateAlbumInfo(Number(this.albumId), this.title, null)
       .subscribe({
-        next: () => console.log('Álbum actualizado correctamente'),
+        next: () => {
+          console.log('Álbum actualizado correctamente');
+          this.loadAlbumData(Number(this.albumId)); // 🔹 Llamar a otro método tras el éxito
+        },
+        error: (err) => console.error('Error al actualizar álbum', err)
+      });
+  }
+
+  savePrice() {
+    this.isEditingPrice = false;
+    this.albumService.updateAlbumInfo(Number(this.albumId), this.title, null)
+      .subscribe({
+        next: () => {
+          console.log('Álbum actualizado correctamente');
+          this.loadAlbumData(Number(this.albumId)); // 🔹 Llamar a otro método tras el éxito
+        },
         error: (err) => console.error('Error al actualizar álbum', err)
       });
   }

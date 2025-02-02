@@ -4,14 +4,35 @@
     <mat-spinner color="primary"></mat-spinner>
   </div>
   <div class="min-h-28">
-    <div class="mx-auto py-12">
+    <div class="mx-auto py-18">
       <!-- Editable Title -->
-      <div id="title-container" class="relative text-center group max-w-[600px] mx-auto">
-        <!-- Título visible -->
+      <div id="title-container" class="relative text-center group max-w-[800px] mx-auto">
+        <!-- Título visible (más grande) -->
         <h2 *ngIf="!isEditingTitle"
-          class="font-black text-5xl text-white uppercase cursor-pointer inline-block relative"
+          class="font-black text-7xl text-white uppercase cursor-pointer inline-block relative"
           (click)="startEditing()">
           {{ albumData?.title }}
+          <a href="#" class="edit-icon absolute top-[90%] right-[-30px] transform -translate-y-1/2 text-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg"
+              class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15.232 5.232l3.536 3.536M4 13v6a2 2 0 002 2h6M16.828 4.586a2 2 0 112.828 2.828L7 19l-4 1 1-4 12.828-12.828z" />
+            </svg>
+          </a>
+        </h2>
+        <!-- Input editable, tamaño dinámico y más grande -->
+        <input *ngIf="isEditingTitle" #titleInput [(ngModel)]="title"
+          class="text-center text-4xl font-black text-white uppercase bg-black border border-gray-500 rounded py-2 px-4 relative"
+          [style.width.px]="calculatedInputWidth || 600" (blur)="saveTitle()" (keyup.enter)="saveTitle()" />
+      </div>
+      <!-- Editable Price -->
+      <div id="title-container" class="relative text-center group max-w-[400px] mx-auto">
+        <!-- Precio visible -->
+        <h2 *ngIf="!isEditingPrice"
+          class="font-black text-5xl text-white uppercase cursor-pointer inline-block relative"
+          (click)="startEditingPrice()">
+          ${{ albumData?.price }}
           <a href="#" class="edit-icon absolute top-[90%] right-[-25px] transform -translate-y-1/2 text-gray-600">
             <svg xmlns="http://www.w3.org/2000/svg"
               class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none"
@@ -21,10 +42,10 @@
             </svg>
           </a>
         </h2>
-        <!-- Input editable, tamaño dinámico -->
-        <input *ngIf="isEditingTitle" #titleInput [(ngModel)]="title"
-          class="text-center text-5xl font-black text-white uppercase bg-black border border-gray-500 rounded py-1  relative"
-          [style.width.px]="calculatedInputWidth || 500" (blur)="saveTitle()" (keyup.enter)="saveTitle()" />
+        <!-- Input editable, más pequeño y centrado -->
+        <input *ngIf="isEditingPrice" #priceInput [(ngModel)]="price"
+          class="text-center text-3xl font-black text-white uppercase bg-black border border-gray-500 rounded py-1 w-32 mx-auto"
+          (blur)="savePrice()" (keyup.enter)="savePrice()" />
       </div>
       <!-- Informacion del usuario -->
       <div class="flex justify-center items-center gap-2 my-3">
@@ -40,11 +61,11 @@
 
       <!-- Video-container -->
       <div class="gap-6 mt-8 mx-4 video-container flex flex-wrap justify-center">
-        <div 
-        class="wrap-video add-photo-card card border border-gray-400 rounded-lg shadow-lg overflow-hidden bg-white h-[500px] flex flex-col justify-center items-center min-w-[300px] max-w-[47px]" 
-        (click)="openModal()">
-        <div class="add-photo-content text-4xl font-bold text-gray-500">+</div>
-      </div>
+        <div
+          class="wrap-video add-photo-card card border border-gray-400 rounded-lg shadow-lg overflow-hidden bg-white h-[500px] flex flex-col justify-center items-center min-w-[300px] max-w-[47px]"
+          (click)="openModal()">
+          <div class="add-photo-content text-4xl font-bold text-gray-500">+</div>
+        </div>
         <!-- Posts -->
         <div class="wrap-video" *ngFor="let post of posts"
           class="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 p-2 min-w-[450px] max-w-[470px]">
@@ -73,28 +94,22 @@
                 [alt]="post.description || 'Imagen sin descripción'" />
             </div>
 
-<!-- Pie de la tarjeta -->
-<div class="h-16 flex justify-between items-center px-4 py-2">
-  <h1 class="text-lg font-bold text-pink-500 truncate">
-    {{ post.description || 'Sin descripción' }}
-  </h1>
-  <!-- Icono de corazón -->
-  <button (click)="toggleLike(post)" class="focus:outline-none">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      [ngClass]="post.isLiked ? 'text-red-500' : 'text-gray-400'"
-      class="w-6 h-6 transition duration-300"
-      fill="currentColor"
-      viewBox="0 0 24 24">
-      <path
-        *ngIf="post.isLiked"
-        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-      <path
-        *ngIf="!post.isLiked"
-        d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-6.4 16.55L12 20.35l1.9-1.72C17.78 15.17 20 12.39 20 8.5 20 6.5 18.5 5 16.5 5c-1.54 0-3.04.99-3.57 2.36h-1.86C10.54 5.99 9.04 5 7.5 5 5.5 5 4 6.5 4 8.5c0 3.89 2.22 6.67 6.1 10.05z" />
-    </svg>
-  </button>
-</div>
+            <!-- Pie de la tarjeta -->
+            <div class="h-16 flex justify-between items-center px-4 py-2">
+              <h1 class="text-lg font-bold text-pink-500 truncate">
+                {{ post.description || 'Sin descripción' }}
+              </h1>
+              <!-- Icono de corazón -->
+              <button (click)="toggleLike(post)" class="focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" [ngClass]="post.isLiked ? 'text-red-500' : 'text-gray-400'"
+                  class="w-6 h-6 transition duration-300" fill="currentColor" viewBox="0 0 24 24">
+                  <path *ngIf="post.isLiked"
+                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                  <path *ngIf="!post.isLiked"
+                    d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-6.4 16.55L12 20.35l1.9-1.72C17.78 15.17 20 12.39 20 8.5 20 6.5 18.5 5 16.5 5c-1.54 0-3.04.99-3.57 2.36h-1.86C10.54 5.99 9.04 5 7.5 5 5.5 5 4 6.5 4 8.5c0 3.89 2.22 6.67 6.1 10.05z" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
