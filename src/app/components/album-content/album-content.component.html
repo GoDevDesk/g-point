@@ -11,7 +11,7 @@
         <h2 *ngIf="!isEditingTitle"
           class="font-black text-5xl text-white uppercase cursor-pointer inline-block relative"
           (click)="startEditing()">
-          {{ title }}
+          {{ albumData?.title }}
           <a href="#" class="edit-icon absolute top-[90%] right-[-25px] transform -translate-y-1/2 text-gray-600">
             <svg xmlns="http://www.w3.org/2000/svg"
               class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none"

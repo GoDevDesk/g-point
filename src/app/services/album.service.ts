@@ -5,6 +5,7 @@ import { Album } from '../models/album';
 import { Observable } from 'rxjs';
 import { AlbumRequest } from '../models/albumRequest';
 import { environment } from 'src/environments/environment';
+import { albumPageData } from '../models/albumPageData';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,11 @@ export class AlbumService {
 
 
   constructor(private http: HttpClient) { }
+
+  getAlbumDataById(albumId: number): Observable<albumPageData> {
+    const url = `${this.apiUrl}/data/${albumId}`;
+    return this.http.get<albumPageData>(url);
+  }
 
   getAlbumsByUserId(userId: number, page: number = 1, pageSize: number = 5): Observable<PaginatedResultResponse<Album>> {
     const params = new HttpParams()
@@ -36,6 +42,17 @@ export class AlbumService {
     formData.append('userId', newAlbum.userId.toString());
     // Enviar el FormData
     return this.http.post<number>(url, formData);
+  }
+
+  updateAlbumInfo(albumId: number, title: string | null, price: number | null): Observable<void> {
+    const url = `${this.apiUrl}/${albumId}`; // URL con el ID del álbum
+    const body = {
+      id: albumId,
+      title: title,
+      price: price
+    };
+  
+    return this.http.put<void>(url, body);
   }
 
 

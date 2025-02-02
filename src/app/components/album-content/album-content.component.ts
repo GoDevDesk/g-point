@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/co
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Album } from 'src/app/models/album';
+import { albumPageData } from 'src/app/models/albumPageData';
 import { AlbumRequest } from 'src/app/models/albumRequest';
 import { PaginatedResultResponse } from 'src/app/models/paginatedResultResponse';
 import { Post } from 'src/app/models/Post';
@@ -16,7 +17,7 @@ import { PostService } from 'src/app/services/post.service';
   styleUrls: ['./album-content.component.scss']
 })
 export class AlbumContentComponent implements OnInit {
-  title = 'Título por defecto';
+  title = 'Inserte un título';
   isEditingTitle = false;
   calculatedInputWidth = 0;
   loggedUserId = 0;
@@ -38,6 +39,7 @@ export class AlbumContentComponent implements OnInit {
   currentPhoto = this.defaultPhoto; // URL de la foto actual
 
   menuStates: { [key: string]: boolean } = {}; // Controla los estados de los menús
+  albumData: albumPageData | null = null; // Variable para almacenar el álbum
 
   @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
   @ViewChild('title') titleElement!: ElementRef<HTMLHeadingElement>;
@@ -61,12 +63,26 @@ export class AlbumContentComponent implements OnInit {
     );
 
     if (this.isEditing) {
+      this.loadAlbumData(Number(this.albumId));
       setTimeout(() => {
         this.loadPosts();
       }, 1000); // Timeout de 1 segundo
     } else {
       this.isLoading = false;
     }
+  }
+
+  loadAlbumData(albumId: number): void {
+    this.albumService.getAlbumDataById(albumId).subscribe({
+      next: (albumData) => {
+        this.albumData = albumData; // Guarda la respuesta en la variable
+        this.title = albumData.title;
+        console.log('Álbum recibido:', this.albumData);
+      },
+      error: (err) => {
+        console.error('Error al obtener el álbum:', err);
+      }
+    });
   }
 
   loadPosts(): void {
@@ -119,6 +135,11 @@ export class AlbumContentComponent implements OnInit {
    */
   saveTitle() {
     this.isEditingTitle = false;
+    this.albumService.updateAlbumInfo(Number(this.albumId), this.title, null)
+      .subscribe({
+        next: () => console.log('Álbum actualizado correctamente'),
+        error: (err) => console.error('Error al actualizar álbum', err)
+      });
   }
 
   /////modal
