@@ -24,7 +24,7 @@
     </div>
   </div>
 
-  <div
+  <div *ngIf="isOwner" 
   class="album-card h-24 w-full bg-pink-500 rounded-lg cursor-pointer transition-transform transform hover:scale-105 active:scale-105 hover:bg-pink-400 active:bg-pink-400"
   (click)="goToAlbumCreation()">
   <div

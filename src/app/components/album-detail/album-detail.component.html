@@ -3,18 +3,18 @@
   <!-- Primera Card -->
   <div class="card-container">
     <!-- Imagen -->
-    <div class="h-48 w-32 bg-center bg-cover rounded-lg" [style.background-image]></div>
+    <div class="h-48 w-32 bg-center bg-cover rounded-lg" [style.background-image]="'url(' + albumData?.miniature + ')'"></div>
     <!-- Contenido -->
     <div class="ml-6">
-      <h2 class="text-3xl font-bold text-pink-500 mb-3">TITULO</h2>
+      <h2 class="text-3xl font-bold text-pink-500 mb-3">{{ albumData?.title }}</h2>
       <p class="text-white  text-base mb-3 flex items-center">
-        <i class="fas fa-folder text-yellow-500 mr-2"></i> ARCHIVOS
+        <i class="fas fa-folder text-yellow-500 mr-2"></i>ARCHIVOS: {{ albumData?.numberOfPublications }}
       </p>
       <p class="text-white text-base mb-4 flex items-center">
-        <i class="fas fa-clock text-blue-500 mr-2"></i> Fecha:
+        <i class="fas fa-clock text-blue-500 mr-2"></i> {{ albumData?.creationDate }}
       </p>
       <p class="text-2xl font-semibold text-white  flex items-center">
-        <i class="fas fa-money-bill-wave text-green-500 mr-2"></i> $ ARS
+        <i class="fas fa-money-bill-wave text-green-500 mr-2"></i> $ ARS{{ albumData?.price }}
       </p>
     </div>
   </div>
@@ -23,7 +23,7 @@
   <p class="text-1xl text-white mb-8">Para obtener el contenido debes loguearte o crear una cuenta:</p>
   <!-- Botón centrado -->
   <div class="flex justify-center">
-    <button class="loggin-button">
+    <button class="loggin-button" (click)="(goToLogin())">
       Iniciar Sesión
     </button>
   </div>

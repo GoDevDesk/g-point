@@ -18,6 +18,7 @@ export class AlbumsGridComponent implements OnInit {
   totalPages: number = 0;
   isLoading = false; 
   profileId = '';
+  isOwner = false;
 
   constructor(private route: ActivatedRoute,private albumService: AlbumService, private authService: AuthService, private router: Router) { }
 
@@ -25,6 +26,7 @@ export class AlbumsGridComponent implements OnInit {
     this.isLoading = true;
     this.route.paramMap.subscribe(params => {
       this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
+      this.isOwner = this.authService.isProfileOwner(this.profileId);
       console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId); 
       this.loadAlbums();
     });

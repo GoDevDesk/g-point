@@ -32,7 +32,7 @@ const routes: Routes = [
     canActivate: [AuthGuard] 
   },
   {
-    path: 'album-detail/:id', component: AlbumDetailComponent
+    path: 'album-detail/:albumId', component: AlbumDetailComponent
   },
   {
     path: 'chat', component: ChatBoxComponent
