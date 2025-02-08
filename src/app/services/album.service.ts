@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PaginatedResultResponse } from '../models/paginatedResultResponse';
 import { Album } from '../models/album';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { AlbumRequest } from '../models/albumRequest';
 import { environment } from 'src/environments/environment';
 import { albumPageData } from '../models/albumPageData';
@@ -54,6 +54,18 @@ export class AlbumService {
   
     return this.http.put<void>(url, body);
   }
+
+  deleteAlbum(albumId: number): Observable<boolean> {
+    const url = `${this.apiUrl}/${albumId}`;
+  
+    return this.http.delete<boolean>(url).pipe(
+      catchError(error => {
+        console.error('Error al eliminar el álbum:', error);
+        return of(false);
+      })
+    );
+  }
+
 
 
   isAlbumOwnerOrBuyer(userId: number): Observable<boolean> {

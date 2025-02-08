@@ -113,6 +113,14 @@
           </div>
         </div>
       </div>
+      <!-- Footer -->
+      <footer class="w-full text-right py-4 mt-24 mb-24 pr-8 lg:pr-60">
+        <button (click)="deleteAlbum()" class="bg-red-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-700 transition">
+          Eliminar Álbum
+        </button>
+      </footer>
+      
+
 
       <!-- Modal -->
       <app-create-post-modal [isOpen]="isModalOpen" (close)="closeModal()"
