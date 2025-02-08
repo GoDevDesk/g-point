@@ -81,8 +81,15 @@ export class AlbumContentComponent implements OnInit {
     this.albumService.getAlbumDataById(albumId).subscribe({
       next: (albumData) => {
         this.albumData = albumData; // Guarda la respuesta en la variable
-        this.title = albumData.title;
-        this.price = albumData.price.toString();
+  
+        // Solo actualiza si los valores son válidos
+        if (albumData.title) {
+          this.title = albumData.title;
+        }
+        if (albumData.price !== null && albumData.price !== undefined) {
+          this.price = albumData.price.toString();
+        }
+  
         console.log('Álbum recibido:', this.albumData);
       },
       error: (err) => {
@@ -149,25 +156,26 @@ export class AlbumContentComponent implements OnInit {
    */
   saveTitle() {
     this.isEditingTitle = false;
-    this.albumService.updateAlbumInfo(Number(this.albumId), this.title, null)
+    this.albumService.updateAlbumInfo(Number(this.albumId), this.title, Number(this.price))
       .subscribe({
         next: () => {
-          console.log('Álbum actualizado correctamente');
-          this.loadAlbumData(Number(this.albumId)); // 🔹 Llamar a otro método tras el éxito
+          console.log('Álbum actualizado correctamente', this.albumData?.price);
+          this.loadAlbumData(Number(this.albumId)); // 🔹 Solo recargar si es necesario
         },
         error: (err) => console.error('Error al actualizar álbum', err)
       });
   }
+  
 
   savePrice() {
     this.isEditingPrice = false;
-    this.albumService.updateAlbumInfo(Number(this.albumId),null, Number(this.price))
+    this.albumService.updateAlbumInfo(Number(this.albumId), null, Number(this.price))
       .subscribe({
         next: () => {
-          console.log('Álbum actualizado correctamente');
-          this.loadAlbumData(Number(this.albumId)); // 🔹 Llamar a otro método tras el éxito
+          console.log('Precio actualizado correctamente');
+          this.loadAlbumData(Number(this.albumId)); // 🔹 Solo recargar si es necesario
         },
-        error: (err) => console.error('Error al actualizar álbum', err)
+        error: (err) => console.error('Error al actualizar precio', err)
       });
   }
 
@@ -270,12 +278,24 @@ export class AlbumContentComponent implements OnInit {
         }
       });
     }
-  }
-  
-  
+  }  
 
   deletePost(post: any): void {
-    console.log('Eliminar', post);
-    // Implementa tu lógica aquí
+    if (confirm('¿Estás seguro de que deseas eliminar este Post? Esta acción no se puede deshacer.')) {
+      this.isLoading = true;
+      this.postService.deletePost(this.loggedUserId, post.id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          console.log('Post eliminado correctamente');
+          alert('Post eliminado correctamente.');
+          this.loadPosts();
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Error al eliminar el Post:', error);
+          alert(error.error || 'No se pudo eliminar el Post.');
+        }
+      });
+    }
   }
 }

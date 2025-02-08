@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PaginatedResultResponse } from '../models/paginatedResultResponse';
 import { Album } from '../models/album';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { Post } from '../models/Post';
 import { environment } from 'src/environments/environment';
 
@@ -35,4 +35,13 @@ export class PostService {
     return this.http.post(`${this.apiUrl}`, formData);
   }
 
+  deletePost( userId: number, postId: number): Observable<boolean> {
+    const url = `${this.apiUrl}/user/${userId}/${postId}`;    
+    return this.http.delete<boolean>(url).pipe(
+      catchError(error => {
+        console.error('Error al eliminar el post:', error);
+        return throwError(() => error); // 🔥 Relanza el error en lugar de devolver false
+      })
+    );
+  }
 }
