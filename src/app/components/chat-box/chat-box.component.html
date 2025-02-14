@@ -55,7 +55,7 @@
         <!-- Incoming Message -->
         <div *ngIf="message.senderId !== currentUserLoggedId" class="flex mb-4 cursor-pointer">
           <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
-            <img [src]="message.avatar" alt="User Avatar" class="w-8 h-8 rounded-full">
+            <img [src]="selectedChat.avatar" alt="User Avatar" class="w-8 h-8 rounded-full">
           </div>
           <div class="flex max-w-96 bg-white rounded-lg p-3 gap-3">
             <span class="block text-sm font-bold text-pink-500">{{ selectedChat.otherUserName }}</span>

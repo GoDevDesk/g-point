@@ -19,7 +19,8 @@ export class ChatBoxComponent {
   receiverId: string = '';
   recentChats: any[] = [];
   user: any;
-  currentAvatarPhoto = '';
+  defaultPhoto = 'assets/defaultIcons/defaultProfilePhoto.png';
+  currentAvatarPhoto = this.defaultPhoto;
   isLoading = false; // Simula la carga inicial
 
   selectedChat: { id: number; name: string; avatar: string; lastMessage: string; otherUserId: string; otherUserName: string; } = {
@@ -123,6 +124,10 @@ export class ChatBoxComponent {
         chats.forEach(newChat => {
           console.log(chats);
           const newOtherUserId = newChat.otherUserId; // Obtiene el otherUserId del nuevo chat
+
+          if (!newChat.avatar || newChat.avatar.trim() === "") {
+            newChat.avatar = this.defaultPhoto;
+          }
 
           const existingIndex = this.recentChats.findIndex(existingChat => {
             return existingChat.otherUserId === newOtherUserId; // Compara por otherUserId
