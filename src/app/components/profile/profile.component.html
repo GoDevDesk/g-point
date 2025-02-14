@@ -1,6 +1,9 @@
 <div *ngIf="isLoading" class="loading-overlay">
   <mat-spinner color="primary"></mat-spinner>
 </div>
+<!-- Foto de portada -->
+<div class="relative w-full h-60 bg-cover bg-center" style="background-image: url({{coverPhoto}})"></div>
+
 <div class="max-w-2xl mx-auto">
   <div class="px-3 py-2">
     <!--descripciopn-->

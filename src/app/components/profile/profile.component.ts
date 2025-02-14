@@ -31,6 +31,8 @@ export class ProfileComponent implements OnInit {
 
   isModalOpen = false; // Control del estado del modal
   defaultPhoto = 'assets/defaultIcons/defaultProfilePhoto.png';
+  coverPhoto = 'assets/defaultIcons/defaultProfilePhoto.png';
+
   currentPhoto = this.defaultPhoto; // URL de la foto actual
   profilePictureId: number = 0;  // URL de la foto actual
 

@@ -21,7 +21,6 @@
     position: relative;
     width: 5rem;  /* Tamaño ancho del contenedor */
     height: 5rem; /* Tamaño alto del contenedor */
-    margin-top: 30px;
 }
 
 .edit-icon {
@@ -38,7 +37,7 @@
 }
 
 .profile-container:hover .edit-icon {
-    opacity: 1; /* Visible al hacer hover en el contenedor */
+    opacity: 1; /* Visible al hacer hover en el contenedor */  //NO FUNCIONA 
 }
 
 .bg-pink-500 {
