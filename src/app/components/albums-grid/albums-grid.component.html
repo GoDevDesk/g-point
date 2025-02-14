@@ -34,15 +34,7 @@
 </div>
 
   <!-- Controles de paginación -->
-  <div class="flex justify-between items-center mt-4">
-    <button class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400" [disabled]="page <= 1"
-      (click)="onPageChange(page - 1)">
-      Anterior
-    </button>
-    <span class="text-gray-600">Página {{ page }} de {{ totalPages }}</span>
-    <button class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400" [disabled]="page >= totalPages"
-      (click)="onPageChange(page + 1)">
-      Siguiente
-    </button>
+  <div *ngIf="isLoading" class="text-center text-white py-4">
+    Cargando más álbumes...
   </div>
 </div>

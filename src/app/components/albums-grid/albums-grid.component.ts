@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Album } from 'src/app/models/album';
 import { PaginatedResultResponse } from 'src/app/models/paginatedResultResponse';
@@ -16,29 +16,32 @@ export class AlbumsGridComponent implements OnInit {
   page: number = 1;
   pageSize: number = 5;
   totalPages: number = 0;
-  isLoading = false; 
+  isLoading = false;
   profileId = '';
   isOwner = false;
+  lastScrollTop: number = 0; // Guarda la última posición del scroll
 
-  constructor(private route: ActivatedRoute,private albumService: AlbumService, private authService: AuthService, private router: Router) { }
+
+  constructor(private route: ActivatedRoute, private albumService: AlbumService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.isLoading = true;
     this.route.paramMap.subscribe(params => {
       this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
       this.isOwner = this.authService.isProfileOwner(this.profileId);
-      console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId); 
-      this.loadAlbums();
+      console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId);
+      this.loadAlbums(this.page);
     });
   }
 
-  loadAlbums(): void {
+  loadAlbums(page:number): void {
+    this.isLoading = true;
     var visitedProfileId = this.authService.getVisitedProfileId();
-    this.albumService.getAlbumsByUserId(visitedProfileId, this.page, this.pageSize).subscribe({
+    this.albumService.getAlbumsByUserId(visitedProfileId, page, this.pageSize).subscribe({
       next: (response: PaginatedResultResponse<Album>) => {
-        this.albums = response.items;
+        this.albums = [...this.albums, ...response.items];
         this.totalItems = response.totalItems;
-        this.page = response.page;
+        this.page = response.page + 1;
         this.pageSize = response.pageSize;
 
         // Calcular el total de páginas
@@ -53,7 +56,7 @@ export class AlbumsGridComponent implements OnInit {
   }
 
   navigateToAlbum(albumId: number): void {
-    
+
     const album = this.albums.find((a) => a.id === albumId);
 
     var profileIdthis = this.authService.getVisitedProfileId();
@@ -71,8 +74,23 @@ export class AlbumsGridComponent implements OnInit {
     this.router.navigate(['/albumContent']);
   }
 
-  onPageChange(newPage: number): void {
-    this.page = newPage;
-    this.loadAlbums();
+  // onPageChange(newPage: number): void {
+  //   this.page = newPage;
+  //   this.loadAlbums();
+  // }
+
+  @HostListener("window:scroll", [])
+  onScroll(): void {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    // Solo cargar más contenido si el usuario está bajando y ha llegado al final
+    if (scrollTop > this.lastScrollTop && (windowHeight + scrollTop) >= documentHeight - 10 && !this.isLoading && 
+    this.page <= this.totalPages ) {
+      this.loadAlbums(this.page + 1);
+    }
+
+    this.lastScrollTop = scrollTop; // Guardamos la posición actual del scroll
   }
 }
