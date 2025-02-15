@@ -6,6 +6,7 @@ import { User } from 'src/app/models/user';
 import { UserProfile } from 'src/app/models/userProfile';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService } from 'src/app/services/chat.service';
+import { CoverService } from 'src/app/services/cover.service';
 import { FollowsService } from 'src/app/services/follows.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { SubscriptionsService } from 'src/app/services/subscriptions.service';
@@ -29,14 +30,18 @@ export class ProfileComponent implements OnInit {
   userProfile: any = {}; // Para almacenar los datos del usuario
   errorMessage: string = ''; // Mensaje de error a mostrar
 
-  isModalOpen = false; // Control del estado del modal
-  defaultPhoto = 'assets/defaultIcons/defaultProfilePhoto.png';
-  coverPhoto = 'assets/defaultIcons/defaultProfilePhoto.png';
+  isProfileModalOpen = false; // Control del estado del modal perfil
+  isCoverModalOpen = false; // Control del estado del modal perfil
 
-  currentPhoto = this.defaultPhoto; // URL de la foto actual
+  defaultPhoto = 'assets/defaultIcons/defaultProfilePhoto.png';
+
+  currentProfilePhoto = this.defaultPhoto; // URL de la foto actual
+  currentCoverPhoto = this.defaultPhoto; // URL de la foto actual
   profilePictureId: number = 0;  // URL de la foto actual
+  coverPictureId: number = 0;  // URL de la foto actual
 
   private haveProfilePicture: boolean = false;
+  private haveCoverPicture: boolean = false;
   isChatOpen = false;
 
   senderId = ''; // Cambia esto al ID del usuario actual (por ejemplo, desde un servicio de autenticación)
@@ -47,22 +52,22 @@ export class ProfileComponent implements OnInit {
   isLoading = false; // Estado de carga
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private userService: UserService, private profileService: ProfileService,
-    private subscriptionsService: SubscriptionsService, private followsService: FollowsService, private router: Router,
+    private coverService: CoverService, private subscriptionsService: SubscriptionsService, private followsService: FollowsService, private router: Router,
     private chatService: ChatService) { }
 
   ngOnInit(): void {
-    this.profileService.setAvatarPhoto(this.currentPhoto); //pongo foto default
+    this.profileService.setAvatarPhoto(this.currentProfilePhoto); //pongo foto default
     this.isLoading = true;
     this.getCurrentLoggedIdUser();
     this.profileId = this.route.snapshot.paramMap.get('id') || '';
 
-      // Escuchar cambios en la URL
-  this.route.paramMap.subscribe(params => {
-    this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
-    console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId);
+    // Escuchar cambios en la URL
+    this.route.paramMap.subscribe(params => {
+      this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
+      console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId);
 
-    this.loadPage(); 
-  });
+      this.loadPage();
+    });
 
     this.items = [
       { label: 'Dashboard' },
@@ -71,32 +76,36 @@ export class ProfileComponent implements OnInit {
     ]
   }
 
-
-  // Abrir el modal
-  openModal(event: Event): void {
+  // Abrir el modal perfil
+  openProfileModal(event: Event): void {
     event.preventDefault(); // Prevenir comportamiento por defecto del enlace
-    this.isModalOpen = true;
+    this.isProfileModalOpen = true;
   }
 
-    // Abrir el modal
-    openCoverModal(event: Event): void {
-      event.preventDefault(); // Prevenir comportamiento por defecto del enlace
-      this.isModalOpen = true;
-    }
-
-  // Cerrar el modal
-  closeModal(): void {
-    this.isModalOpen = false;
+  // Abrir el modal portada
+  openCoverModal(event: Event): void {
+    event.preventDefault(); // Prevenir comportamiento por defecto del enlace
+    this.isCoverModalOpen = true;
   }
 
-  handlePhotoSelected(file: File): void {
+  // Cerrar el modal perfil
+  closeProfileModal(): void {
+    this.isProfileModalOpen = false;
+  }
+
+  // Cerrar el modal portada
+  closeCoverModal(): void {
+    this.isCoverModalOpen = false;
+  }
+
+  handleProfilePhotoSelected(file: File): void {
     if (!this.haveProfilePicture) {
       this.profileService.createPhoto(file, this.profileId).subscribe({
         next: (response) => {
           console.log('Foto subida correctamente:', response);
 
-          this.currentPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
-          this.closeModal();
+          this.currentProfilePhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
+          this.closeProfileModal();
         },
         error: (error) => {
           console.error('Error al enviar foto al servidor:', error);
@@ -108,9 +117,39 @@ export class ProfileComponent implements OnInit {
         next: (response) => {
           console.log('Foto modificada correctamente:', response);
 
-          this.currentPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
-          this.profileService.setAvatarPhoto(this.currentPhoto);
-          this.closeModal();
+          this.currentProfilePhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
+          this.profileService.setAvatarPhoto(this.currentProfilePhoto);
+          this.closeProfileModal();
+        },
+        error: (error) => {
+          console.error('Error al enviar foto al servidor:', error);
+        },
+      });
+    }
+  }
+
+  handleCoverPhotoSelected(file: File): void {
+    if (!this.haveCoverPicture) {  ////modificar este metodo para cover
+      this.coverService.createPhoto(file, this.profileId).subscribe({
+        next: (response) => {
+          console.log('Foto subida correctamente:', response);
+
+          this.currentCoverPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
+          this.closeProfileModal();
+        },
+        error: (error) => {
+          console.error('Error al enviar foto al servidor:', error);
+        },
+      });
+    }
+    else {
+      this.coverService.updatePhoto(file, this.coverPictureId).subscribe({
+        next: (response) => {
+          console.log('Foto modificada correctamente:', response);
+
+          this.currentCoverPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
+          this.profileService.setAvatarPhoto(this.currentCoverPhoto);
+          this.closeProfileModal();
         },
         error: (error) => {
           console.error('Error al enviar foto al servidor:', error);
@@ -145,17 +184,37 @@ export class ProfileComponent implements OnInit {
     if (!isNaN(userId)) {
       this.profileService.getProfilePhoto(userId).subscribe({
         next: (profilePicture: any) => {
-          this.currentPhoto = profilePicture.url_File; // Actualiza la foto de perfil
+          this.currentProfilePhoto = profilePicture.url_File; // Actualiza la foto de perfil
           this.profilePictureId = profilePicture.id;
-          if (this.isOwner){
-            this.profileService.setAvatarPhoto(this.currentPhoto);
+          if (this.isOwner) {
+            this.profileService.setAvatarPhoto(this.currentProfilePhoto);
           }
-          console.log('Foto de perfil obtenida:', this.currentPhoto);
+          console.log('Foto de perfil obtenida:', this.currentProfilePhoto);
           this.haveProfilePicture = true;
         },
         error: (error) => {
           console.error('Error al obtener la foto de perfil:', error);
           this.errorMessage = 'No se pudo cargar la foto de perfil';
+        },
+      });
+    } else {
+      console.error('El ID de usuario no es válido');
+    }
+  }
+
+  fetchCoverPhoto(): void {
+    const userId = Number(this.profileId);
+    if (!isNaN(userId)) {
+      this.coverService.getCoverPhoto(userId).subscribe({
+        next: (coverPicture: any) => {
+          this.currentCoverPhoto = coverPicture.url_File; // Actualiza la foto de perfil
+          this.coverPictureId = coverPicture.id;
+          console.log('Foto de portada obtenida:', this.currentCoverPhoto);
+          this.haveCoverPicture = true;
+        },
+        error: (error) => {
+          console.error('Error al obtener la foto de portada:', error);
+          this.errorMessage = 'No se pudo cargar la foto de portada';
         },
       });
     } else {
@@ -191,47 +250,34 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-    toggleFollow(): void {
-      // Cambiar el estado en el backend
-      this.isFollowed = !this.isFollowed;
-      this.followsService.updateFollowStatus(Number(this.profileId) ,this.isFollowed).subscribe({
-        next: () => console.log('Follow status updated successfully'),
-        error: (error) => console.error('Error updating follow status:', error)
-      });
-    }
+  toggleFollow(): void {
+    // Cambiar el estado en el backend
+    this.isFollowed = !this.isFollowed;
+    this.followsService.updateFollowStatus(Number(this.profileId), this.isFollowed).subscribe({
+      next: () => console.log('Follow status updated successfully'),
+      error: (error) => console.error('Error updating follow status:', error)
+    });
+  }
 
-   toggleSubscribe(): void {
-     // Cambiar el estado en el backend
-     this.isSubscribed = !this.isSubscribed;
-     this.subscriptionsService.updateSubscribeStatus(Number(this.profileId) ,this.isSubscribed).subscribe({
-       next: () => console.log('Subscribe status updated successfully'),
-       error: (error) => console.error('Error updating subscribe status:', error)
-     });
-   }
+  toggleSubscribe(): void {
+    // Cambiar el estado en el backend
+    this.isSubscribed = !this.isSubscribed;
+    this.subscriptionsService.updateSubscribeStatus(Number(this.profileId), this.isSubscribed).subscribe({
+      next: () => console.log('Subscribe status updated successfully'),
+      error: (error) => console.error('Error updating subscribe status:', error)
+    });
+  }
 
-
-  // subscribeUser() {
-  //   this.subscriptionService.subscribeToUser().subscribe({
-  //     next: (response) => {
-  //       console.log('User subscribed successfully:', response);
-  //       alert('You have successfully subscribed!');
-  //     },
-  //     error: (error) => {
-  //       console.error('Error subscribing the user:', error);
-  //       alert('There was an error. Please try again.');
-  //     }
-  //   });
-  // }
-
-  loadPage(){
+  loadPage() {
     this.isOwner = this.authService.isProfileOwner(this.profileId);
-    if (!this.isOwner){
+    if (!this.isOwner) {
       this.receiverId = this.profileId;
       this.GetForeignProfileData(Number(this.profileId));
 
     }
     this.fetchUserProfile();
-    this.fetchProfilePhoto(); 
+    this.fetchProfilePhoto();
+    this.fetchCoverPhoto();
     this.authService.setVisitedProfileId(Number(this.profileId));
   }
 
@@ -244,13 +290,13 @@ export class ProfileComponent implements OnInit {
     this.isChatOpen = false;
   }
 
-  async setChats(){
+  async setChats() {
     try {
       const userJson = this.authService.getUserStorage();
       const user: User = JSON.parse(userJson); // Define el tipo si es posible  
       const timestamp = new Date(); // O usa Date.now() si prefieres un número
 
-      await this.chatService.setChats(user.id.toString(), this.userProfile.id, this.userProfile.userName, user.userName, timestamp);  
+      await this.chatService.setChats(user.id.toString(), this.userProfile.id, this.userProfile.userName, user.userName, timestamp);
       console.log('Chats creados.');
 
       this.router.navigate(['/chat'], {
