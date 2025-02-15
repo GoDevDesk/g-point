@@ -35,7 +35,8 @@ const routes: Routes = [
     path: 'album-detail/:albumId', component: AlbumDetailComponent
   },
   {
-    path: 'chat', component: ChatBoxComponent
+    path: 'chat', component: ChatBoxComponent,
+    canActivate: [AuthGuard] 
   }
   // },
   // {

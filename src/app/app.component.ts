@@ -16,9 +16,11 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(() => {
       const currentUrl = this.router.url;
       this.isUserLoggedIn = !(
-        currentUrl.startsWith('/login') || 
-        currentUrl.startsWith('/register') || 
-        currentUrl.includes('/album-detail/') // Detecta album-detail con ID dinámico
+        this.isUserLoggedIn = true
+        // this.isUserLoggedIn = true &&
+        // currentUrl.startsWith('/login') || 
+        // currentUrl.startsWith('/register') || 
+        // currentUrl.includes('/album-detail/') // Detecta album-detail con ID dinámico
       );
     });
   }
