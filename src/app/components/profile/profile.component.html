@@ -57,7 +57,7 @@
     </div>
 
     <!--boton seguir y mensaje-->
-    <div *ngIf="!isOwner" class="flex justify-center gap-2 my-5">
+    <div *ngIf="!isOwner && userId !=0" class="flex justify-center gap-2 my-5">
       <div class="flex justify-center gap-2 my-5">
         <button [ngClass]="{'bg-pink-500 text-white': isFollowed, 'bg-white text-black border-gray-500': !isFollowed}"
           class="px-10 py-2 rounded-full shadow-lg" (click)="toggleFollow()">
