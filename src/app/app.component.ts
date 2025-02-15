@@ -14,9 +14,15 @@ export class AppComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router) {
     this.router.events.subscribe(() => {
-      this.isUserLoggedIn = this.router.url !== '/login' && this.router.url !== '/register';  // O la ruta que tengas para el login
+      const currentUrl = this.router.url;
+      this.isUserLoggedIn = !(
+        currentUrl.startsWith('/login') || 
+        currentUrl.startsWith('/register') || 
+        currentUrl.includes('/album-detail/') // Detecta album-detail con ID dinámico
+      );
     });
   }
+
   ngOnInit(): void {
     this.authService
       .getCurrentUserIdLoggedBehavior()
