@@ -78,6 +78,12 @@ export class ProfileComponent implements OnInit {
     this.isModalOpen = true;
   }
 
+    // Abrir el modal
+    openCoverModal(event: Event): void {
+      event.preventDefault(); // Prevenir comportamiento por defecto del enlace
+      this.isModalOpen = true;
+    }
+
   // Cerrar el modal
   closeModal(): void {
     this.isModalOpen = false;
