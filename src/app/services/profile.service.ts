@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ProfilePicture } from '../models/profilePicture';
 
@@ -8,27 +8,17 @@ import { ProfilePicture } from '../models/profilePicture';
   providedIn: 'root',
 })
 export class ProfileService {
- // private apiUrl = 'https://localhost:44306/api/profile-picture'; // Cambia la URL según la ruta de tu servidor.
-
-  private apiUrl = `${environment.apiPtFilesBaseUrl}/api/profile-picture`;  // Concatenar el subpath
+  private apiUrl = `${environment.apiPtFilesBaseUrl}/api/profile-picture`;
   private currentPhotoUrlSubject = new BehaviorSubject<string>('');
   currentPhotoUrl$ = this.currentPhotoUrlSubject.asObservable();
 
 
   constructor(private http: HttpClient) {
-        // Recuperamos la URL del avatar desde localStorage (si existe)
-        const storedAvatar = localStorage.getItem('avatarUrl');
-    
-        // Si hay una URL almacenada, la usamos. Si no, asignamos un valor vacío.
-        this.currentPhotoUrlSubject = new BehaviorSubject<string>(storedAvatar || '');
+
+    const storedAvatar = localStorage.getItem('avatarUrl');
+    this.currentPhotoUrlSubject = new BehaviorSubject<string>(storedAvatar || '');
   }
 
-  // /**
-  //  * Envía la foto al servidor mediante un POST.
-  //  * @param file Archivo a enviar.
-  //  * @param userId Identificador del usuario.
-  //  * @returns Observable de la respuesta HTTP.
-  //  */
   createPhoto(file: File, userId: string): Observable<any> {
     const formData = new FormData();
     formData.append('multimedia', file);
@@ -50,15 +40,20 @@ export class ProfileService {
     return this.http.get<ProfilePicture>(`${this.apiUrl}/user/${userId}`).pipe(
       tap((photoUrl: ProfilePicture) => {
         const newPhotoUrl = photoUrl.url_File;
-
-        // Aquí se ejecuta setAvatarPhoto cuando se reciba la respuesta
-      //  localStorage.setItem('avatarUrl', newPhotoUrl);
-
-     //   this.setAvatarPhoto(newPhotoUrl);
       })
     );
   }
 
+  deleteProfilePhoto(userId: number, profilePictureId:number): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.apiUrl}/user/${userId}/${profilePictureId}`).pipe(
+      tap(response => {
+        console.log(response.message);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        return throwError(() => new Error(error.error?.message || "No se pudo eliminar la foto"));
+      })
+    );
+  }
   setAvatarPhoto(profilePicture: string) {
     this.currentPhotoUrlSubject.next(profilePicture);  // Emitir el nuevo valor
     localStorage.setItem('avatarUrl', profilePicture); // Guardamos la nueva URL en el localStorage

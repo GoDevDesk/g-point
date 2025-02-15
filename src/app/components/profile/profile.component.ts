@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit {
   activeTab: string = 'albums';
 
   profileId: string = ''; // ID del perfil visitado
+  userId: number = 0; // ID del perfil visitado
   isOwner: boolean = false; // Indica si el usuario actual es dueño del perfil
 
   userProfile: any = {}; // Para almacenar los datos del usuario
@@ -103,8 +104,10 @@ export class ProfileComponent implements OnInit {
       this.profileService.createPhoto(file, this.profileId).subscribe({
         next: (response) => {
           console.log('Foto subida correctamente:', response);
-
           this.currentProfilePhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
+          this.profileService.setAvatarPhoto(this.currentProfilePhoto);
+          this.profilePictureId = response;
+          this.haveProfilePicture = true;
           this.closeProfileModal();
         },
         error: (error) => {
@@ -135,6 +138,8 @@ export class ProfileComponent implements OnInit {
           console.log('Foto subida correctamente:', response);
 
           this.currentCoverPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
+          this.coverPictureId = response;
+          this.haveCoverPicture = true;
           this.closeProfileModal();
         },
         error: (error) => {
@@ -153,6 +158,43 @@ export class ProfileComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error al enviar foto al servidor:', error);
+        },
+      });
+    }
+  }
+
+  deleteCoverPhotoSelected(coverPictureId: number): void {
+    if (this.haveCoverPicture && this.userId != 0) {
+      this.isLoading = true;
+      this.coverService.deleteCoverPhoto(this.userId, coverPictureId).subscribe({
+        next: (response) => {
+          console.log('Foto eliminada correctamente:', response);
+          this.closeProfileModal();
+          this.currentCoverPhoto = this.defaultPhoto;
+          this.haveCoverPicture = false;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error al enviar foto al servidor:', error);
+          this.isLoading = false;
+        },
+      });
+    }
+  }
+
+  deleteProfilePhotoSelected(profilePictureId: number): void {
+    if (this.haveProfilePicture && this.userId != 0) {
+      this.isLoading = true;
+      this.profileService.deleteProfilePhoto(this.userId, profilePictureId).subscribe({
+        next: (response) => {
+          console.log('Foto subida correctamente:', response);
+          this.closeProfileModal();
+          this.currentProfilePhoto = this.defaultPhoto;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error al enviar foto al servidor:', error);
+          this.isLoading = false;
         },
       });
     }
@@ -186,6 +228,7 @@ export class ProfileComponent implements OnInit {
         next: (profilePicture: any) => {
           this.currentProfilePhoto = profilePicture.url_File; // Actualiza la foto de perfil
           this.profilePictureId = profilePicture.id;
+
           if (this.isOwner) {
             this.profileService.setAvatarPhoto(this.currentProfilePhoto);
           }
@@ -203,6 +246,7 @@ export class ProfileComponent implements OnInit {
   }
 
   fetchCoverPhoto(): void {
+    this.isLoading = true;
     const userId = Number(this.profileId);
     if (!isNaN(userId)) {
       this.coverService.getCoverPhoto(userId).subscribe({
@@ -211,8 +255,10 @@ export class ProfileComponent implements OnInit {
           this.coverPictureId = coverPicture.id;
           console.log('Foto de portada obtenida:', this.currentCoverPhoto);
           this.haveCoverPicture = true;
+          this.isLoading = false;
         },
         error: (error) => {
+          this.isLoading = false;
           console.error('Error al obtener la foto de portada:', error);
           this.errorMessage = 'No se pudo cargar la foto de portada';
         },
@@ -229,6 +275,7 @@ export class ProfileComponent implements OnInit {
         this.authService.CurrentUserLoggedId = response.id;
         this.senderId = response.id.toString(); // Asignar el id del usuario a senderId
         this.isLoading = false;
+        this.userId = response.id
       },
       error: (error) => {
         this.isLoading = false;

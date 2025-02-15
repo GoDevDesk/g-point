@@ -11,9 +11,14 @@ export class EditPhotoModalComponent {
 
   @Input() isOpen: boolean = false; // Control de apertura
   @Input() currentPhoto: string = ''; // Foto actual
+  @Input() currentPhotoId: number = 0; // Foto actual
+
   @Output() close = new EventEmitter<void>(); // Para cerrar el modal
   @Output() updatePhoto = new EventEmitter<File>(); // Emitirá solo el objeto File
+  @Output() deletePhoto = new EventEmitter<number>(); // Emitirá solo el objeto File
 
+
+  defaultPhoto = 'assets/defaultIcons/defaultProfilePhoto.png';
   previewPhoto: string | null = null; // Vista previa de la nueva foto
   selectedFile: File | null = null;
 
@@ -42,6 +47,9 @@ export class EditPhotoModalComponent {
     reader.onload = (e) => {
       try {
         this.previewPhoto = e.target?.result as string || null;
+        if (this.previewPhoto == null)
+          this.previewPhoto =  this.defaultPhoto;
+
       } catch (error) {
         console.error('Error procesando la vista previa', error);
       }
@@ -67,4 +75,11 @@ export class EditPhotoModalComponent {
       this.closeModal();
     }
   }
+
+   deleteActualPhoto(): void {
+     if (this.currentPhotoId != 0) {
+       this.deletePhoto.emit(this.currentPhotoId); // Solo envía el archivo
+       this.closeModal();
+     }
+   }
 }

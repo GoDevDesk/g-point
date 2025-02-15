@@ -39,11 +39,11 @@
       <span class="text-sm text-gray-400">{{ userProfile.aboutMe }}</span>
     </div>
     <!-- Modal PORTADA -->
-    <app-edit-photo-modal [isOpen]="isCoverModalOpen" [currentPhoto]="currentCoverPhoto" (close)="closeCoverModal()"
-      (updatePhoto)="handleCoverPhotoSelected($event)"></app-edit-photo-modal>
+    <app-edit-photo-modal [isOpen]="isCoverModalOpen" [currentPhoto]="currentCoverPhoto" [currentPhotoId]="coverPictureId" (close)="closeCoverModal()"
+      (updatePhoto)="handleCoverPhotoSelected($event)" (deletePhoto)="deleteCoverPhotoSelected($event)"></app-edit-photo-modal>
     <!-- Modal PERFIL -->
-    <app-edit-photo-modal [isOpen]="isProfileModalOpen" [currentPhoto]="currentProfilePhoto"
-      (close)="closeProfileModal()" (updatePhoto)="handleProfilePhotoSelected($event)"></app-edit-photo-modal>
+    <app-edit-photo-modal [isOpen]="isProfileModalOpen" [currentPhoto]="currentProfilePhoto"[currentPhotoId]="profilePictureId" 
+      (close)="closeProfileModal()" (updatePhoto)="handleProfilePhotoSelected($event)" (deletePhoto)="deleteProfilePhotoSelected($event)"></app-edit-photo-modal>
     <!--informacion del usuario-->
     <div class="flex justify-center items-center gap-2 my-3">
       <div class="font-semibold text-center mx-4">

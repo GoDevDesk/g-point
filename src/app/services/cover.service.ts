@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CoverPicture } from '../models/coverPicture';
 
@@ -39,4 +39,15 @@ export class CoverService {
       })
     );
   }
+
+    deleteCoverPhoto(userId: number, coverPictureId: number): Observable<{ message: string }> {
+      return this.http.delete<{ message: string }>(`${this.apiUrl}/user/${userId}/${coverPictureId}`).pipe(
+        tap(response => {
+          console.log(response.message);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => new Error(error.error?.message || "No se pudo eliminar la foto"));
+        })
+      );
+    }
 }
