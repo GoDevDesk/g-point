@@ -30,7 +30,7 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/user`, data);
   }
 
-  getCurrentUserLoggedId(): number {
+  getCurrentUserLoggedIdFromStorage(): number {
     const user = this.getUserStorage();
     if (user) {
       try {

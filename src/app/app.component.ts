@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
       .subscribe((isLoggedIn: boolean) => {
         this.isUserLoggedIn = isLoggedIn; // Actualiza dinámicamente el estado
         if (!this.isUserLoggedIn){
-          var userIdFromStorage = this.authService.getCurrentUserLoggedId();
+          var userIdFromStorage = this.authService.getCurrentUserLoggedIdFromStorage();
           this.isUserLoggedIn = userIdFromStorage != 0 ? true : false;
         }
       });

@@ -12,8 +12,6 @@ import { ProfileService } from 'src/app/services/profile.service';
 import { SubscriptionsService } from 'src/app/services/subscriptions.service';
 import { UserService } from 'src/app/services/user.service';
 
-
-
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -57,7 +55,7 @@ export class ProfileComponent implements OnInit {
     private chatService: ChatService) { }
 
   ngOnInit(): void {
-//    this.profileService.setAvatarPhoto(this.currentProfilePhoto); //pongo foto default
+    //    this.profileService.setAvatarPhoto(this.currentProfilePhoto); //pongo foto default
     this.isLoading = true;
     this.getCurrentLoggedIdUser();
     this.profileId = this.route.snapshot.paramMap.get('id') || '';
@@ -66,7 +64,7 @@ export class ProfileComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
       console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId);
-    //  this.currentProfilePhoto = this.defaultPhoto;
+      //  this.currentProfilePhoto = this.defaultPhoto;
       this.currentCoverPhoto = this.defaultPhoto;
       this.loadPage();
     });
@@ -137,11 +135,10 @@ export class ProfileComponent implements OnInit {
       this.coverService.createPhoto(file, this.profileId).subscribe({
         next: (response) => {
           console.log('Foto subida correctamente:', response);
-
           this.currentCoverPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
           this.coverPictureId = response;
           this.haveCoverPicture = true;
-          this.closeProfileModal();
+          this.closeCoverModal();
         },
         error: (error) => {
           console.error('Error al enviar foto al servidor:', error);
@@ -152,10 +149,8 @@ export class ProfileComponent implements OnInit {
       this.coverService.updatePhoto(file, this.coverPictureId).subscribe({
         next: (response) => {
           console.log('Foto modificada correctamente:', response);
-
           this.currentCoverPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
-          this.profileService.setAvatarPhoto(this.currentCoverPhoto);
-          this.closeProfileModal();
+          this.closeCoverModal();
         },
         error: (error) => {
           console.error('Error al enviar foto al servidor:', error);

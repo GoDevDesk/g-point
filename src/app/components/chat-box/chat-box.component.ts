@@ -49,7 +49,7 @@ export class ChatBoxComponent {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.currentUserLoggedId = this.authService.getCurrentUserLoggedId().toString();
+    this.currentUserLoggedId = this.authService.getCurrentUserLoggedIdFromStorage().toString();
     this.user = JSON.parse(this.authService.getUserStorage());  ///este no es el mismo de arriba??
 
     // Obtener datos del estado de navegación

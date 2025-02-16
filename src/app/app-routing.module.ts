@@ -8,6 +8,7 @@ import { AlbumDetailComponent } from './components/album-detail/album-detail.com
 import { AuthGuard } from './guard/auth.guard';
 import { NotFoundError } from 'rxjs';
 import { ChatBoxComponent } from './components/chat-box/chat-box.component';
+import { AuthNoLoggedGuard } from './guard/auth-no-logged.guard';
 
 
 const routes: Routes = [
@@ -15,10 +16,12 @@ const routes: Routes = [
     path: '', redirectTo: 'login', pathMatch: 'full'
   },
   {
-    path: 'login', component: LoginComponent
+    path: 'login', component: LoginComponent,
+    canActivate: [AuthNoLoggedGuard] 
   },
   {
-    path: 'register', component: RegisterComponent
+    path: 'register', component: RegisterComponent,
+    canActivate: [AuthNoLoggedGuard] 
   },
   {
     path: 'profile/:id', component: ProfileComponent

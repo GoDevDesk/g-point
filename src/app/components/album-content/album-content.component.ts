@@ -264,6 +264,7 @@ export class AlbumContentComponent implements OnInit {
   deleteAlbum() {
     if (confirm('¿Estás seguro de que deseas eliminar este álbum? Esta acción no se puede deshacer.')) {
       this.isLoading = true;
+      
       this.albumService.deleteAlbum(Number(this.albumId)).subscribe({
         next: () => {
           this.isLoading = false;
@@ -273,12 +274,17 @@ export class AlbumContentComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
+          
+          // Muestra en consola para depurar
           console.error('Error al eliminar el álbum:', error);
-          alert(error.error || 'No se pudo eliminar el álbum.');
+          
+          // Verifica si hay un mensaje en error.error o muestra un mensaje genérico
+          const errorMessage = 'No se pudo eliminar el álbum.';
+          alert(errorMessage);
         }
       });
     }
-  }  
+  }   
 
   deletePost(post: any): void {
     if (confirm('¿Estás seguro de que deseas eliminar este Post? Esta acción no se puede deshacer.')) {

@@ -22,7 +22,7 @@ export class ToolbarComponent implements OnInit {
               private profileService: ProfileService, private searchService: SearchService) { }
 
   ngOnInit(): void {
-    this.currentUserLoggedId = this.authService.getCurrentUserLoggedId().toString();
+    this.currentUserLoggedId = this.authService.getCurrentUserLoggedIdFromStorage().toString();
 
     this.profileService.getAvatarPhoto().subscribe(photoUrl => {
       this.currentAvatarPhoto = photoUrl;
