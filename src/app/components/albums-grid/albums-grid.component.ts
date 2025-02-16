@@ -29,6 +29,10 @@ export class AlbumsGridComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
       this.isOwner = this.authService.isProfileOwner(this.profileId);
+
+      this.albums = []; // unificar los metodos de limpieza 
+      this.page = 1;// unificar los metodos de limpieza 
+      
       console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId);
       this.loadAlbums(this.page);
     });
@@ -41,7 +45,7 @@ export class AlbumsGridComponent implements OnInit {
       next: (response: PaginatedResultResponse<Album>) => {
         this.albums = [...this.albums, ...response.items];
         this.totalItems = response.totalItems;
-        this.page = response.page + 1;
+        this.page = response.page; // el numero de pagina manejarlo desde el paginator
         this.pageSize = response.pageSize;
 
         // Calcular el total de páginas
@@ -56,9 +60,7 @@ export class AlbumsGridComponent implements OnInit {
   }
 
   navigateToAlbum(albumId: number): void {
-
     const album = this.albums.find((a) => a.id === albumId);
-
     var profileIdthis = this.authService.getVisitedProfileId();
     var isOwner = this.authService.isProfileOwner(profileIdthis.toString());
     if (isOwner) {

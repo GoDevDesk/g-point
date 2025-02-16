@@ -57,7 +57,7 @@ export class ProfileComponent implements OnInit {
     private chatService: ChatService) { }
 
   ngOnInit(): void {
-    this.profileService.setAvatarPhoto(this.currentProfilePhoto); //pongo foto default
+//    this.profileService.setAvatarPhoto(this.currentProfilePhoto); //pongo foto default
     this.isLoading = true;
     this.getCurrentLoggedIdUser();
     this.profileId = this.route.snapshot.paramMap.get('id') || '';
@@ -66,7 +66,8 @@ export class ProfileComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
       console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId);
-
+    //  this.currentProfilePhoto = this.defaultPhoto;
+      this.currentCoverPhoto = this.defaultPhoto;
       this.loadPage();
     });
 
@@ -258,6 +259,7 @@ export class ProfileComponent implements OnInit {
           this.isLoading = false;
         },
         error: (error) => {
+          this.haveCoverPicture = false;
           this.isLoading = false;
           console.error('Error al obtener la foto de portada:', error);
           this.errorMessage = 'No se pudo cargar la foto de portada';
