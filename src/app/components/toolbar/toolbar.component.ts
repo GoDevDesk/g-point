@@ -26,7 +26,6 @@ export class ToolbarComponent implements OnInit {
 
     this.profileService.getAvatarPhoto().subscribe(photoUrl => {
       this.currentAvatarPhoto = photoUrl;
-      console.log('Foto cargada:', this.currentAvatarPhoto);
     });
 
     this.searchControl.valueChanges
@@ -78,7 +77,6 @@ export class ToolbarComponent implements OnInit {
     this.authService.logout();
     // Lógica de cierre de sesión
     this.router.navigate(['/login']);
-    console.log('Cerrando sesión...');
   }
 
   navigateToOtherProfile(user: any): void {

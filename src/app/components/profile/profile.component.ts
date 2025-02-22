@@ -55,7 +55,6 @@ export class ProfileComponent implements OnInit {
     private chatService: ChatService) { }
 
   ngOnInit(): void {
-    //    this.profileService.setAvatarPhoto(this.currentProfilePhoto); //pongo foto default
     this.isLoading = true;
     this.getCurrentLoggedIdUser();
     this.profileId = this.route.snapshot.paramMap.get('id') || '';
@@ -63,8 +62,6 @@ export class ProfileComponent implements OnInit {
     // Escuchar cambios en la URL
     this.route.paramMap.subscribe(params => {
       this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
-      console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId);
-      //  this.currentProfilePhoto = this.defaultPhoto;
       this.currentCoverPhoto = this.defaultPhoto;
       this.loadPage();
     });
@@ -102,58 +99,53 @@ export class ProfileComponent implements OnInit {
     if (!this.haveProfilePicture) {
       this.profileService.createPhoto(file, this.profileId).subscribe({
         next: (response) => {
-          console.log('Foto subida correctamente:', response);
-          this.currentProfilePhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
+          this.currentProfilePhoto = URL.createObjectURL(file);
           this.profileService.setAvatarPhoto(this.currentProfilePhoto);
           this.profilePictureId = response;
           this.haveProfilePicture = true;
           this.closeProfileModal();
         },
         error: (error) => {
-          console.error('Error al enviar foto al servidor:', error);
+          // Error al enviar foto al servidor
         },
       });
     }
     else {
       this.profileService.updatePhoto(file, this.profilePictureId).subscribe({
         next: (response) => {
-          console.log('Foto modificada correctamente:', response);
-
-          this.currentProfilePhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
+          this.currentProfilePhoto = URL.createObjectURL(file);
           this.profileService.setAvatarPhoto(this.currentProfilePhoto);
           this.closeProfileModal();
         },
         error: (error) => {
-          console.error('Error al enviar foto al servidor:', error);
+          // Error al enviar foto al servidor
         },
       });
     }
   }
 
   handleCoverPhotoSelected(file: File): void {
-    if (!this.haveCoverPicture) {  ////modificar este metodo para cover
+    if (!this.haveCoverPicture) {
       this.coverService.createPhoto(file, this.profileId).subscribe({
         next: (response) => {
-          console.log('Foto subida correctamente:', response);
-          this.currentCoverPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
+          this.currentCoverPhoto = URL.createObjectURL(file);
           this.coverPictureId = response;
           this.haveCoverPicture = true;
           this.closeCoverModal();
         },
         error: (error) => {
-          console.error('Error al enviar foto al servidor:', error);
+          // Error al enviar foto al servidor
         },
       });
     }
     else {
       this.coverService.updatePhoto(file, this.coverPictureId).subscribe({
         next: (response) => {
-          console.log('Foto modificada correctamente:', response);
-          this.currentCoverPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
+          this.currentCoverPhoto = URL.createObjectURL(file);
           this.closeCoverModal();
         },
         error: (error) => {
-          console.error('Error al enviar foto al servidor:', error);
+          // Error al enviar foto al servidor
         },
       });
     }
@@ -164,14 +156,12 @@ export class ProfileComponent implements OnInit {
       this.isLoading = true;
       this.coverService.deleteCoverPhoto(this.userId, coverPictureId).subscribe({
         next: (response) => {
-          console.log('Foto eliminada correctamente:', response);
           this.closeProfileModal();
           this.currentCoverPhoto = this.defaultPhoto;
           this.haveCoverPicture = false;
           this.isLoading = false;
         },
         error: (error) => {
-          console.error('Error al enviar foto al servidor:', error);
           this.isLoading = false;
         },
       });
@@ -183,7 +173,6 @@ export class ProfileComponent implements OnInit {
       this.isLoading = true;
       this.profileService.deleteProfilePhoto(this.userId, profilePictureId).subscribe({
         next: (response) => {
-          console.log('Foto subida correctamente:', response);
           this.closeProfileModal();
           this.currentProfilePhoto = this.defaultPhoto;
           this.isLoading = false;
@@ -202,17 +191,13 @@ export class ProfileComponent implements OnInit {
       if (!isNaN(userId)) {
         this.userService.getUserById(userId).pipe(
           tap((response: UserProfile) => {
-            this.userProfile = response; // Guardamos la información del usuario
-            console.log('Perfil del usuario:', this.userProfile); // Para depurar en consola
+            this.userProfile = response;
           }),
           catchError((error) => {
             this.errorMessage = 'Error al obtener el perfil del usuario';
-            console.error(this.errorMessage, error); // Manejo de error
-            throw error; // Deja que el error sea propagado
+            throw error;
           })
         ).subscribe();
-      } else {
-        console.error('El ID de usuario no es válido');
       }
     }
   }
@@ -222,22 +207,18 @@ export class ProfileComponent implements OnInit {
     if (!isNaN(userId)) {
       this.profileService.getProfilePhoto(userId).subscribe({
         next: (profilePicture: any) => {
-          this.currentProfilePhoto = profilePicture.url_File; // Actualiza la foto de perfil
+          this.currentProfilePhoto = profilePicture.url_File;
           this.profilePictureId = profilePicture.id;
 
           if (this.isOwner) {
             this.profileService.setAvatarPhoto(this.currentProfilePhoto);
           }
-          console.log('Foto de perfil obtenida:', this.currentProfilePhoto);
           this.haveProfilePicture = true;
         },
         error: (error) => {
-          console.error('Error al obtener la foto de perfil:', error);
           this.errorMessage = 'No se pudo cargar la foto de perfil';
         },
       });
-    } else {
-      console.error('El ID de usuario no es válido');
     }
   }
 
@@ -247,9 +228,8 @@ export class ProfileComponent implements OnInit {
     if (!isNaN(userId)) {
       this.coverService.getCoverPhoto(userId).subscribe({
         next: (coverPicture: any) => {
-          this.currentCoverPhoto = coverPicture.url_File; // Actualiza la foto de perfil
+          this.currentCoverPhoto = coverPicture.url_File;
           this.coverPictureId = coverPicture.id;
-          console.log('Foto de portada obtenida:', this.currentCoverPhoto);
           this.haveCoverPicture = true;
           this.isLoading = false;
         },
@@ -268,7 +248,6 @@ export class ProfileComponent implements OnInit {
   getCurrentLoggedIdUser(): void {
     this.authService.getCurrentUserLogged().subscribe({
       next: (response: User) => {
-        console.log('Obtenido correctamente:', response);
         this.authService.CurrentUserLoggedId = response.id;
         this.senderId = response.id.toString(); // Asignar el id del usuario a senderId
         this.isLoading = false;
@@ -284,7 +263,6 @@ export class ProfileComponent implements OnInit {
   GetForeignProfileData(userId: number): void {
     this.userService.GetForeignProfileData(userId).subscribe({
       next: (response: ForeignProfileData) => {
-        console.log('Obtenido correctamente:', response);
         this.isFollowed = response.hasFollow;
         this.isSubscribed = response.hasSubscription
       },
@@ -295,20 +273,18 @@ export class ProfileComponent implements OnInit {
   }
 
   toggleFollow(): void {
-    // Cambiar el estado en el backend
     this.isFollowed = !this.isFollowed;
     this.followsService.updateFollowStatus(Number(this.profileId), this.isFollowed).subscribe({
-      next: () => console.log('Follow status updated successfully'),
-      error: (error) => console.error('Error updating follow status:', error)
+      next: () => {},
+      error: (error) => {}
     });
   }
 
   toggleSubscribe(): void {
-    // Cambiar el estado en el backend
     this.isSubscribed = !this.isSubscribed;
     this.subscriptionsService.updateSubscribeStatus(Number(this.profileId), this.isSubscribed).subscribe({
-      next: () => console.log('Subscribe status updated successfully'),
-      error: (error) => console.error('Error updating subscribe status:', error)
+      next: () => {},
+      error: (error) => {}
     });
   }
 
@@ -341,7 +317,6 @@ export class ProfileComponent implements OnInit {
       const timestamp = new Date(); // O usa Date.now() si prefieres un número
 
       await this.chatService.setChats(user.id.toString(), this.userProfile.id, this.userProfile.userName, user.userName, timestamp);
-      console.log('Chats creados.');
 
       this.router.navigate(['/chat'], {
         state: { otherUserName: this.userProfile.userName, otherUserId: this.userProfile.id.toString() }

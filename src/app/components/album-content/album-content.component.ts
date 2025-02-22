@@ -60,7 +60,6 @@ export class AlbumContentComponent implements OnInit {
     this.authService.getCurrentUserIdLogged().subscribe(
       id => {
         this.loggedUserId = id; // Asigna el ID a la variable
-        console.log('ID del usuario actual:', this.loggedUserId);
       },
       error => {
         console.error('Error al obtener el ID del usuario:', error);
@@ -90,7 +89,6 @@ export class AlbumContentComponent implements OnInit {
           this.price = albumData.price.toString();
         }
   
-        console.log('Álbum recibido:', this.albumData);
       },
       error: (err) => {
         console.error('Error al obtener el álbum:', err);
@@ -159,7 +157,6 @@ export class AlbumContentComponent implements OnInit {
     this.albumService.updateAlbumInfo(Number(this.albumId), this.title, Number(this.price))
       .subscribe({
         next: () => {
-          console.log('Álbum actualizado correctamente', this.albumData?.price);
           this.loadAlbumData(Number(this.albumId)); // 🔹 Solo recargar si es necesario
         },
         error: (err) => console.error('Error al actualizar álbum', err)
@@ -172,7 +169,6 @@ export class AlbumContentComponent implements OnInit {
     this.albumService.updateAlbumInfo(Number(this.albumId), null, Number(this.price))
       .subscribe({
         next: () => {
-          console.log('Precio actualizado correctamente');
           this.loadAlbumData(Number(this.albumId)); // 🔹 Solo recargar si es necesario
         },
         error: (err) => console.error('Error al actualizar precio', err)
@@ -229,7 +225,6 @@ export class AlbumContentComponent implements OnInit {
   createPost(file: File): void {
     this.postService.createPost(file, this.albumId, this.loggedUserId.toString()).subscribe({
       next: (response) => {
-        console.log('Foto subida correctamente:', response);
 
         this.currentPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
         this.closeModal();
@@ -257,7 +252,6 @@ export class AlbumContentComponent implements OnInit {
   }
 
   editPost(post: any): void {
-    console.log('Editar', post);
     // Implementa tu lógica aquí
   }
 
@@ -268,7 +262,6 @@ export class AlbumContentComponent implements OnInit {
       this.albumService.deleteAlbum(Number(this.albumId)).subscribe({
         next: () => {
           this.isLoading = false;
-          console.log('Álbum eliminado correctamente');
           alert('Álbum eliminado correctamente.');
           this.router.navigate([`/profile/${this.loggedUserId}`]);
         },
@@ -292,7 +285,6 @@ export class AlbumContentComponent implements OnInit {
       this.postService.deletePost(this.loggedUserId, post.id).subscribe({
         next: () => {
           this.isLoading = false;
-          console.log('Post eliminado correctamente');
           alert('Post eliminado correctamente.');
           this.loadPosts();
         },

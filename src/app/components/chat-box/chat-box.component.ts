@@ -66,14 +66,10 @@ export class ChatBoxComponent {
 
     this.profileService.getAvatarPhoto().subscribe(photoUrl => {
       this.currentAvatarPhoto = photoUrl;
-      console.log('Foto cargada:', this.currentAvatarPhoto);
     });
 
     this.senderId = this.currentUserLoggedId;
     this.loadMessages(); //validar q haya ids antes de hacer esto
-
-    console.log(this.recentChats);
-    // Si los datos se pasaron, intenta cargarlos desde otro lugar
   }
 
   loadMessages(): void {
@@ -81,7 +77,6 @@ export class ChatBoxComponent {
 
     // Verifica que el `receiverId` esté correctamente definido
     if (!receiverId) {
-      console.error('No se ha seleccionado un chat válido');
       return;
     }
 
@@ -97,11 +92,9 @@ export class ChatBoxComponent {
           this.selectedChat.lastMessage = ''; // Si no hay mensajes, establece un valor vacío
         }
         this.isLoading = false;
-        console.log('Mensajes cargados para el chat seleccionado:', messages);
         this.scrollToBottom(); // Desplaza el scroll después de cargar los mensajes
       } else {
         this.isLoading = false;
-        console.log('Nuevo mensaje recibido de un chat diferente.');
       }
     });
   }
@@ -122,7 +115,6 @@ export class ChatBoxComponent {
     try {
       this.chatService.getRecentUserChats(userId, limitResults).subscribe(chats => {
         chats.forEach(newChat => {
-          console.log(chats);
           const newOtherUserId = newChat.otherUserId; // Obtiene el otherUserId del nuevo chat
 
           if (!newChat.avatar || newChat.avatar.trim() === "") {
@@ -142,7 +134,6 @@ export class ChatBoxComponent {
           }
         });
         this.isLoading = false;
-        console.log('Recent chats:', this.recentChats);
       });
     } catch (error) {
       this.isLoading = false;
@@ -160,8 +151,6 @@ export class ChatBoxComponent {
 
     // Reasignación para garantizar detección de cambios en Angular
     this.recentChats = [...this.recentChats];
-
-    console.log('Sorted recent chats:', this.recentChats);
   }
 
   //abrir una nueva conversacion
@@ -222,8 +211,6 @@ export class ChatBoxComponent {
       // Ordena los chats inmediatamente
       this.sortRecentChatsByTimestamp();
       this.newMessage = '';
-
-      console.log('Recent chats después de enviar mensaje:', this.recentChats);
     }
   }
 
@@ -235,7 +222,6 @@ export class ChatBoxComponent {
       // Aquí solo actualizamos los chats de usuario como ejemplo
       await this.chatService.updateUserChats(senderId, senderName, receiverId, receiverName, message, timestamp);
 
-      console.log('Mensaje enviado y chats actualizados.');
     } catch (error) {
       console.error('Error al enviar el mensaje:', error);
     }

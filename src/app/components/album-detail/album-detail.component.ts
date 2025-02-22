@@ -33,7 +33,6 @@ export class AlbumDetailComponent implements OnInit {
     this.albumService.getAlbumDataById(albumId).subscribe({
       next: (albumData) => {
         this.albumData = albumData; // Guarda la respuesta en la variable  
-        console.log('Álbum recibido:', this.albumData);
       },
       error: (err) => {
         console.error('Error al obtener el álbum:', err);

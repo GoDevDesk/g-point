@@ -19,7 +19,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void { }
   
   onInputChange() {
-    console.log('Valores actuales:', this.credentials);
   }
 
   
@@ -51,15 +50,12 @@ export class LoginComponent implements OnInit {
       this.authService.getCurrentUserLogged().subscribe({
         next: (user: User) => {
           this.authService.setCurrentUserIdBehavior(user.id);
-          console.log('Usuario actual:', user);
-          //     this.authService.setCurrentUser(user);
 
           localStorage.setItem('currentUser', JSON.stringify(user));
 
           resolve(user.id); // Suponiendo que el usuario tiene un campo `id`
         },
         error: (error) => {
-          console.error('Error al obtener el usuario actual:', error);
           reject(error);
         },
       });

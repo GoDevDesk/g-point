@@ -33,7 +33,6 @@ export class AlbumsGridComponent implements OnInit {
       this.albums = []; // unificar los metodos de limpieza 
       this.page = 1;// unificar los metodos de limpieza 
       
-      console.log('Cambio detectado en la URL. Nuevo ID:', this.profileId);
       this.loadAlbums(this.page);
     });
   }
