@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { catchError, throwError } from 'rxjs';
 import { PaginatedResultResponse } from '../models/paginatedResultResponse';
 import { PersonalPhoto } from '../models/PersonalPhoto';
@@ -19,9 +19,16 @@ getPersonalPhotosByUserId(userId: number, page: number = 1, pageSize: number = 5
   const params = new HttpParams()
     .set('page', page.toString()) 
     .set('pageSize', pageSize.toString());
+
   const url = `${this.apiUrl}/${userId}`;
-  return this.http.get<PaginatedResultResponse<PersonalPhoto>>(url, { params });
+  return this.http.get<PaginatedResultResponse<PersonalPhoto>>(url, { params }).pipe(
+    map(response => ({
+      ...response,
+      items: response.items ? response.items.sort((a, b) => new Date(b.upload_Date).getTime() - new Date(a.upload_Date).getTime()) : []
+    }))
+  );
 }
+
 
 createPersonalPhoto(file: File, userId: string): Observable<any> {
   const formData = new FormData();

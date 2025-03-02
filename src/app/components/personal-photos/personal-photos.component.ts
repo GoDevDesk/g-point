@@ -19,7 +19,7 @@ export class PersonalPhotosComponent implements OnInit {
 
   totalItems: number = 0;
   page: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 4;
   totalPages: number = 0;
   isLoading = false;
   isOwner = false;
@@ -40,27 +40,23 @@ export class PersonalPhotosComponent implements OnInit {
     this.loadPersonalPhotos(this.page);
   }
 
-  loadPersonalPhotos(page: number): void {
-    if (this.isLoading) return; // Evita llamadas duplicadas
-  
+  loadPersonalPhotos(page: number): void { 
     this.isLoading = true;
   
     this.personalPhotosService.getPersonalPhotosByUserId(Number(this.profileId), page, this.pageSize)
       .subscribe({
         next: (response: PaginatedResultResponse<PersonalPhoto>) => {
-          // Asegúrate de que this.personalPhotos no sea undefined
           if (!this.personalPhotos) {
-            this.personalPhotos = []; // Inicializa como un array vacío si es undefined
+            this.personalPhotos = [];
           }
-          
-          // Usamos spread operator para agregar nuevas fotos
-          this.personalPhotos = [...this.personalPhotos, ...response.items];
-          
+  
+          // Agregar nuevas fotos y ordenar por fecha (de más nueva a más antigua)
+          this.personalPhotos = [...this.personalPhotos, ...response.items]
+            .sort((a, b) => new Date(b.upload_Date).getTime() - new Date(a.upload_Date).getTime());
+  
           this.totalItems = response.totalItems;
           this.page = response.page;
           this.pageSize = response.pageSize;
-  
-          // Calcular el total de páginas
           this.totalPages = Math.ceil(this.totalItems / this.pageSize);
           this.isLoading = false;
         },
@@ -70,14 +66,17 @@ export class PersonalPhotosComponent implements OnInit {
         }
       });
   }
-
+  
 
   createPersonalPhoto(file: File): void {
     this.isLoading = true;
     this.personalPhotosService.createPersonalPhoto(file, this.loggedUserId.toString()).subscribe({
-      next: (response) => {
+      next: () => {
         this.closeModal();
-        this.loadPersonalPhotos(this.page);
+        this.isLoading = false;
+  
+        // Volver a cargar todas las fotos desde el servidor
+        this.loadPersonalPhotos(1); // Cargar desde la primera página para que la nueva foto esté arriba
       },
       error: (error) => {
         this.isLoading = false;
@@ -85,6 +84,7 @@ export class PersonalPhotosComponent implements OnInit {
       },
     });
   }
+  
 
   goToAlbumCreation(): void {
     // this.router.navigate(['/albumContent']);
