@@ -44,9 +44,7 @@ export class AlbumContentComponent implements OnInit {
   albumData: albumPageData | null = null; // Variable para almacenar el álbum
 
   @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('title') titleElement!: ElementRef<HTMLHeadingElement>;
-
-  
+  @ViewChild('title') titleElement!: ElementRef<HTMLHeadingElement>;  
   @ViewChild('priceInput') priceInput!: ElementRef<HTMLInputElement>;
 
   constructor(private postService: PostService, private albumService: AlbumService, private route: ActivatedRoute, private authService: AuthService, private router: Router) { }

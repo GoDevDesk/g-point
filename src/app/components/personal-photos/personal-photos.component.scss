@@ -1,35 +1,71 @@
+.personal-photo-card {
+  position: relative;
+  overflow: visible;
+  background-color: #080808; /* Gris oscuro */
+  margin-top: 20px; /* Margen superior */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Transición para el cambio de color y el efecto de escala */
+}
+
+.personal-photo-card:hover {
+  background-color: #f48fb1; /* Rosa cuando se pasa el mouse */
+}
+
+.plus-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  opacity: 1 !important;
+  transition: opacity 0.3s ease;
+  padding: 10px;
+}
+
+.plus-symbol {
+  font-size: 4rem;
+}
+
+.photo-card {
+  position: relative;
+  height: 670px;
+  background-color: #080808;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  margin-top: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.photo-wrapper {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.photo-img {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
 .reels-container {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding: 1rem 0;
-  }
-  
-  .reel-container {
-    scroll-snap-align: center;
-    background-color: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.75rem;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    min-width: 100%;
-  }
-  
-  .reel-content {
-    position: relative;
-  }
-  
-  button i {
-    font-size: 1.5rem;
-  }
-  
-  button {
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .hidden {
-    display: none;
-  }
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.reels-container::-webkit-scrollbar {
+  display: none;
+}
+.photo-card:last-child {
+  margin-bottom: 50px; /* Espacio adicional al final de la última tarjeta */
+}

@@ -1,29 +1,39 @@
-  <div *ngFor="let post of posts" class="bg-white p-4 mt-12 rounded-lg shadow-md">
-    <div class="flex items-center px-4 py-3">
-      <img class="h-8 w-8 rounded-full" [src]="post.profilePictureUrl || 'https://picsum.photos/id/1027/150/150'" />
-      <div class="ml-3">
-        <span class="text-sm font-semibold antialiased block leading-tight">{{ post.username }}</span>
-        <span class="text-gray-600 text-xs block">{{ post.location || 'Unknown Location' }}</span>
-      </div>
+<div *ngIf="true"
+  class="personal-photo-card h-24 w-full bg-gray-800 rounded-lg cursor-pointer transition-transform transform hover:scale-105 active:scale-105 hover:bg-pink-400 active:bg-pink-400"
+  (click)="openModal()">
+  <div
+    class="plus-container absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold transition-opacity opacity-30 hover:opacity-100 active:opacity-100">
+    <span class="plus-symbol text-8xl" style="font-weight: 300;">+</span>
+  </div>
+</div>
+
+<div *ngFor="let personalPhoto of personalPhotos" class="photo-card">
+  <div class="flex items-center px-4 py-3">
+    <div class="ml-3"></div>
+  </div>
+
+  <!-- Imagen con margen interno -->
+  <div class="photo-wrapper">
+    <img [src]="personalPhoto.url_File || 'https://picsum.photos/id/244/900/900'" class="photo-img" />
+  </div>
+
+  <div class="flex items-center justify-between mx-4 mt-3 mb-2">
+    <div class="flex gap-5">
+      <!-- Iconos de acción -->
+      <svg fill="#262626" height="24" viewBox="0 0 48 48" width="24">
+        <path d="M34.6 6.1c5.7 0 10.4 5.2 10.4 11.5 ..."></path>
+      </svg>
+      <svg fill="#262626" height="24" viewBox="0 0 48 48" width="24">
+        <path d="M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 ..."></path>
+      </svg>
     </div>
-    <img [src]="post.imageUrl || 'https://picsum.photos/id/244/900/900'" class="w-full rounded-lg" />
-    <div class="flex items-center justify-between mx-4 mt-3 mb-2">
-      <div class="flex gap-5">
-        <!-- Iconos de acción -->
-        <svg fill="#262626" height="24" viewBox="0 0 48 48" width="24">
-          <path d="M34.6 6.1c5.7 0 10.4 5.2 10.4 11.5 ..."></path>
-        </svg>
-        <svg fill="#262626" height="24" viewBox="0 0 48 48" width="24">
-          <path d="M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 ..."></path>
-        </svg>
-      </div>
-      <div class="flex">
-        <svg fill="#262626" height="24" viewBox="0 0 48 48" width="24">
-          <path d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 29 ..."></path>
-        </svg>
-      </div>
-    </div>
-    <div class="font-semibold text-sm mx-4 mt-2 mb-4">
-      {{ post.likes || 0 }} likes
+    <div class="flex">
+      <svg fill="#262626" height="24" viewBox="0 0 48 48" width="24">
+        <path d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 29 ..."></path>
+      </svg>
     </div>
   </div>
+        <!-- Modal -->
+        <app-create-post-modal [isOpen]="isModalOpen" (close)="closeModal()"
+        (updatePhoto)="handlePhotoSelected($event)"></app-create-post-modal>
+</div>
