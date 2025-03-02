@@ -6,6 +6,9 @@
     <span class="plus-symbol text-8xl" style="font-weight: 300;">+</span>
   </div>
 </div>
+<div *ngIf="isLoading" class="loading-overlay">
+  <mat-spinner color="primary"></mat-spinner>
+</div>
 
 <div *ngFor="let personalPhoto of personalPhotos" class="photo-card">
   <div class="flex items-center px-4 py-3">
@@ -37,3 +40,7 @@
         <app-create-post-modal [isOpen]="isModalOpen" (close)="closeModal()"
         (updatePhoto)="handlePhotoSelected($event)"></app-create-post-modal>
 </div>
+  <!-- Controles de paginación -->
+  <div *ngIf="isLoading" class="text-center text-white py-4">
+    Cargando más álbumes...
+  </div>
