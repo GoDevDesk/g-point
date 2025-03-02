@@ -36,10 +36,10 @@
       </svg>
     </div>
   </div>
-        <!-- Modal -->
-        <app-create-post-modal [isOpen]="isModalOpen" (close)="closeModal()"
-        (updatePhoto)="handlePhotoSelected($event)"></app-create-post-modal>
 </div>
+<!-- Modal -->
+<app-create-post-modal [isOpen]="isModalOpen" (close)="closeModal()"
+(updatePhoto)="handlePhotoSelected($event)"></app-create-post-modal>
   <!-- Controles de paginación -->
   <div *ngIf="isLoading" class="text-center text-white py-4">
     Cargando más álbumes...
