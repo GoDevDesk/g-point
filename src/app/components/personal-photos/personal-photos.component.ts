@@ -19,7 +19,7 @@ export class PersonalPhotosComponent implements OnInit {
 
   totalItems: number = 0;
   page: number = 1;
-  pageSize: number = 2;
+  pageSize: number = 5;
   totalPages: number = 0;
   isLoading = false;
   isOwner = false;
