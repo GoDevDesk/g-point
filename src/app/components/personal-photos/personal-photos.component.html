@@ -20,6 +20,14 @@
     <img [src]="personalPhoto.url_File || 'https://picsum.photos/id/244/900/900'" class="photo-img" />
   </div>
 
+    <!-- Menú de acciones (elipsis) -->
+    <div class="absolute top-3 right-3">
+      <button (click)="toggleMenu(personalPhoto.id)" class="menu-button">⋮</button>
+      <div *ngIf="openMenuId === personalPhoto.id" class="menu-options">
+        <button (click)="deletePersonalPhoto(personalPhoto.id)">🗑 Eliminar</button>
+      </div>
+    </div>
+
   <div class="flex items-center justify-between mx-4 mt-3 mb-2">
     <div class="flex gap-5">
       <!-- Iconos de acción -->

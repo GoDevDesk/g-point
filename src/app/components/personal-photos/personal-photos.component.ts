@@ -33,27 +33,27 @@ export class PersonalPhotosComponent implements OnInit {
   constructor(private personalPhotosService: PersonalPhotosService, private authService: AuthService, private route: ActivatedRoute) {
   }
   ngOnInit(): void {
-   // this.isLoading = true;
+    // this.isLoading = true;
     this.profileId = this.route.snapshot.paramMap.get('id') || '';
     this.isOwner = this.authService.isProfileOwner(this.profileId);
     this.loggedUserId = this.authService.getCurrentUserLoggedIdFromStorage();
     this.loadPersonalPhotos(this.page);
   }
 
-  loadPersonalPhotos(page: number): void { 
+  loadPersonalPhotos(page: number): void {
     this.isLoading = true;
-  
+
     this.personalPhotosService.getPersonalPhotosByUserId(Number(this.profileId), page, this.pageSize)
       .subscribe({
         next: (response: PaginatedResultResponse<PersonalPhoto>) => {
           if (!this.personalPhotos) {
             this.personalPhotos = [];
           }
-  
+
           // Agregar nuevas fotos y ordenar por fecha (de más nueva a más antigua)
           this.personalPhotos = [...this.personalPhotos, ...response.items]
             .sort((a, b) => new Date(b.upload_Date).getTime() - new Date(a.upload_Date).getTime());
-  
+
           this.totalItems = response.totalItems;
           this.page = response.page;
           this.pageSize = response.pageSize;
@@ -66,7 +66,7 @@ export class PersonalPhotosComponent implements OnInit {
         }
       });
   }
-  
+
 
   createPersonalPhoto(file: File): void {
     this.isLoading = true;
@@ -74,7 +74,7 @@ export class PersonalPhotosComponent implements OnInit {
       next: () => {
         this.closeModal();
         this.isLoading = false;
-  
+
         // Volver a cargar todas las fotos desde el servidor
         this.loadPersonalPhotos(1); // Cargar desde la primera página para que la nueva foto esté arriba
       },
@@ -84,7 +84,7 @@ export class PersonalPhotosComponent implements OnInit {
       },
     });
   }
-  
+
 
   goToAlbumCreation(): void {
     // this.router.navigate(['/albumContent']);
@@ -102,18 +102,38 @@ export class PersonalPhotosComponent implements OnInit {
     this.createPersonalPhoto(file);
   }
 
-    @HostListener("window:scroll", [])
-    onScroll(): void {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-  
-      // Solo cargar más contenido si el usuario está bajando y ha llegado al final
-      if (scrollTop > this.lastScrollTop && (windowHeight + scrollTop) >= documentHeight - 10 && !this.isLoading && 
-      this.page <= this.totalPages ) {
-        this.loadPersonalPhotos(this.page + 1);
-      }  
-      this.lastScrollTop = scrollTop; // Guardamos la posición actual del scroll
+  @HostListener("window:scroll", [])
+  onScroll(): void {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    // Solo cargar más contenido si el usuario está bajando y ha llegado al final
+    if (scrollTop > this.lastScrollTop && (windowHeight + scrollTop) >= documentHeight - 10 && !this.isLoading &&
+      this.page <= this.totalPages) {
+      this.loadPersonalPhotos(this.page + 1);
     }
+    this.lastScrollTop = scrollTop; // Guardamos la posición actual del scroll
+  }
+
+  openMenuId: number | null = null; // Controla qué menú está abierto
+
+  toggleMenu(photoId: number): void {
+    this.openMenuId = this.openMenuId === photoId ? null : photoId; // Abre/cierra el menú
+  }
+
+  deletePersonalPhoto(photoId: number): void {
+    if (confirm('¿Seguro que quieres eliminar esta foto?')) {
+      this.personalPhotosService.deletePersonalPhoto(this.loggedUserId, photoId).subscribe({
+        next: () => {
+          // Eliminar la foto del array
+          this.personalPhotos = this.personalPhotos?.filter(photo => photo.id !== photoId);
+        },
+        error: (error) => {
+          console.error('Error al eliminar la foto:', error);
+        }
+      });
+    }
+  }
 }
 

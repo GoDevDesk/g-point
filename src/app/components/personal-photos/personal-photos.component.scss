@@ -82,3 +82,40 @@
   background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
   z-index: 1000; /* Asegura que está sobre todo */
 }
+
+/* ----------------MENU ELIPSIS --------------------*/
+
+.menu-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: white;
+}
+
+.menu-options {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.menu-options button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  color: white;
+}
+
+.menu-options button:hover {
+  background: rgba(255, 0, 0, 0.5);
+}
