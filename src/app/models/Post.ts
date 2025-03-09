@@ -5,5 +5,6 @@ export interface Post {
   upload_Date: Date,
   url_File: string,
   description: string,
+  contentType: string,
   currentUserData: any
 }

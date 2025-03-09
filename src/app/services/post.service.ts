@@ -29,8 +29,9 @@ export class PostService {
     const formData = new FormData();
     formData.append('userId', userId);
     formData.append('albumId', albumId);
-    formData.append('multimedia', file);
+    formData.append('multimedia', file);  // ✅ Asegura el tipo MIME correcto
     formData.append('description', 'asd');
+    formData.append('contentType', file.type);  // Asegúrate de pasar el contentType
 
     return this.http.post(`${this.apiUrl}`, formData);
   }

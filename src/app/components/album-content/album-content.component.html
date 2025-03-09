@@ -90,9 +90,17 @@
 
             <!-- Contenido principal -->
             <div class="h-[375px] relative bg-gray-200">
-              <img class="object-cover w-full h-full" [src]="post.url_File"
+              <!-- Mostrar video si el contentType es 'video/mp4' -->
+              <video *ngIf="post.contentType === 'video/mp4'" width="100%" controls>
+                <source [src]="post.url_File" type="video/mp4">
+                Tu navegador no soporta el tag de video.
+              </video>
+
+              <!-- Mostrar imagen si el contentType no es 'video/mp4' -->
+              <img *ngIf="post.contentType !== 'video/mp4'" class="object-cover w-full h-full" [src]="post.url_File"
                 [alt]="post.description || 'Imagen sin descripción'" />
             </div>
+
 
             <!-- Pie de la tarjeta -->
             <div class="h-16 flex justify-between items-center px-4 py-2">
@@ -115,10 +123,11 @@
       </div>
       <!-- Footer -->
       <footer class="w-full text-right py-4 mt-24 mb-24 pr-8 lg:pr-60">
-        <button (click)="deleteAlbum()" class="bg-red-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-700 transition">
+        <button (click)="deleteAlbum()"
+          class="bg-red-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-700 transition">
           Eliminar Álbum
         </button>
-      </footer>    
+      </footer>
       <!-- Modal -->
       <app-create-post-modal [isOpen]="isModalOpen" (close)="closeModal()"
         (updatePhoto)="handlePhotoSelected($event)"></app-create-post-modal>
