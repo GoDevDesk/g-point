@@ -39,7 +39,6 @@ export class PersonalPhotosComponent implements OnInit {
       this.personalPhotos = [];
       this.isOwner = this.authService.isProfileOwner(this.profileId);
       this.loggedUserId = this.authService.getCurrentUserLoggedIdFromStorage();
-      debugger;
       this.loadPersonalPhotos(this.page);
     });
 

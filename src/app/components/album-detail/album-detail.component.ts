@@ -16,6 +16,7 @@ export class AlbumDetailComponent implements OnInit {
   albumData: albumPageData | null = null; // Variable para almacenar el álbum
   albumId = '';
   isLoading = false;
+  isLoggedUser = false;
 
   constructor(
     private router: Router,
@@ -25,10 +26,18 @@ export class AlbumDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isLoggedUser = this.authService.getCurrentUserLoggedIdFromStorage() != 0 ? true : false;
     this.isLoading = true;
     this.albumId = this.route.snapshot.paramMap.get('albumId') || '';
     this.loadAlbumData(Number(this.albumId));
+
   }
+
+  buyContent() {
+    // Lógica para la compra del contenido
+    console.log('Contenido comprado!');
+  }
+
   loadAlbumData(albumId: number): void {
     this.albumService.getAlbumDataById(albumId).subscribe({
       next: (albumData) => {
