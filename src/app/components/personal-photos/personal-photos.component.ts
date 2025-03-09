@@ -28,16 +28,21 @@ export class PersonalPhotosComponent implements OnInit {
 
   isModalOpen: boolean = false; // Controla la apertura del modal
 
-
-
   constructor(private personalPhotosService: PersonalPhotosService, private authService: AuthService, private route: ActivatedRoute) {
   }
   ngOnInit(): void {
     // this.isLoading = true;
     this.profileId = this.route.snapshot.paramMap.get('id') || '';
-    this.isOwner = this.authService.isProfileOwner(this.profileId);
-    this.loggedUserId = this.authService.getCurrentUserLoggedIdFromStorage();
-    this.loadPersonalPhotos(this.page);
+
+    this.route.paramMap.subscribe(params => {
+      this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
+      this.personalPhotos = [];
+      this.isOwner = this.authService.isProfileOwner(this.profileId);
+      this.loggedUserId = this.authService.getCurrentUserLoggedIdFromStorage();
+      debugger;
+      this.loadPersonalPhotos(this.page);
+    });
+
   }
 
   loadPersonalPhotos(page: number): void {

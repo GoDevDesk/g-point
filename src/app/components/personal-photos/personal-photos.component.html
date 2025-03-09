@@ -1,4 +1,4 @@
-<div *ngIf="true"
+<div *ngIf="isOwner"
   class="personal-photo-card h-24 w-full bg-gray-800 rounded-lg cursor-pointer transition-transform transform hover:scale-105 active:scale-105 hover:bg-pink-400 active:bg-pink-400"
   (click)="openModal()">
   <div
@@ -21,7 +21,7 @@
   </div>
 
     <!-- Menú de acciones (elipsis) -->
-    <div class="absolute top-3 right-3">
+    <div *ngIf="isOwner" class="absolute top-3 right-3">
       <button (click)="toggleMenu(personalPhoto.id)" class="menu-button">⋮</button>
       <div *ngIf="openMenuId === personalPhoto.id" class="menu-options">
         <button (click)="deletePersonalPhoto(personalPhoto.id)">🗑 Eliminar</button>

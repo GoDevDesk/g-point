@@ -51,16 +51,20 @@
     max-width: 1400px;
   }
   
-  /* Ajustes en el diseño para el tamaño en pantalla grande */
-  .wrap-video {
-    aspect-ratio: 16 / 9;
-    height: 500px; /* Más alto en la vista no responsive */
-    width: 100%; 
-    max-width: 600px; /* Más ancho en el diseño no responsive */
-    background-color: black;
-    border-radius: 8px;
-  }
-  
+/* Asegúrate de que el contenedor del video sea flexible */
+.wrap-video {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centra el video vertical y horizontalmente */
+  height: 100%; /* Asegura que la tarjeta tenga un alto flexible */
+}
+
+/* Estilo para que el video ocupe todo el espacio disponible */
+.wrap-video video {
+  width: 100%;        /* El video ocupará todo el ancho disponible */
+  height: 100%;       /* El video ocupará todo el alto disponible */
+  object-fit: cover;  /* Asegura que el video cubra todo el espacio sin distorsionar */
+}
 
 
   /* Ajuste de tamaño más grande para la tarjeta de agregar fotos */
