@@ -6,5 +6,6 @@ export interface albumPageData {
     miniature: string,
     price: number,
     numberOfPublications: number,
-    creationDate: Date
+    creationDate: Date,
+    productId: number
 }

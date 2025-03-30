@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service'; // Asegúrate de te
 import { AlbumService } from 'src/app/services/album.service'; // Asegúrate de tener el servicio para obtener álbumes
 import { Album } from 'src/app/models/album';
 import { albumPageData } from 'src/app/models/albumPageData';
+import { PaymentService } from 'src/app/services/payment.service';
 
 @Component({
   selector: 'app-album-detail',
@@ -22,7 +23,8 @@ export class AlbumDetailComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService, // Servicio para verificar el dueño
-    private albumService: AlbumService // Servicio para obtener los datos del álbum
+    private albumService: AlbumService, // Servicio para obtener los datos del álbum
+    private paymentService: PaymentService
   ) {}
 
   ngOnInit(): void {
@@ -34,8 +36,10 @@ export class AlbumDetailComponent implements OnInit {
   }
 
   buyContent() {
-    // Lógica para la compra del contenido
-    console.log('Contenido comprado!');
+    if(this.albumData)
+    this.paymentService.createPurchase(this.albumData.productId).subscribe(response => {
+      window.location.href = response.initPoint;
+    });
   }
 
   loadAlbumData(albumId: number): void {

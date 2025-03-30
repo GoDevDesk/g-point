@@ -12,7 +12,7 @@
           class="font-black text-7xl text-white uppercase cursor-pointer inline-block relative"
           (click)="startEditing()">
           {{ albumData?.title }}
-          <a href="#" class="edit-icon absolute top-[90%] right-[-30px] transform -translate-y-1/2 text-gray-600">
+          <a *ngIf="!isEditingTitle" href="#" class="edit-icon absolute top-[90%] right-[-30px] transform -translate-y-1/2 text-gray-600">
             <svg xmlns="http://www.w3.org/2000/svg"
               class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none"
               viewBox="0 0 24 24" stroke="currentColor">
@@ -73,7 +73,7 @@
             <!-- Encabezado de la tarjeta -->
             <div class="h-14 flex justify-between items-center px-4 py-2">
               <h1 class="text-sm font-medium text-pink-500">Post</h1>
-              <div class="relative">
+              <div *ngIf="isOwner" class="relative">
                 <button class="text-gray-300 hover:text-white" (click)="toggleMenu(post.id)">
                   &#x22EE;
                 </button>
@@ -123,7 +123,7 @@
       </div>
       <!-- Footer -->
       <footer class="w-full text-right py-4 mt-24 mb-24 pr-8 lg:pr-60">
-        <button (click)="deleteAlbum()"
+        <button *ngIf="isOwner" (click)="deleteAlbum()"
           class="bg-red-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-700 transition">
           Eliminar Álbum
         </button>

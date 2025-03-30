@@ -3,13 +3,14 @@ import { CanActivate, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from
 import { catchError, map, observable, Observable, of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { AlbumService } from '../services/album.service';
+import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
   
-  constructor(private router: Router, private albumService: AlbumService, private authService: AuthService) {}
+  constructor(private router: Router, private albumService: AlbumService, private authService: AuthService, private location: Location   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     // Obtener el parámetro `albumId` de la URL
@@ -27,10 +28,11 @@ export class AuthGuard implements CanActivate {
       map((esValido: boolean) => {
         if (!esValido) {
           // Si no tiene acceso, redirige a una página de error
-          this.router.navigate([`/album-detail/${albumId}`]);
+          this.location.back(); // Vuelve a la página anterior
           return false;
         }
        // this.router.navigate([`/albumContent/${albumId}`]);
+   //    this.router.navigate([`/albumContent/${albumId}`]);
         return true; // Permite el acceso
       }),
       catchError(() => {

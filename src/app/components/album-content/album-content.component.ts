@@ -33,6 +33,7 @@ export class AlbumContentComponent implements OnInit {
   totalPages: number = 0;
   isEditing: boolean = false;
   isLoading = false;
+  isOwner = false;
 
 
   isModalOpen: boolean = false; // Controla la apertura del modal
@@ -55,14 +56,9 @@ export class AlbumContentComponent implements OnInit {
     this.isLoading = true;
     this.albumId = this.route.snapshot.paramMap.get('albumId') || '';
     this.isEditing = this.albumId != "" ? true : false;
-    this.authService.getCurrentUserIdLogged().subscribe(
-      id => {
-        this.loggedUserId = id; // Asigna el ID a la variable
-      },
-      error => {
-        console.error('Error al obtener el ID del usuario:', error);
-      }
-    );
+    this.loggedUserId = this.authService.getCurrentUserLoggedIdFromStorage()
+
+
 
     if (this.isEditing) {
       this.loadAlbumData(Number(this.albumId));
@@ -72,14 +68,17 @@ export class AlbumContentComponent implements OnInit {
     } else {
       this.isLoading = false;
     }
+
   }
 
   loadAlbumData(albumId: number): void {
     this.albumService.getAlbumDataById(albumId).subscribe({
       next: (albumData) => {
+        debugger;
         this.albumData = albumData; // Guarda la respuesta en la variable
-  
         // Solo actualiza si los valores son válidos
+        if (this.albumData.userId == this.loggedUserId)
+          this.isOwner = true;      
         if (albumData.title) {
           this.title = albumData.title;
         }

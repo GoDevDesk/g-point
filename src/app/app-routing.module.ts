@@ -9,6 +9,7 @@ import { AuthGuard } from './guard/auth.guard';
 import { NotFoundError } from 'rxjs';
 import { ChatBoxComponent } from './components/chat-box/chat-box.component';
 import { AuthNoLoggedGuard } from './guard/auth-no-logged.guard';
+import { AuthBuyerGuard } from './guard/auth-buyer.guard';
 
 
 const routes: Routes = [
@@ -35,7 +36,8 @@ const routes: Routes = [
     canActivate: [AuthGuard] 
   },
   {
-    path: 'album-detail/:albumId', component: AlbumDetailComponent
+    path: 'album-detail/:albumId', component: AlbumDetailComponent,
+    canActivate: [AuthBuyerGuard] 
   },
   {
     path: 'chat', component: ChatBoxComponent,
