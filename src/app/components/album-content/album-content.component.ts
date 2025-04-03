@@ -74,7 +74,6 @@ export class AlbumContentComponent implements OnInit {
   loadAlbumData(albumId: number): void {
     this.albumService.getAlbumDataById(albumId).subscribe({
       next: (albumData) => {
-        debugger;
         this.albumData = albumData; // Guarda la respuesta en la variable
         // Solo actualiza si los valores son válidos
         if (this.albumData.userId == this.loggedUserId)

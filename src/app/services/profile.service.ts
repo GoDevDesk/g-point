@@ -54,9 +54,15 @@ export class ProfileService {
       })
     );
   }
+
   setAvatarPhoto(profilePicture: string) {
     this.currentPhotoUrlSubject.next(profilePicture);  // Emitir el nuevo valor
     localStorage.setItem('avatarUrl', profilePicture); // Guardamos la nueva URL en el localStorage
+  }
+
+  removeAvatarPhoto() {
+    this.currentPhotoUrlSubject.next('');  // Emitir el nuevo valor
+    localStorage.removeItem('avatarUrl'); // Guardamos la nueva URL en el localStorage
   }
 
   // Método para obtener la URL de la foto de perfil

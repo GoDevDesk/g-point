@@ -217,6 +217,7 @@ export class ProfileComponent implements OnInit {
         },
         error: (error) => {
           this.errorMessage = 'No se pudo cargar la foto de perfil';
+          this.currentProfilePhoto = this.defaultPhoto;
         },
       });
     }

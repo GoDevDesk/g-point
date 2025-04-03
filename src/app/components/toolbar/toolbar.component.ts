@@ -18,45 +18,48 @@ export class ToolbarComponent implements OnInit {
   results: any[] = [];
   currentUserLoggedId = ""
   currentAvatarPhoto = ""
+  defaultPhoto = 'assets/defaultIcons/defaultProfilePhoto.png';
   constructor(private renderer: Renderer2, private el: ElementRef, private router: Router, private authService: AuthService,
-              private profileService: ProfileService, private searchService: SearchService) { }
+    private profileService: ProfileService, private searchService: SearchService) { }
 
   ngOnInit(): void {
     this.currentUserLoggedId = this.authService.getCurrentUserLoggedIdFromStorage().toString();
-
+    this.profileService.removeAvatarPhoto();
     this.profileService.getAvatarPhoto().subscribe(photoUrl => {
       this.currentAvatarPhoto = photoUrl;
+      if (photoUrl == "")
+        this.currentAvatarPhoto = this.defaultPhoto;
     });
 
     this.searchControl.valueChanges
-    .pipe(
-      debounceTime(300), // Espera 300ms tras cada cambio
-      distinctUntilChanged(), // Ignora valores consecutivos iguales
-      // Realizamos la búsqueda con switchMap
-      switchMap((query) => {
-        const trimmedQuery = query?.trim(); // Elimina espacios
-        if (!trimmedQuery) {
-          // Si el texto está vacío, vacía los resultados
-          this.results = [];
-          return of([]); // Devolvemos un observable vacío
-        }
-
-        // Si el texto no está vacío, realizamos la búsqueda
-        return this.searchService.search(trimmedQuery).pipe(
-          catchError((error) => {
-            // Manejo de error: si algo sale mal, simplemente vaciamos los resultados
-            console.error('Error en la búsqueda:', error);
+      .pipe(
+        debounceTime(300), // Espera 300ms tras cada cambio
+        distinctUntilChanged(), // Ignora valores consecutivos iguales
+        // Realizamos la búsqueda con switchMap
+        switchMap((query) => {
+          const trimmedQuery = query?.trim(); // Elimina espacios
+          if (!trimmedQuery) {
+            // Si el texto está vacío, vacía los resultados
             this.results = [];
-            return of([]); // Retornamos un observable vacío para continuar el flujo
-          })
-        );
-      })
-    )
-    .subscribe(
-      (data) => {
-        this.results = data; // Actualiza los resultados
-      }
-    );
+            return of([]); // Devolvemos un observable vacío
+          }
+
+          // Si el texto no está vacío, realizamos la búsqueda
+          return this.searchService.search(trimmedQuery).pipe(
+            catchError((error) => {
+              // Manejo de error: si algo sale mal, simplemente vaciamos los resultados
+              console.error('Error en la búsqueda:', error);
+              this.results = [];
+              return of([]); // Retornamos un observable vacío para continuar el flujo
+            })
+          );
+        })
+      )
+      .subscribe(
+        (data) => {
+          this.results = data; // Actualiza los resultados
+        }
+      );
   }
 
   ngAfterViewInit() {
