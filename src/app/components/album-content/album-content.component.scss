@@ -79,6 +79,7 @@
   justify-content: center;
   align-items: center; /* Centra el video vertical y horizontalmente */
   height: 100%; /* Asegura que la tarjeta tenga un alto flexible */
+  background-color: #1a1a1a; /* Mismo color gris que el botón de crear post */
 }
 
 /* Estilo para que el video ocupe todo el espacio disponible */
@@ -98,13 +99,13 @@
     height: 100%;
     width: 100%;
     max-width: 600px; /* Más ancho en el diseño no responsive */
-    background-color: #080808; /* Color de fondo principal */
+    background-color: #1a1a1a; /* Color de fondo gris oscuro */
     border-radius: 8px;
     transition: background-color 0.3s ease;
   }
   
   .add-photo-card:hover {
-    background-color: #080808; /* Color de fondo principal */
+    background-color: #1a1a1a; /* Color de fondo gris oscuro */
     transform: scale(1.05); /* Aumentar tamaño ligeramente al pasar el cursor */
     cursor: pointer;
 }
@@ -142,9 +143,8 @@
       font-size: 30px;
     }
 
-    *, *::before, *::after {
-      border-color: #e98e8e !important; /* Cambia este color al que prefieras */
-  }
+
+  
 
     .bg-custom-card-bg {
       background-color: #080808; /* Reemplaza con tu color personalizado */
