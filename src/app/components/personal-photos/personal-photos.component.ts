@@ -50,12 +50,15 @@ export class PersonalPhotosComponent implements OnInit {
     this.personalPhotosService.getPersonalPhotosByUserId(Number(this.profileId), page, this.pageSize)
       .subscribe({
         next: (response: PaginatedResultResponse<PersonalPhoto>) => {
-          if (!this.personalPhotos) {
-            this.personalPhotos = [];
-          }
+          const currentPhotos = this.personalPhotos || [];
+          
+          // Filtrar duplicados y agregar nuevas fotos
+          const newPhotos = response.items.filter(newPhoto => 
+            !currentPhotos.some(existingPhoto => existingPhoto.id === newPhoto.id)
+          );
 
-          // Agregar nuevas fotos y ordenar por fecha (de más nueva a más antigua)
-          this.personalPhotos = [...this.personalPhotos, ...response.items]
+          // Agregar las nuevas fotos y ordenar por fecha
+          this.personalPhotos = [...currentPhotos, ...newPhotos]
             .sort((a, b) => new Date(b.upload_Date).getTime() - new Date(a.upload_Date).getTime());
 
           this.totalItems = response.totalItems;
