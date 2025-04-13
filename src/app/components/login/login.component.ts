@@ -16,7 +16,10 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) { }
 
   
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    //limpiar todo lo q puede haber de otro user
+    this.authService.cleanStorage();
+   }
   
   onInputChange() {
   }

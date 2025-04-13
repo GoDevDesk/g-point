@@ -4,6 +4,7 @@ import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { User } from '../models/user';
 import { environment } from 'src/environments/environment';
 import { UserRegister } from '../models/userRegister';
+import { ProfileService } from './profile.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,7 @@ export class AuthService {
   public CurrentUserLoggedId = 0;
   private currentUserIdBehavior = new BehaviorSubject<number>(0); // Inicialmente no hay usuario logueado
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private profileService: ProfileService) { }
 
   // Método para enviar el login y recibir el token
   login(credentials: { username: string; password: string }): Observable<any> {
@@ -76,6 +77,7 @@ export class AuthService {
     localStorage.removeItem('authToken');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('avatarUrl');
+    this.profileService.removeAvatarPhoto();
   }
 
 
