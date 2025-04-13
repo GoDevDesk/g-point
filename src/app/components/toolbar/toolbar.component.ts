@@ -24,7 +24,7 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUserLoggedId = this.authService.getCurrentUserLoggedIdFromStorage().toString();
-    this.profileService.removeAvatarPhoto();
+    //this.profileService.removeAvatarPhoto();
     this.profileService.getAvatarPhoto().subscribe(photoUrl => {
       this.currentAvatarPhoto = photoUrl;
       if (photoUrl == "")

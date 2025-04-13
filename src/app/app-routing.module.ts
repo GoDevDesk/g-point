@@ -10,6 +10,8 @@ import { NotFoundError } from 'rxjs';
 import { ChatBoxComponent } from './components/chat-box/chat-box.component';
 import { AuthNoLoggedGuard } from './guard/auth-no-logged.guard';
 import { AuthBuyerGuard } from './guard/auth-buyer.guard';
+import { AuthProfileGuard } from './guard/auth-profile.guard';
+import { ProfileNotFoundComponent } from './components/profile-not-found/profile-not-found.component';
 
 
 const routes: Routes = [
@@ -25,7 +27,11 @@ const routes: Routes = [
     canActivate: [AuthNoLoggedGuard] 
   },
   {
-    path: 'profile/:id', component: ProfileComponent
+    path: 'profile/:id', component: ProfileComponent,
+    canActivate: [AuthProfileGuard] 
+  },
+  {
+    path: 'profile-not-found', component: ProfileNotFoundComponent
   },
   {
     path: 'albumContent/:albumId', component: AlbumContentComponent,
