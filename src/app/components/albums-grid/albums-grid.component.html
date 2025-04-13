@@ -8,7 +8,7 @@
 
   <div *ngIf="isOwner"
     class="album-card h-24 w-full bg-pink-500 rounded-lg cursor-pointer transition-transform transform hover:scale-105 active:scale-105 hover:bg-pink-400 active:bg-pink-400"
-    (click)="goToAlbumCreation()">
+    (click)="openCreateAlbumModal()">
     <div
       class="plus-container absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold transition-opacity opacity-30 hover:opacity-100 active:opacity-100">
       <span class="plus-symbol text-8xl" style="font-weight: 300;">+</span>
@@ -36,4 +36,11 @@
   <div *ngIf="isLoading" class="text-center text-white py-4">
     Cargando más álbumes...
   </div>
+
+  <!-- Modal de creación de álbum -->
+  <app-create-album-modal 
+    [isOpen]="isModalOpen" 
+    (close)="closeModal()" 
+    (createAlbum)="handleCreateAlbum($event)">
+  </app-create-album-modal>
 </div>

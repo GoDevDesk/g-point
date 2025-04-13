@@ -43,6 +43,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { CreateAlbumModalComponent } from './components/create-album-modal/create-album-modal.component';
 
 
 
@@ -65,7 +66,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     GoBackComponent,
     ChatComponent,
     ChatBoxComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    CreateAlbumModalComponent
   ],
   imports: [
     SharedModule,

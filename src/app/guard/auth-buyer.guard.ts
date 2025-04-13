@@ -14,7 +14,7 @@ export class AuthBuyerGuard implements CanActivate {
       // Obtener el parámetro `albumId` de la URL
       var user = this.authService.getUserStorage();
       if (!user)
-        return  of(false);
+        return  of(true);
   
       const albumId = route.paramMap.get('albumId');
       if (!albumId) {

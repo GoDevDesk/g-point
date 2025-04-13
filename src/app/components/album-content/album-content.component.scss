@@ -15,6 +15,28 @@
   opacity: 0.5;
   pointer-events: none; /* Evita que se interactúe con los elementos detrás */
 }
+
+/* Estilos específicos para el título y precio */
+#title-container h2 {
+  font-size: 3rem !important; /* Tamaño para el título */
+  line-height: 1.2;
+}
+
+/* Estilo específico para el precio */
+#title-container:has(h2.uppercase) h2 {
+  font-size: 2.5rem !important; /* Tamaño más pequeño para el precio */
+}
+
+/* Inputs de edición */
+#title-container input {
+  font-size: 3rem !important; /* Tamaño igual al título */
+}
+
+/* Input específico para el precio */
+#title-container:has(input.uppercase) input {
+  font-size: 2.5rem !important; /* Tamaño igual al precio */
+}
+
 //spinner
 
 .relative.group:hover i {

@@ -20,7 +20,7 @@ export class AlbumsGridComponent implements OnInit {
   profileId = '';
   isOwner = false;
   lastScrollTop: number = 0; // Guarda la última posición del scroll
-
+  isModalOpen = false;
 
   constructor(private route: ActivatedRoute, private albumService: AlbumService, private authService: AuthService, private router: Router) { }
 
@@ -71,8 +71,35 @@ export class AlbumsGridComponent implements OnInit {
     }
   }
 
-  goToAlbumCreation(): void {
-    this.router.navigate(['/albumContent']);
+  openCreateAlbumModal(): void {
+    this.isModalOpen = true;
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
+  }
+
+  handleCreateAlbum(albumData: { name: string, price: number }): void {
+    this.isLoading = true;
+    const userId = this.authService.getCurrentUserLoggedIdFromStorage();
+    const newAlbum = {
+      name: albumData.name,
+      price: albumData.price,
+      userId: userId
+    };
+
+    this.albumService.createAlbum(newAlbum).subscribe({
+      next: (albumId) => {
+        if (albumId) {
+          this.router.navigate([`/albumContent/${albumId}`]);
+          this.isLoading = false;
+        }
+      },
+      error: (err) => {
+        console.error('Error al crear el álbum:', err);
+        this.isLoading = false;
+      }
+    });
   }
 
   // onPageChange(newPage: number): void {

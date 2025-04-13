@@ -31,7 +31,6 @@ export class AlbumContentComponent implements OnInit {
   page: number = 1;
   pageSize: number = 10;
   totalPages: number = 0;
-  isEditing: boolean = false;
   isLoading = false;
   isOwner = false;
 
@@ -45,54 +44,48 @@ export class AlbumContentComponent implements OnInit {
   albumData: albumPageData | null = null; // Variable para almacenar el álbum
 
   @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('title') titleElement!: ElementRef<HTMLHeadingElement>;  
+  @ViewChild('title') titleElement!: ElementRef<HTMLHeadingElement>;
   @ViewChild('priceInput') priceInput!: ElementRef<HTMLInputElement>;
 
   constructor(private postService: PostService, private albumService: AlbumService, private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
   hoverAddPhoto = false;
 
-
   ngOnInit(): void {
     this.isLoading = true;
     this.albumId = this.route.snapshot.paramMap.get('albumId') || '';
-    this.isEditing = this.albumId != "" ? true : false;
     this.loggedUserId = this.authService.getCurrentUserLoggedIdFromStorage()
-
-
-
-    if (this.isEditing) {
-      this.loadAlbumData(Number(this.albumId));
-      setTimeout(() => {
-        this.loadPosts();
-      }, 1000); // Timeout de 1 segundo
-    } else {
-      this.isLoading = false;
-    }
+    this.loadAlbumData(Number(this.albumId));
+    setTimeout(() => {
+      this.loadPosts();
+    }, 1000); // Timeout de 1 segundo
 
   }
 
   loadAlbumData(albumId: number): void {
+    this.isLoading = true;
     this.albumService.getAlbumDataById(albumId).subscribe({
       next: (albumData) => {
         this.albumData = albumData; // Guarda la respuesta en la variable
         // Solo actualiza si los valores son válidos
         if (this.albumData.userId == this.loggedUserId)
-          this.isOwner = true;      
+          this.isOwner = true;
         if (albumData.title) {
           this.title = albumData.title;
         }
         if (albumData.price !== null && albumData.price !== undefined) {
           this.price = albumData.price.toString();
         }
-  
+        this.isLoading = false;
       },
       error: (err) => {
         console.error('Error al obtener el álbum:', err);
+        this.isLoading = false;
       }
     });
   }
 
   loadPosts(): void {
+    this.isLoading = true;
     this.postService.getPostsByAlbumId(Number(this.albumId), this.page, this.pageSize).subscribe({
       next: (response: PaginatedResultResponse<Post>) => {
         this.posts = response.items;
@@ -128,7 +121,7 @@ export class AlbumContentComponent implements OnInit {
   }
 
   startEditingPrice() {
-    this.isEditingPrice= true;
+    this.isEditingPrice = true;
 
     setTimeout(() => {
       this.setInputWidth();
@@ -158,7 +151,7 @@ export class AlbumContentComponent implements OnInit {
         error: (err) => console.error('Error al actualizar álbum', err)
       });
   }
-  
+
 
   savePrice() {
     this.isEditingPrice = false;
@@ -185,48 +178,16 @@ export class AlbumContentComponent implements OnInit {
 
   handlePhotoSelected(file: File): void {
     this.isLoading = true;
-    if (!this.isEditing) {
-      this.createAlbum(file);
-    }
-    else {
-      this.createPost(file);
-    }
+    this.createPost(file);
   }
-
-  createAlbum(file: File): void {
-    const newAlbum: AlbumRequest = {
-      name: 'Mi Álbum',
-      price: 50,
-      userId: this.loggedUserId
-    };
-
-    this.albumService.createAlbum(newAlbum).subscribe({
-      next: (albumId) => {
-        if (albumId) {
-
-          this.albumId = albumId.toString();
-          this.createPost(file);
-          this.router.navigate([`/albumContent/${this.albumId}`]);
-
-        }
-      },
-      error: (err) => {
-        this.isLoading = false;
-        console.error('Error al crear el álbum:', err);
-      },
-    });
-  }
-
 
   createPost(file: File): void {
     this.postService.createPost(file, this.albumId, this.loggedUserId.toString()).subscribe({
       next: (response) => {
-
-        this.currentPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa
+        this.currentPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa        
+        this.loadPosts();
         this.closeModal();
-        if (this.isEditing) {
-          this.loadPosts();
-        }
+        this.isLoading = false;
       },
       error: (error) => {
         this.isLoading = false;
@@ -254,7 +215,7 @@ export class AlbumContentComponent implements OnInit {
   deleteAlbum() {
     if (confirm('¿Estás seguro de que deseas eliminar este álbum? Esta acción no se puede deshacer.')) {
       this.isLoading = true;
-      
+
       this.albumService.deleteAlbum(Number(this.albumId)).subscribe({
         next: () => {
           this.isLoading = false;
@@ -263,17 +224,17 @@ export class AlbumContentComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          
+
           // Muestra en consola para depurar
           console.error('Error al eliminar el álbum:', error);
-          
+
           // Verifica si hay un mensaje en error.error o muestra un mensaje genérico
           const errorMessage = 'No se pudo eliminar el álbum.';
           alert(errorMessage);
         }
       });
     }
-  }   
+  }
 
   deletePost(post: any): void {
     if (confirm('¿Estás seguro de que deseas eliminar este Post? Esta acción no se puede deshacer.')) {

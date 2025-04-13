@@ -1,18 +1,19 @@
+<div *ngIf="isLoading" class="loading-overlay">
+  <mat-spinner color="primary"></mat-spinner>
+</div>
 <div class="relative flex min-h-screen flex-col">
   <app-go-back></app-go-back>
-  <div *ngIf="isLoading" class="loading-overlay">
-    <mat-spinner color="primary"></mat-spinner>
-  </div>
   <div class="min-h-28">
     <div class="mx-auto py-18">
       <!-- Editable Title -->
       <div id="title-container" class="relative text-center group max-w-[800px] mx-auto">
         <!-- Título visible (más grande) -->
         <h2 *ngIf="!isEditingTitle"
-          class="font-black text-7xl text-white uppercase cursor-pointer inline-block relative"
-          (click)="startEditing()">
+          class="font-black text-7xl text-white inline-block relative"
+          [class.cursor-pointer]="isOwner"
+          (click)="isOwner ? startEditing() : null">
           {{ albumData?.title }}
-          <a *ngIf="!isEditingTitle" href="#" class="edit-icon absolute top-[90%] right-[-30px] transform -translate-y-1/2 text-gray-600">
+          <a *ngIf="!isEditingTitle && isOwner" href="#" class="edit-icon absolute top-[90%] right-[-30px] transform -translate-y-1/2 text-gray-600">
             <svg xmlns="http://www.w3.org/2000/svg"
               class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none"
               viewBox="0 0 24 24" stroke="currentColor">
@@ -23,17 +24,18 @@
         </h2>
         <!-- Input editable, tamaño dinámico y más grande -->
         <input *ngIf="isEditingTitle" #titleInput [(ngModel)]="title"
-          class="text-center text-4xl font-black text-white uppercase bg-black border border-gray-500 rounded py-2 px-4 relative"
+          class="text-center text-4xl font-black text-white bg-black border border-gray-500 rounded py-2 px-4 relative"
           [style.width.px]="calculatedInputWidth || 600" (blur)="saveTitle()" (keyup.enter)="saveTitle()" />
       </div>
       <!-- Editable Price -->
       <div id="title-container" class="relative text-center group max-w-[400px] mx-auto">
         <!-- Precio visible -->
         <h2 *ngIf="!isEditingPrice"
-          class="font-black text-5xl text-white uppercase cursor-pointer inline-block relative"
-          (click)="startEditingPrice()">
+          class="font-black text-7xl text-white uppercase inline-block relative"
+          [class.cursor-pointer]="isOwner"
+          (click)="isOwner ? startEditingPrice() : null">
           ${{ price }}
-          <a href="#" class="edit-icon absolute top-[90%] right-[-25px] transform -translate-y-1/2 text-gray-600">
+          <a *ngIf="!isEditingPrice && isOwner" href="#" class="edit-icon absolute top-[90%] right-[-25px] transform -translate-y-1/2 text-gray-600">
             <svg xmlns="http://www.w3.org/2000/svg"
               class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none"
               viewBox="0 0 24 24" stroke="currentColor">
@@ -44,7 +46,7 @@
         </h2>
         <!-- Input editable, más pequeño y centrado -->
         <input *ngIf="isEditingPrice" #priceInput [(ngModel)]="price"
-          class="text-center text-3xl font-black text-white uppercase bg-black border border-gray-500 rounded py-1 w-32 mx-auto"
+          class="text-center text-3xl font-black text-white uppercase bg-black border border-gray-500 rounded py-1 w-48 mx-auto"
           (blur)="savePrice()" (keyup.enter)="savePrice()" />
       </div>
       <!-- Informacion del usuario -->
@@ -60,8 +62,8 @@
       </div>
 
       <!-- Video-container -->
-      <div class="gap-6 mt-8 mx-4 video-container flex flex-wrap justify-center">
-        <div
+      <div  class="gap-6 mt-8 mx-4 video-container flex flex-wrap justify-center">
+        <div *ngIf="isOwner"
           class="wrap-video add-photo-card card border border-gray-400 rounded-lg shadow-lg overflow-hidden bg-white h-[500px] flex flex-col justify-center items-center min-w-[300px] max-w-[47px]"
           (click)="openModal()">
           <div class="add-photo-content text-4xl font-bold text-gray-500">+</div>

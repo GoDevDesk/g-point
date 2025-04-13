@@ -13,6 +13,8 @@ export class CreatePostModalComponent {
   @Output() close = new EventEmitter<void>(); // Para cerrar el modal
   @Output() updatePhoto = new EventEmitter<File>(); // Emitirá solo el objeto File
 
+  defaultPhoto = 'assets/defaultIcons/defaultProfilePhoto.png';
+
   previewPhoto: string | null = null; // Vista previa de la nueva foto
   selectedFile: File | null = null;
   isLoading = false;
@@ -42,6 +44,9 @@ export class CreatePostModalComponent {
     reader.onload = (e) => {
       try {
         this.previewPhoto = e.target?.result as string || null;
+        if (this.previewPhoto == null)
+          this.previewPhoto =  this.defaultPhoto;
+
       } catch (error) {
         console.error('Error procesando la vista previa', error);
       }
