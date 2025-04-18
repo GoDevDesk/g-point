@@ -27,11 +27,11 @@ export class AlbumsGridComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.route.paramMap.subscribe(params => {
-      this.profileId = params.get('id') || ''; // Capturar el nuevo ID de la URL
+      this.profileId = params.get('id') || '';
       this.isOwner = this.authService.isProfileOwner(this.profileId);
 
-      this.albums = []; // unificar los metodos de limpieza 
-      this.page = 1;// unificar los metodos de limpieza 
+      this.albums = [];
+      this.page = 1;
       
       this.loadAlbums(this.page);
     });
@@ -44,10 +44,9 @@ export class AlbumsGridComponent implements OnInit {
       next: (response: PaginatedResultResponse<Album>) => {
         this.albums = [...this.albums, ...response.items];
         this.totalItems = response.totalItems;
-        this.page = response.page; // el numero de pagina manejarlo desde el paginator
+        this.page = response.page;
         this.pageSize = response.pageSize;
 
-        // Calcular el total de páginas
         this.totalPages = Math.ceil(this.totalItems / this.pageSize);
         this.isLoading = false;
       },
@@ -66,7 +65,7 @@ export class AlbumsGridComponent implements OnInit {
       this.router.navigate(['/albumContent', albumId]);
     } else {
       this.router.navigate(['/album-detail', albumId], {
-        state: { album }, // Pasar el objeto como estado
+        state: { album },
       });
     }
   }
@@ -102,25 +101,18 @@ export class AlbumsGridComponent implements OnInit {
     });
   }
 
-  // onPageChange(newPage: number): void {
-  //   this.page = newPage;
-  //   this.loadAlbums();
-  // }
-
   @HostListener("window:scroll", [])
   onScroll(): void {
-    if(this.totalItems < 6)
+    if(this.totalItems < 6) ///mejorar para q pagine cada 5 items nomas, ahora solo funciona al principio
       return;
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
 
-    // Solo cargar más contenido si el usuario está bajando y ha llegado al final
     if (scrollTop > this.lastScrollTop && (windowHeight + scrollTop) >= documentHeight - 10 && !this.isLoading && 
     this.page <= this.totalPages ) {
       this.loadAlbums(this.page + 1);
     }
-
-    this.lastScrollTop = scrollTop; // Guardamos la posición actual del scroll
+    this.lastScrollTop = scrollTop;
   }
 }
