@@ -109,6 +109,8 @@ export class AlbumsGridComponent implements OnInit {
 
   @HostListener("window:scroll", [])
   onScroll(): void {
+    if(this.totalItems < 6)
+      return;
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;

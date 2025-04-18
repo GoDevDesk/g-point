@@ -17,4 +17,16 @@
  .logged-out {
    margin-top: 0px; /* Si isUserLoggedIn es falso, elimina el margen */
  }
+
+.guest-nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    z-index: 1000;
+}
+
+.guest-menu-button {
+    color: white;
+}
   

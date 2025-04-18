@@ -10,37 +10,84 @@
         <!-- Descripción -->
         <p class="text-white mb-4">La donación de tips no otorga acceso a contenido.</p>
     
-        <!-- Inputs -->
-        <div class="flex flex-col gap-4 mb-4">
-            <input 
-                type="text" 
-                placeholder="Nombre" 
-                class="w-full p-2 border rounded-md focus:ring-2 focus:ring-pink-500"
-            >
-            <textarea 
-                placeholder="Mensaje" 
-                class="w-full p-2 border rounded-md focus:ring-2 focus:ring-pink-500"
-            ></textarea>
-        </div>
-    
-        <!-- Donación -->
-        <div class="mb-4">
-            <label class="text-white font-semibold block mb-2" for="donationAmount">Donación (ARS o USD):</label>
-            <input 
-                type="number" 
-                id="donationAmount" 
-                placeholder="Ingresa el monto" 
-                class="w-full p-2 border rounded-md text-pink-500 focus:ring-2 focus:ring-pink-500"
-            >
-        </div>
-    
-        <!-- Botón Enviar -->
-        <div class="flex justify-end">
-            <button 
-                class="w-full p-2 bg-pink-500 text-white font-semibold rounded-lg hover:bg-pink-600">
-                Enviar Donación
-            </button>
-        </div>
+        <!-- Formulario -->
+        <form [formGroup]="donationForm" (ngSubmit)="sendDonation()">
+            <!-- Inputs -->
+            <div class="flex flex-col gap-4 mb-4">
+                <div>
+                    <input 
+                        type="text" 
+                        formControlName="name"
+                        placeholder="Nombre" 
+                        class="w-full p-2 border rounded-md focus:ring-2 focus:ring-pink-500"
+                        [ngClass]="{'border-red-500': name?.invalid && name?.touched}"
+                    >
+                    <div *ngIf="name?.invalid && name?.touched" class="text-red-500 text-sm mt-1">
+                        <div *ngIf="name?.errors?.['required']">El nombre es requerido</div>
+                        <div *ngIf="name?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres</div>
+                    </div>
+                </div>
+
+                <div>
+                    <textarea 
+                        formControlName="message"
+                        placeholder="Mensaje" 
+                        class="w-full p-2 border rounded-md focus:ring-2 focus:ring-pink-500"
+                        [ngClass]="{'border-red-500': message?.invalid && message?.touched}"
+                    ></textarea>
+                    <div *ngIf="message?.invalid && message?.touched" class="text-red-500 text-sm mt-1">
+                        <div *ngIf="message?.errors?.['required']">El mensaje es requerido</div>
+                        <div *ngIf="message?.errors?.['minlength']">El mensaje debe tener al menos 5 caracteres</div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Donación -->
+            <div class="mb-4">
+                <div class="flex gap-4">
+                    <div class="flex-1">
+                        <label class="text-white font-semibold block mb-2" for="donationAmount">Monto:</label>
+                        <input 
+                            type="number" 
+                            id="donationAmount" 
+                            formControlName="amount"
+                            placeholder="Ingresa el monto" 
+                            class="w-full p-2 border rounded-md text-pink-500 focus:ring-2 focus:ring-pink-500"
+                            [ngClass]="{'border-red-500': amount?.invalid && amount?.touched}"
+                        >
+                        <div *ngIf="amount?.invalid && amount?.touched" class="text-red-500 text-sm mt-1">
+                            <div *ngIf="amount?.errors?.['required']">El monto es requerido</div>
+                            <div *ngIf="amount?.errors?.['min']">El monto debe ser mayor a 0</div>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <label class="text-white font-semibold block mb-2" for="currency">Moneda:</label>
+                        <select
+                            id="currency"
+                            formControlName="currency"
+                            class="w-full p-2 border rounded-md text-pink-500 focus:ring-2 focus:ring-pink-500"
+                            [ngClass]="{'border-red-500': currency?.invalid && currency?.touched}"
+                        >
+                            <option *ngFor="let currency of currencies" [value]="currency.code">
+                                {{ currency.name }}
+                            </option>
+                        </select>
+                        <div *ngIf="currency?.invalid && currency?.touched" class="text-red-500 text-sm mt-1">
+                            <div *ngIf="currency?.errors?.['required']">La moneda es requerida</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Botón Enviar -->
+            <div class="flex justify-end">
+                <button 
+                    type="submit"
+                    [disabled]="donationForm.invalid || isSubmitting"
+                    class="w-full p-2 bg-pink-500 text-white font-semibold rounded-lg hover:bg-pink-600 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    {{ isSubmitting ? 'Enviando...' : 'Enviar Donación' }}
+                </button>
+            </div>
+        </form>
     </div>
-    
 </div>

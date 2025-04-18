@@ -37,4 +37,12 @@ export class AppComponent implements OnInit {
         }
       });
   }
+
+  navigateToLogin() {
+    this.router.navigate(['/login']);
+  }
+
+  navigateToRegister() {
+    this.router.navigate(['/register']);
+  }
 }
