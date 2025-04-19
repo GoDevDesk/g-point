@@ -1,27 +1,28 @@
-<div class="card-container">
-    <!-- Título principal con flecha -->
-    <div class="flex items-center justify-between">
-        <h1 class="text-2xl font-bold text-pink-500">Suscripción Mensual</h1>
-        <span class="text-pink-500 text-2xl font-bold">&gt;</span> <!-- Símbolo ">" más visible -->
+<div *ngIf="isLoading" class="loading-overlay">
+  <mat-spinner color="primary"></mat-spinner>
+</div>
+
+<div *ngIf="isOwner || plan?.active" class="bg-[#080808] p-6 rounded-lg shadow-lg mt-6">
+  <div class="flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-pink-500">Suscripción Mensual</h1>
+    <div *ngIf="isOwner" class="flex items-center gap-4">
+      <span class="text-white">{{ isPlanActive ? 'Activo' : 'Inactivo' }}</span>
+      <label  class="relative inline-flex items-center cursor-pointer">
+        <input type="checkbox" class="sr-only peer" [checked]="isPlanActive" (change)="togglePlanStatus()">
+        <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-pink-500"></div>
+      </label>
     </div>
-    
-    <!-- Labels con íconos -->
-    <div class="flex flex-col gap-3 text-left mt-4">
-        <!-- Carpeta -->
-        <div class="flex items-center text-white">
-            <i class="fas fa-folder text-yellow-500 mr-3"></i> <!-- Icono de carpeta -->
-            <span>58 archivos y 2 msjs</span>
-        </div>
-        <!-- Reloj -->
-        <div class="flex items-center text-white">
-            <i class="fas fa-clock text-blue-500 mr-3"></i> <!-- Icono de reloj -->
-            <span>Fecha: 20/11/2024</span>
-        </div>
-        <!-- Dinero -->
-        <div class="flex items-center text-white">
-            <i class="fas fa-money-bill text-green-500 mr-3"></i> <!-- Icono de dinero -->
-            <span>10000 ARS</span>
-        </div>
+  </div>
+  
+  <div class="flex flex-col gap-3 text-left mt-4">
+    <div class="flex items-center text-white">
+      <i class="fas fa-dollar-sign text-blue-500 mr-3"></i>
+      <span>Precio: ARS {{ plan?.price }}</span>
     </div>
+    <div class="flex items-center text-white">
+      <i class="fas fa-info-circle text-blue-500 mr-3"></i>
+      <span>Los suscriptores podrán ver todo el contenido por un mes</span>
+    </div>
+  </div>
 </div>
 

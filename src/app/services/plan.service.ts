@@ -20,4 +20,12 @@ export class PlanService {
   haveAnyPlan(userId: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/have-any/${userId}`);
   }
+
+  getByUserId(id: number): Observable<Plan> {
+    return this.http.get<Plan>(`${this.apiUrl}/${id}`);
+  }
+
+  changeStatus(plan: Plan): Observable<any> {
+    return this.http.post<boolean>(`${this.apiUrl}/change-status`, plan);
+  }
 }
