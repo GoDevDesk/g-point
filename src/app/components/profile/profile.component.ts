@@ -9,7 +9,7 @@ import { ChatService } from 'src/app/services/chat.service';
 import { CoverService } from 'src/app/services/cover.service';
 import { FollowsService } from 'src/app/services/follows.service';
 import { ProfileService } from 'src/app/services/profile.service';
-import { SubscriptionsService } from 'src/app/services/subscriptions.service';
+import { PlanService } from 'src/app/services/plan.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -49,9 +49,11 @@ export class ProfileComponent implements OnInit {
   isFollowed = false; // Estado inicial para follow
   isSubscribed = false; // Estado inicial para subscribe
   isLoading = false; // Estado de carga
+  hasPlan = false; // Estado para controlar si existe un plan
+  isCreatePlanModalOpen = false; // Control del estado del modal de creación de plan
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private userService: UserService, private profileService: ProfileService,
-    private coverService: CoverService, private subscriptionsService: SubscriptionsService, private followsService: FollowsService, private router: Router,
+    private coverService: CoverService, private planService: PlanService, private followsService: FollowsService, private router: Router,
     private chatService: ChatService) { }
 
   ngOnInit(): void {
@@ -276,30 +278,39 @@ export class ProfileComponent implements OnInit {
   toggleFollow(): void {
     this.isFollowed = !this.isFollowed;
     this.followsService.updateFollowStatus(Number(this.profileId), this.isFollowed).subscribe({
-      next: () => {},
-      error: (error) => {}
+      next: () => { },
+      error: (error) => { }
     });
   }
 
-  toggleSubscribe(): void {
-    this.isSubscribed = !this.isSubscribed;
-    this.subscriptionsService.updateSubscribeStatus(Number(this.profileId), this.isSubscribed).subscribe({
-      next: () => {},
-      error: (error) => {}
-    });
-  }
+  /*  toggleSubscribe(): void {
+     this.isSubscribed = !this.isSubscribed;
+     this.subscriptionsService.updateSubscribeStatus(Number(this.profileId), this.isSubscribed).subscribe({   //cambio la logica en la que se suscribe
+       next: () => {},
+       error: (error) => {}
+     });
+   } */
 
   loadPage() {
     this.isOwner = this.authService.isProfileOwner(this.profileId);
     if (!this.isOwner) {
       this.receiverId = this.profileId;
       this.GetForeignProfileData(Number(this.profileId));
-
     }
     this.fetchUserProfile();
     this.fetchProfilePhoto();
     this.fetchCoverPhoto();
     this.authService.setVisitedProfileId(Number(this.profileId));
+
+    // Verificar si existe un plan
+    this.planService.haveAnyPlan(Number(this.profileId)).subscribe({
+      next: (hasPlan) => {
+        this.hasPlan = hasPlan;
+      },
+      error: (error) => {
+        console.error('Error al verificar el plan:', error);
+      }
+    });
   }
 
   openChat() {
@@ -326,5 +337,18 @@ export class ProfileComponent implements OnInit {
     } catch (error) {
       console.error('Error al enviar el mensaje:', error);
     }
+  }
+
+  openCreatePlanModal(): void {
+    this.isCreatePlanModalOpen = true;
+  }
+
+  closeCreatePlanModal(): void {
+    this.isCreatePlanModalOpen = false;
+  }
+
+  handlePlanCreated(): void {
+    this.hasPlan = true;
+    this.closeCreatePlanModal();
   }
 }

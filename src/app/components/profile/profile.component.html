@@ -63,11 +63,6 @@
           class="px-10 py-2 rounded-full shadow-lg" (click)="toggleFollow()">
           Follow
         </button>
-        <button
-          [ngClass]="{'bg-pink-500 text-white': isSubscribed, 'bg-white text-black border-gray-500': !isSubscribed}"
-          class="px-10 py-2 rounded-full shadow-lg" (click)="toggleSubscribe()">
-          Subscribe
-        </button>
         <button class="bg-white border border-gray-500 px-4 py-1 rounded-full shadow-lg" (click)="setChats()">Envíame un
           Mensaje</button>
       </div>
@@ -91,6 +86,30 @@
         Drinks
       </button>
     </div>
+    <app-mensual-suscription *ngIf="hasPlan"></app-mensual-suscription>
+    <div *ngIf="!hasPlan && isOwner" class="bg-[#080808] p-6 rounded-lg shadow-lg mt-6">
+      <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-pink-500">Suscripción Mensual</h1>
+        <span class="text-pink-500 text-2xl font-bold">&gt;</span>
+      </div>
+      <div class="flex flex-col gap-3 text-left mt-4">
+        <div class="flex items-center text-white">
+          <i class="fas fa-exclamation-circle text-yellow-500 mr-3"></i>
+          <span>No hay plan de suscripción creado</span>
+        </div>
+        <div class="flex items-center text-white">
+          <i class="fas fa-info-circle text-blue-500 mr-3"></i>
+          <span>Crea un plan para que tus seguidores puedan suscribirse</span>
+        </div>
+        <div class="flex items-center text-white">
+          <i class="fas fa-plus-circle text-green-500 mr-3"></i>
+          <button class="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors" (click)="openCreatePlanModal()">
+            Crear Plan
+          </button>
+        </div>
+      </div>
+    </div>
+    <app-create-plan-modal [isOpen]="isCreatePlanModalOpen" (close)="closeCreatePlanModal()" (planCreated)="handlePlanCreated()"></app-create-plan-modal>
     <app-albums-grid *ngIf="activeTab === 'albums'"></app-albums-grid>
     <app-personal-photos *ngIf="activeTab === 'photos'"></app-personal-photos>
     <app-drinks *ngIf="activeTab === 'drinks'"></app-drinks>

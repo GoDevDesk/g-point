@@ -1,12 +1,9 @@
-
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-
-
 
 import { environment } from 'src/environments/environment';
 import { LoginComponent } from './components/login/login.component';
@@ -44,8 +41,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CreateAlbumModalComponent } from './components/create-album-modal/create-album-modal.component';
-
-
+import { CreatePlanModalComponent } from './components/create-plan-modal/create-plan-modal.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +63,8 @@ import { CreateAlbumModalComponent } from './components/create-album-modal/creat
     ChatComponent,
     ChatBoxComponent,
     ToolbarComponent,
-    CreateAlbumModalComponent
+    CreateAlbumModalComponent,
+    CreatePlanModalComponent
   ],
   imports: [
     SharedModule,
@@ -95,7 +92,7 @@ import { CreateAlbumModalComponent } from './components/create-album-modal/creat
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true, // Permite múltiples interceptores si se agregan otros en el futuro
+      multi: true,
     },
   ]
 })
