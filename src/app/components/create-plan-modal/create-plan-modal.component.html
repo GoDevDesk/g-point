@@ -1,5 +1,8 @@
 <div *ngIf="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-md">
+    <div *ngIf="isLoading" class="loading-overlay">
+      <mat-spinner color="primary"></mat-spinner>
+    </div>
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-2xl font-bold text-white text-center flex-1">Crear Plan de Suscripción</h2>
       <button (click)="closeModal()" class="text-gray-400 hover:text-white">
