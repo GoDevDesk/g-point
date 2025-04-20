@@ -42,6 +42,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CreateAlbumModalComponent } from './components/create-album-modal/create-album-modal.component';
 import { CreatePlanModalComponent } from './components/create-plan-modal/create-plan-modal.component';
+import { PurchaseSuscriptionComponent } from './components/purchase-suscription/purchase-suscription.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { CreatePlanModalComponent } from './components/create-plan-modal/create-
     ChatBoxComponent,
     ToolbarComponent,
     CreateAlbumModalComponent,
-    CreatePlanModalComponent
+    CreatePlanModalComponent,
+    PurchaseSuscriptionComponent
   ],
   imports: [
     SharedModule,

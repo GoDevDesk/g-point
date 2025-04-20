@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PlanService } from 'src/app/services/plan.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Plan } from 'src/app/models/plan';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-mensual-suscription',
@@ -22,7 +22,8 @@ export class MensualSuscriptionComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private planService: PlanService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -99,5 +100,10 @@ export class MensualSuscriptionComponent implements OnInit {
         alert('Error al actualizar el precio. Por favor, intente nuevamente.');
       }
     });
+  }
+
+  onSubscriptionClick(): void {
+    if (this.isOwner) return;    
+    this.router.navigate(['/purchase-suscription']);
   }
 }

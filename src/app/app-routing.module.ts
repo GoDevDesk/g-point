@@ -12,6 +12,8 @@ import { AuthNoLoggedGuard } from './guard/auth-no-logged.guard';
 import { AuthBuyerGuard } from './guard/auth-buyer.guard';
 import { AuthProfileGuard } from './guard/auth-profile.guard';
 import { ProfileNotFoundComponent } from './components/profile-not-found/profile-not-found.component';
+import { AuthPurchaseSuscriptionGuard } from './guards/auth-purchase-suscription.guard';
+import { PurchaseSuscriptionComponent } from './components/purchase-suscription/purchase-suscription.component';
 
 
 const routes: Routes = [
@@ -48,7 +50,12 @@ const routes: Routes = [
   {
     path: 'chat', component: ChatBoxComponent,
     canActivate: [AuthGuard] 
+  },
+  {
+    path: 'purchase-suscription', component: PurchaseSuscriptionComponent,
+    canActivate: [AuthPurchaseSuscriptionGuard] 
   }
+
   // },
   // {
   //   path:"*",
@@ -57,7 +64,6 @@ const routes: Routes = [
   // }
 
 ];
-
 
 
 @NgModule({

@@ -2,7 +2,7 @@
   <mat-spinner color="primary"></mat-spinner>
 </div>
 
-<div *ngIf="isOwner || plan?.active" class="bg-[#080808] p-6 rounded-lg shadow-lg mt-6">
+<div *ngIf="isOwner || plan?.active" [class.cursor-pointer]="!isOwner" [class.hover\:bg-gray-900]="!isOwner" class="bg-[#080808] p-6 rounded-lg shadow-lg mt-6" (click)="onSubscriptionClick()">
   <div class="flex items-center justify-between">
     <h1 class="text-2xl font-bold text-pink-500">Suscripción Mensual</h1>
     <div *ngIf="isOwner" class="flex items-center gap-4">

@@ -1,0 +1,58 @@
+<div class="min-h-screen bg-[#080808] text-white p-6">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold text-pink-500 mb-8">Confirmar Suscripción</h1>
+    
+    <div class="bg-gray-900 rounded-lg p-6 shadow-lg mb-8">
+      <h2 class="text-xl font-semibold mb-4">Detalles de la Suscripción</h2>
+      
+      <div class="space-y-4">
+        <div class="flex items-center">
+          <i class="fas fa-calendar text-blue-500 mr-3 w-6"></i>
+          <span>Duración: 1 mes</span>
+        </div>
+        
+        <div class="flex items-center">
+          <i class="fas fa-dollar-sign text-blue-500 mr-3 w-6"></i>
+          <span>Precio: ARS {{ plan?.price }}</span>
+        </div>
+        
+        <div class="flex items-start">
+          <i class="fas fa-check-circle text-blue-500 mr-3 w-6 mt-1"></i>
+          <span>Acceso completo a todo el contenido del creador durante el período de suscripción</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-900 rounded-lg p-6 shadow-lg mb-8">
+      <h2 class="text-xl font-semibold mb-4">Acuerdo Legal</h2>
+      
+      <div class="space-y-4 text-sm text-gray-300">
+        <p>Al proceder con el pago, aceptas los siguientes términos:</p>
+        
+        <ul class="list-disc pl-5 space-y-2">
+          <li>La suscripción se renovará automáticamente al finalizar cada período</li>
+          <li>Puedes cancelar la suscripción en cualquier momento</li>
+          <li>No se realizan reembolsos por suscripciones canceladas durante el período activo</li>
+          <li>El contenido está protegido por derechos de autor</li>
+          <li>No está permitido compartir o distribuir el contenido</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-4">
+      <button 
+        (click)="goBack()"
+        class="flex-1 px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
+      >
+        Cancelar
+      </button>
+      
+      <button 
+        (click)="proceedToPayment()"
+        class="flex-1 px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors"
+      >
+        Proceder al Pago
+      </button>
+    </div>
+  </div>
+</div>
