@@ -15,6 +15,9 @@ export class MensualSuscriptionComponent implements OnInit {
   isPlanActive = true;
   isOwner: boolean = false;
   profileId: string = ''; // ID del perfil visitado
+  isEditPriceModalOpen = false;
+  newPrice: number = 0;
+  isSavingPrice = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -49,18 +52,52 @@ export class MensualSuscriptionComponent implements OnInit {
 
   togglePlanStatus(): void {
     this.isLoading = true;
+    this.isSavingPrice = true;
     if (this.plan) {
       this.plan.active = !this.isPlanActive;
       this.planService.changeStatus(this.plan).subscribe({
         next: (response) => {
-          this.isPlanActive = !this.isPlanActive;
+          this.isPlanActive = !this.isPlanActive;          
           this.isLoading = false;
+          this.isSavingPrice = false;
         },
         error: (error) => {
           console.error('Error al cambiar el estado del plan:', error);
           this.isLoading = false;
+          this.isSavingPrice = false;
         }
       });
     }
+  }
+
+  openEditPriceModal(): void {
+    this.newPrice = this.plan?.price || 0;
+    this.isEditPriceModalOpen = true;
+  }
+
+  closeEditPriceModal(): void {
+    this.isEditPriceModalOpen = false;
+    this.newPrice = 0;
+  }
+
+  onSubmitEditPrice(): void {
+    if (!this.plan || this.newPrice <= 0) return;
+
+    this.isLoading = true;
+    this.plan.price = this.newPrice;
+    
+    this.planService.changePrice(this.plan).subscribe({
+      next: (response) => {
+        this.plan = response;
+        this.isLoading = false;
+        this.isEditPriceModalOpen = false;
+        alert('Precio actualizado exitosamente');
+      },
+      error: (error) => {
+        console.error('Error al actualizar el precio:', error);
+        this.isLoading = false;
+        alert('Error al actualizar el precio. Por favor, intente nuevamente.');
+      }
+    });
   }
 }

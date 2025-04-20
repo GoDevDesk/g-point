@@ -28,4 +28,8 @@ export class PlanService {
   changeStatus(plan: Plan): Observable<any> {
     return this.http.post<boolean>(`${this.apiUrl}/change-status`, plan);
   }
+
+  changePrice(plan: Plan): Observable<any> {
+    return this.http.post<boolean>(`${this.apiUrl}/change-price`, plan);
+  }
 }
