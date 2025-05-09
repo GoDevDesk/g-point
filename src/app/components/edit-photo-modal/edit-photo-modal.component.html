@@ -15,6 +15,20 @@
         class="w-32 h-32 rounded-full border border-gray-600 object-cover mb-4"
       />
 
+      <!-- Mensaje de error -->
+      <div *ngIf="errorMessage" class="text-red-500 text-sm mb-2">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Información de formatos permitidos -->
+      <div class="text-gray-400 text-sm mb-2">
+        <p>Formatos permitidos:</p>
+        <ul class="list-disc list-inside">
+          <li>Fotos: JPG, PNG, GIF (máx. 10MB)</li>
+          <li>Videos: MP4, MOV, AVI (máx. 100MB)</li>
+        </ul>
+      </div>
+
       <!-- Botón para subir una foto -->
       <label
         class="block w-full text-center"

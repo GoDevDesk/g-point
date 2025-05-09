@@ -19,21 +19,41 @@ export class CreatePostModalComponent {
   selectedFile: File | null = null;
   isLoading = false;
 
+  // Constantes para validación
+  readonly MAX_PHOTO_SIZE = 10 * 1024 * 1024; // 10MB para fotos
+  readonly MAX_VIDEO_SIZE = 100 * 1024 * 1024; // 100MB para videos
+  readonly ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
+  readonly ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/x-msvideo'];
+  errorMessage: string | null = null;
 
   constructor() {    
   }
-
-///los dos de arriba son los q agregue
 
   onPhotoUpload(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input?.files?.[0]) {
       const file = input.files[0];
       
-      // Asignar el archivo seleccionado
+      // Determinar si es foto o video
+      const isPhoto = this.ALLOWED_PHOTO_TYPES.includes(file.type);
+      const isVideo = this.ALLOWED_VIDEO_TYPES.includes(file.type);
+
+      if (!isPhoto && !isVideo) {
+        this.errorMessage = 'Solo se permiten archivos JPG, PNG, GIF, MP4, MOV y AVI';
+        return;
+      }
+
+      // Validar tamaño según el tipo
+      const maxSize = isPhoto ? this.MAX_PHOTO_SIZE : this.MAX_VIDEO_SIZE;
+      if (file.size > maxSize) {
+        const maxSizeMB = isPhoto ? 10 : 100;
+        this.errorMessage = `El archivo no debe superar los ${maxSizeMB}MB`;
+        return;
+      }
+
+      // Si pasa las validaciones, limpiar mensaje de error y continuar
+      this.errorMessage = null;
       this.selectedFile = file;
-  
-      // Leer el archivo para vista previa de manera asíncrona
       this.getFilePreview(file);
     }
   }
@@ -45,8 +65,7 @@ export class CreatePostModalComponent {
       try {
         this.previewPhoto = e.target?.result as string || null;
         if (this.previewPhoto == null)
-          this.previewPhoto =  this.defaultPhoto;
-
+          this.previewPhoto = this.defaultPhoto;
       } catch (error) {
         console.error('Error procesando la vista previa', error);
       }
@@ -62,6 +81,8 @@ export class CreatePostModalComponent {
   // Cerrar el modal
   closeModal(): void {
     this.previewPhoto = null;
+    this.selectedFile = null;
+    this.errorMessage = null;
     this.close.emit();
   }
 
