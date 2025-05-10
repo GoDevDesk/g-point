@@ -16,6 +16,7 @@ import { AuthPurchaseSuscriptionGuard } from './guards/auth-purchase-suscription
 import { PurchaseSuscriptionComponent } from './components/purchase-suscription/purchase-suscription.component';
 import { HomeComponent } from './components/home/home.component';
 import { ReportComponent } from './components/report/report.component';
+import { AuthReportGuard } from './guard/auth-report.guard';
 
 
 const routes: Routes = [
@@ -61,9 +62,9 @@ const routes: Routes = [
     path: 'home', component: HomeComponent
   },
   {
-    path: 'report-content', component: ReportComponent
+    path: 'report-content', component: ReportComponent,
+    canActivate: [AuthReportGuard]
   }
-
   // },
   // {
   //   path:"*",

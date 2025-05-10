@@ -7,11 +7,13 @@
   <!-- Barra lateral de navegación -->
   <nav class="sidebar" [class.active]="sidebarActive">
     <div class="sidebar-header">
-      <h3>Estadísticas</h3>
+      <h3>Información</h3>
     </div>
     <ul>
-      <li *ngFor="let seccion of secciones" (click)="scrollToSection(seccion.id)">
-        {{ seccion.nombre }}
+      <li *ngFor="let section of sections" (click)="scrollToSection(section.id)">
+        {{ section.name === 'Billing' ? 'Facturación' : 
+           section.name === 'Sales' ? 'Ventas' : 
+           section.name === 'Community' ? 'Comunidad' : section.name }}
       </li>
     </ul>
   </nav>
@@ -19,84 +21,144 @@
   <!-- Contenido principal -->
   <main class="content">
     <!-- Sección de Facturación -->
-    <section id="facturacion" class="section">
+    <section id="billing" class="section">
       <h2>Facturación Total</h2>
-      <div class="card highlight">
+      <div class="card highlight" [style.background-color]="getCurrentRank().color + '15'" [style.border-left-color]="getCurrentRank().color">
         <div class="card-header">
           <h3>Total Facturado</h3>
-          <button class="settings-button" (click)="openObjectiveSettings()">
-            <span>⚙️</span>
+          <button class="info-button" (click)="toggleRankInfo()">
+            <span>ℹ️</span>
           </button>
         </div>
-        <p class="amount">${{ totalFacturado | number:'1.0-0' }}</p>
-        <div class="progress-container">
+        <div class="rango-info" *ngIf="showRankInfo">
+          <h4>Sistema de Niveles</h4>
+          <div class="rangos-list">
+            <div class="rango-item" *ngFor="let rank of ranks">
+              <span class="rango-icon">{{ rank.icon }}</span>
+              <span class="rango-nombre">{{ rank.name === 'Bronze' ? 'Bronce' : 
+                                         rank.name === 'Silver' ? 'Plata' : 
+                                         rank.name === 'Gold' ? 'Oro' : 
+                                         rank.name === 'Diamond' ? 'Diamante' : rank.name }}</span>
+              <span class="rango-objetivo">${{ rank.goal | number:'1.0-0' }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="rango-actual" [style.background-color]="getCurrentRank().color + '20'">
+          <div class="rango-icon">{{ getCurrentRank().icon }}</div>
+          <div class="rango-details">
+            <p class="amount">${{ totalBilled | number:'1.0-0' }}</p>
+            <p class="rango-nombre">Nivel {{ getCurrentRank().name === 'Bronze' ? 'Bronce' : 
+                                           getCurrentRank().name === 'Silver' ? 'Plata' : 
+                                           getCurrentRank().name === 'Gold' ? 'Oro' : 
+                                           getCurrentRank().name === 'Diamond' ? 'Diamante' : getCurrentRank().name }}</p>
+          </div>
+        </div>
+        <div class="progress-container" *ngIf="getNextRank()">
           <div class="progress-bar">
-            <div class="progress" [style.width.%]="getProgresoObjetivo()"></div>
+            <div class="progress" [style.width.%]="getCurrentLevelProgress()"></div>
           </div>
           <div class="progress-info">
-            <span>Objetivo: ${{ objetivoFacturacion | number:'1.0-0' }}</span>
-            <span>{{ getProgresoFormateado() }}</span>
+            <span>Progreso al siguiente nivel: {{ getNextRank()?.name === 'Bronze' ? 'Bronce' : 
+                                  getNextRank()?.name === 'Silver' ? 'Plata' : 
+                                  getNextRank()?.name === 'Gold' ? 'Oro' : 
+                                  getNextRank()?.name === 'Diamond' ? 'Diamante' : getNextRank()?.name }} 
+              ({{ getNextRank()?.icon }})</span>
+            <span>{{ getFormattedProgress() }}</span>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Sección de Ventas -->
-    <section id="ventas" class="section">
+    <section id="sales" class="section">
       <h2>Estadísticas de Ventas</h2>
       <div class="stats-grid">
         <div class="card">
           <h3>Álbumes Vendidos</h3>
-          <p class="amount">{{ ventas.albumesVendidos }}</p>
+          <p class="amount">{{ sales.albumsSold }}</p>
         </div>
         <div class="card">
           <h3>Donaciones Recibidas</h3>
-          <p class="amount">${{ ventas.donacionesRecibidas | number:'1.0-0' }}</p>
+          <div class="donations-row">
+            <span class="donations-count">{{ sales.donationsCount }}</span>
+            <span class="donations-amount">${{ sales.donationsReceived | number:'1.0-0' }}</span>
+          </div>
         </div>
         <div class="card">
           <h3>Ventas por Chat</h3>
-          <p class="amount">${{ ventas.ventasChat | number:'1.0-0' }}</p>
+          <p class="amount">${{ sales.chatSales | number:'1.0-0' }}</p>
         </div>
       </div>
     </section>
 
     <!-- Sección de Comunidad -->
-    <section id="comunidad" class="section">
+    <section id="community" class="section">
       <h2>Estadísticas de Comunidad</h2>
       <div class="stats-grid">
         <div class="card">
           <h3>Seguidores</h3>
-          <p class="amount">{{ comunidad.seguidores }}</p>
+          <p class="amount">{{ community.followers }}</p>
         </div>
         <div class="card">
           <h3>Suscriptores</h3>
-          <p class="amount">{{ comunidad.suscriptores }}</p>
+          <p class="amount">{{ community.subscribers }}</p>
         </div>
+      </div>
+    </section>
+
+    <!-- Sección de Contenido -->
+    <section id="content" class="section">
+      <h2>Estadísticas de Contenido</h2>
+      <div class="stats-grid">
         <div class="card">
           <h3>Álbumes Publicados</h3>
-          <p class="amount">{{ comunidad.cantidadAlbums }}</p>
+          <p class="amount">{{ content.albumsCount }}</p>
+        </div>
+        <div class="card">
+          <h3>Fotos Publicadas</h3>
+          <p class="amount">{{ content.photosCount }}</p>
+        </div>
+        <div class="card">
+          <h3>Videos Publicados</h3>
+          <p class="amount">{{ content.videosCount }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Análisis -->
+    <section id="analysis" class="section">
+      <h2>Análisis de Ventas</h2>
+      <div class="analysis-container">
+        <div class="filter-buttons">
+          <button 
+            [class.active]="selectedFilter === 'all'"
+            (click)="onFilterChange('all')">
+            Todos
+          </button>
+          <button 
+            [class.active]="selectedFilter === 'albums'"
+            (click)="onFilterChange('albums')">
+            Álbumes
+          </button>
+          <button 
+            [class.active]="selectedFilter === 'chat'"
+            (click)="onFilterChange('chat')">
+            Chat
+          </button>
+          <button 
+            [class.active]="selectedFilter === 'donations'"
+            (click)="onFilterChange('donations')">
+            Donaciones
+          </button>
+        </div>
+        <div class="chart-container">
+          <canvas baseChart
+            [data]="chartData"
+            [options]="chartOptions"
+            [type]="chartType">
+          </canvas>
         </div>
       </div>
     </section>
   </main>
-
-  <!-- Modal de configuración del objetivo -->
-  <div class="objective-settings" *ngIf="showObjectiveSettings">
-    <div class="modal-content">
-      <h3>Configurar Objetivo de Facturación</h3>
-      <div class="input-group">
-        <label for="nuevoObjetivo">Nuevo Objetivo ($)</label>
-        <input 
-          type="number" 
-          id="nuevoObjetivo" 
-          [(ngModel)]="nuevoObjetivo" 
-          min="0"
-          placeholder="Ingrese el nuevo objetivo">
-      </div>
-      <div class="button-group">
-        <button class="cancel" (click)="cancelarConfiguracion()">Cancelar</button>
-        <button class="save" (click)="guardarObjetivo()">Guardar</button>
-      </div>
-    </div>
-  </div>
 </div>
