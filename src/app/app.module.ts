@@ -43,6 +43,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CreateAlbumModalComponent } from './components/create-album-modal/create-album-modal.component';
 import { CreatePlanModalComponent } from './components/create-plan-modal/create-plan-modal.component';
 import { PurchaseSuscriptionComponent } from './components/purchase-suscription/purchase-suscription.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { PurchaseSuscriptionComponent } from './components/purchase-suscription/
     ToolbarComponent,
     CreateAlbumModalComponent,
     CreatePlanModalComponent,
-    PurchaseSuscriptionComponent
+    PurchaseSuscriptionComponent,
+    HomeComponent
   ],
   imports: [
     SharedModule,
