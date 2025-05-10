@@ -88,11 +88,6 @@
         <!-- Ícono -->
         Photos
       </button>
-      <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'drinks'"
-        (click)="activeTab = 'drinks'">
-        <!-- Ícono -->
-        Drinks
-      </button>
     </div>
     <app-mensual-suscription *ngIf="hasPlan"></app-mensual-suscription>
     <div *ngIf="!hasPlan && isOwner" class="bg-[#080808] p-6 rounded-lg shadow-lg mt-6">
@@ -120,6 +115,5 @@
     <app-create-plan-modal [isOpen]="isCreatePlanModalOpen" (close)="closeCreatePlanModal()" (planCreated)="handlePlanCreated()"></app-create-plan-modal>
     <app-albums-grid *ngIf="activeTab === 'albums'"></app-albums-grid>
     <app-personal-photos *ngIf="activeTab === 'photos'"></app-personal-photos>
-    <app-drinks *ngIf="activeTab === 'drinks'"></app-drinks>
   </div>
 </div>

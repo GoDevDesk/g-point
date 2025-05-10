@@ -17,7 +17,6 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AlbumsGridComponent } from './components/albums-grid/albums-grid.component';
 import { ToolbarFooterComponent } from './components/toolbar-footer/toolbar-footer.component';
 import { PersonalPhotosComponent } from './components/personal-photos/personal-photos.component';
-import { DrinksComponent } from './components/drinks/drinks.component';
 import { AuthService } from './services/auth.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -54,7 +53,6 @@ import { HomeComponent } from './components/home/home.component';
     AlbumsGridComponent,
     ToolbarFooterComponent,
     PersonalPhotosComponent,
-    DrinksComponent,
     MensualSuscriptionComponent,
     LooseDrinkComponent,
     AlbumContentComponent,
