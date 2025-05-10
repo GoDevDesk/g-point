@@ -1,0 +1,102 @@
+<div class="report-container">
+  <!-- Botón de menú para móvil -->
+  <button class="menu-toggle" (click)="toggleSidebar()">
+    <span>☰</span>
+  </button>
+
+  <!-- Barra lateral de navegación -->
+  <nav class="sidebar" [class.active]="sidebarActive">
+    <div class="sidebar-header">
+      <h3>Estadísticas</h3>
+    </div>
+    <ul>
+      <li *ngFor="let seccion of secciones" (click)="scrollToSection(seccion.id)">
+        {{ seccion.nombre }}
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main class="content">
+    <!-- Sección de Facturación -->
+    <section id="facturacion" class="section">
+      <h2>Facturación Total</h2>
+      <div class="card highlight">
+        <div class="card-header">
+          <h3>Total Facturado</h3>
+          <button class="settings-button" (click)="openObjectiveSettings()">
+            <span>⚙️</span>
+          </button>
+        </div>
+        <p class="amount">${{ totalFacturado | number:'1.0-0' }}</p>
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress" [style.width.%]="getProgresoObjetivo()"></div>
+          </div>
+          <div class="progress-info">
+            <span>Objetivo: ${{ objetivoFacturacion | number:'1.0-0' }}</span>
+            <span>{{ getProgresoFormateado() }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Ventas -->
+    <section id="ventas" class="section">
+      <h2>Estadísticas de Ventas</h2>
+      <div class="stats-grid">
+        <div class="card">
+          <h3>Álbumes Vendidos</h3>
+          <p class="amount">{{ ventas.albumesVendidos }}</p>
+        </div>
+        <div class="card">
+          <h3>Donaciones Recibidas</h3>
+          <p class="amount">${{ ventas.donacionesRecibidas | number:'1.0-0' }}</p>
+        </div>
+        <div class="card">
+          <h3>Ventas por Chat</h3>
+          <p class="amount">${{ ventas.ventasChat | number:'1.0-0' }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Comunidad -->
+    <section id="comunidad" class="section">
+      <h2>Estadísticas de Comunidad</h2>
+      <div class="stats-grid">
+        <div class="card">
+          <h3>Seguidores</h3>
+          <p class="amount">{{ comunidad.seguidores }}</p>
+        </div>
+        <div class="card">
+          <h3>Suscriptores</h3>
+          <p class="amount">{{ comunidad.suscriptores }}</p>
+        </div>
+        <div class="card">
+          <h3>Álbumes Publicados</h3>
+          <p class="amount">{{ comunidad.cantidadAlbums }}</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal de configuración del objetivo -->
+  <div class="objective-settings" *ngIf="showObjectiveSettings">
+    <div class="modal-content">
+      <h3>Configurar Objetivo de Facturación</h3>
+      <div class="input-group">
+        <label for="nuevoObjetivo">Nuevo Objetivo ($)</label>
+        <input 
+          type="number" 
+          id="nuevoObjetivo" 
+          [(ngModel)]="nuevoObjetivo" 
+          min="0"
+          placeholder="Ingrese el nuevo objetivo">
+      </div>
+      <div class="button-group">
+        <button class="cancel" (click)="cancelarConfiguracion()">Cancelar</button>
+        <button class="save" (click)="guardarObjetivo()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>

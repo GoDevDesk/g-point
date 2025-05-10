@@ -15,6 +15,7 @@ import { ProfileNotFoundComponent } from './components/profile-not-found/profile
 import { AuthPurchaseSuscriptionGuard } from './guards/auth-purchase-suscription.guard';
 import { PurchaseSuscriptionComponent } from './components/purchase-suscription/purchase-suscription.component';
 import { HomeComponent } from './components/home/home.component';
+import { ReportComponent } from './components/report/report.component';
 
 
 const routes: Routes = [
@@ -58,6 +59,9 @@ const routes: Routes = [
   },
   {
     path: 'home', component: HomeComponent
+  },
+  {
+    path: 'report-content', component: ReportComponent
   }
 
   // },
