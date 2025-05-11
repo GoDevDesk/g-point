@@ -119,7 +119,7 @@ export class ReportComponent implements OnInit {
   }
 
   loadData(): void {
-    // Simulated data - Replace with real service call
+    // Simulated data - Replace withs real service call
     this.totalBilled = 19000;
     
     this.sales = {
