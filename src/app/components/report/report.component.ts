@@ -11,7 +11,7 @@ interface Rank {
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
-  styleUrls: ['./report.component.scss']
+  styleUrls: ['./report.component.scss', './report-chart.scss', './report-utils.scss']
 })
 export class ReportComponent implements OnInit {
   // Billing data
