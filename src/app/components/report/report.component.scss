@@ -1,6 +1,5 @@
+@import '../../styles/utils.scss';
 @import './report-vars.scss';
-@import './report-utils.scss';
-@import './report-chart.scss';
 
 .report-container {
   display: flex;
@@ -11,7 +10,15 @@
 }
 
 .sidebar {
-  @extend .sidebar-base;
+  width: 250px;
+  background: $bg-card;
+  position: fixed;
+  top: 70px;
+  left: 0;
+  height: calc(100vh - 70px);
+  border-right: 1px solid $border;
+  z-index: 1000;
+  transition: transform $t;
 
   .sidebar-header {
     padding: 0 1.5rem 0.5rem;
@@ -76,20 +83,11 @@
     margin-bottom: 1rem;
     font-size: 1.1rem;
   }
-
-  .amount {
-    @extend .amount;
-  }
 }
 
 .highlight {
   background-color: $bg-card;
   border-left: 4px solid #2e7d32;
-
-  .amount {
-    color: $text;
-    font-size: 2.5rem;
-  }
 }
 
 .progress-container {
@@ -98,26 +96,10 @@
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.progress-bar {
-  @extend .progress-base;
-}
-
 .progress-info {
   @include flex(row, center, space-between);
   color: #6c757d;
   font-size: 0.9rem;
-}
-
-.donations-row {
-  @extend .donations-base;
-}
-
-.rango-actual {
-  @extend .rank-base;
-}
-
-.rango-info {
-  @extend .rango-info-base;
 }
 
 .menu-toggle {
@@ -161,14 +143,6 @@
 
   .section {
     padding: 1rem;
-  }
-
-  .card .amount {
-    font-size: 1.5rem;
-  }
-
-  .highlight .amount {
-    font-size: 2rem;
   }
 
   .menu-toggle {

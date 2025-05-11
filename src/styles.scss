@@ -5,15 +5,173 @@
 @tailwind components;
 @tailwind utilities;
 
+// Utilidades globales
+@import './app/styles/utils.scss';
 
-html body {
-    background-color: black;
-    color: rgb(236 72 153 / var(--tw-bg-opacity, 1));
+// Estilos base
+html, body { 
+  height: 85%; 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: black;
+  color: rgb(236 72 153 / var(--tw-bg-opacity, 1));
 }
 
+// Clases utilitarias
 .gray-cards {
-    background-color: #363636; /* Cambia este valor según lo que necesites */
+  background-color: #363636;
+}
+
+.container-base {
+  width: 100%;
+  overflow-x: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.chart-base {
+  height: 350px;
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 300px;
+  background: $bg-hover;
+  border-radius: $radius;
+  padding: 1rem;
+}
+
+.progress-base {
+  width: 100%;
+  height: 20px;
+  background: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+
+  .progress {
+    height: 100%;
+    background: #4caf50;
+    transition: width 0.5s ease;
+    border-radius: 10px;
   }
-html, body { height: 85%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+}
+
+.donations-base {
+  @include flex(column);
+  gap: 0.5rem;
+
+  .donations-count {
+    font-size: 2rem;
+    font-weight: bold;
+    color: $text;
+  }
+
+  .donations-amount {
+    font-size: 1.2rem;
+    color: $text-muted;
+  }
+}
+
+.rank-base {
+  @include flex;
+  padding: 1.5rem;
+  border-radius: $radius;
+  margin: 1rem 0;
+  background: rgba(255,255,255,.05);
+
+  .rango-icon {
+    font-size: 3rem;
+    margin-right: 1rem;
+  }
+
+  .rango-details {
+    .amount {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 0;
+      color: $text;
+    }
+
+    .rango-nombre {
+      margin: 0.5rem 0 0 0;
+      font-size: 1.2rem;
+      color: $text-muted;
+    }
+  }
+}
+
+.rango-info-base {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: $radius;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  padding: 1rem;
+  z-index: 1000;
+  width: 300px;
+  margin-top: 0.5rem;
+
+  h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+  }
+
+  .rangos-list .rango-item {
+    @include flex;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .rango-icon {
+      font-size: 1.5rem;
+      margin-right: 0.5rem;
+    }
+
+    .rango-nombre {
+      flex: 1;
+      font-weight: 500;
+    }
+
+    .rango-objetivo {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+/* You can add global styles to this file, and also import other style files */
+@import './app/components/report/report-vars.scss';
+
+// Utilidades globales
+.card-base {
+  @include card;
+  text-align: center;
+  transition: transform $t;
+  &:hover { transform: translateY(-5px); }
+}
+
+.amount {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: $text;
+  margin: 0;
+}
+
+.section-base {
+  margin-bottom: 2rem;
+  @include card;
+  box-shadow: $shadow;
+}
 
