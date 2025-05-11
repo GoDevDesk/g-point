@@ -7,6 +7,10 @@
   background-color: $bg-dark;
   position: relative;
   padding-top: 70px;
+
+  @include mq(768px) {
+    padding-top: 65px;
+  }
 }
 
 .sidebar {
@@ -19,6 +23,17 @@
   border-right: 1px solid $border;
   z-index: 1000;
   transition: transform $t;
+
+  @include mq(768px) {
+    transform: translateX(-100%);
+    width: 250px;
+    height: calc(100vh - 65px);
+    top: 65px;
+
+    &.active {
+      transform: translateX(0);
+    }
+  }
 
   .sidebar-header {
     padding: 0 1.5rem 0.5rem;
@@ -57,6 +72,11 @@
   margin-left: 250px;
   padding: 0.5rem 2rem;
   transition: margin $t;
+
+  @include mq(768px) {
+    margin-left: 0;
+    padding: 1rem;
+  }
 }
 
 .section {
@@ -66,6 +86,10 @@
     color: $text;
     margin-bottom: 1rem;
     font-size: 1.5rem;
+
+    @include mq(768px) {
+      font-size: 1.3rem;
+    }
   }
 }
 
@@ -73,15 +97,25 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
+
+  @include mq(768px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 }
 
 .card {
   @extend .card-base;
+  position: relative;
 
   h3 {
     color: $text-muted;
     margin-bottom: 1rem;
     font-size: 1.1rem;
+
+    @include mq(768px) {
+      font-size: 1rem;
+    }
   }
 }
 
@@ -114,39 +148,30 @@
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
+
+  @include mq(768px) {
+    display: block;
+    top: 70px;
+  }
 }
 
-@include mq(768px) {
-  .report-container {
-    padding-top: 65px;
-  }
-
-  .sidebar {
-    transform: translateX(-100%);
-    width: 200px;
-    height: calc(100vh - 65px);
-    top: 65px;
-
-    &.active {
-      transform: translateX(0);
+.analysis-container {
+  .filter-buttons {
+    @include mq(768px) {
+      gap: 0.25rem;
+      
+      button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+      }
     }
   }
 
-  .content {
-    margin-left: 0;
-    padding: 1rem;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .section {
-    padding: 1rem;
-  }
-
-  .menu-toggle {
-    display: block;
-    top: 80px;
+  .chart-container {
+    @include mq(768px) {
+      height: 300px;
+      min-height: 250px;
+      padding: 1rem;
+    }
   }
 }
