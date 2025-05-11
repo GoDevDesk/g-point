@@ -1,0 +1,15 @@
+// Variables
+$bg-dark: #121212;
+$bg-card: #1e1e1e;
+$bg-hover: #2d2d2d;
+$text: #fff;
+$text-muted: #bdbdbd;
+$border: rgba(255,255,255,.1);
+$t: .3s ease;
+$shadow: 0 2px 4px rgba(0,0,0,.2);
+$radius: 8px;
+
+// Mixins
+@mixin flex($d:row,$a:center,$j:center){display:flex;flex-direction:$d;align-items:$a;justify-content:$j}
+@mixin card{background:$bg-card;border-radius:$radius;padding:1.5rem}
+@mixin mq($w){@media (max-width:$w){@content}} 

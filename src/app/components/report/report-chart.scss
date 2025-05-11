@@ -1,25 +1,62 @@
-@import './report-utils.scss';
+@import './report-vars.scss';
 
 .analysis-container {
-  @extend .container-base;
-  @include card;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  overflow-x: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .filter-buttons {
-  @extend .button-group;
-  
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
   button {
-    @include button-base;
+    padding: 0.5rem 1rem;
+    border: 2px solid #3d3d3d;
+    border-radius: 20px;
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    min-width: 90px;
+
+    &:hover {
+      background-color: #3d3d3d;
+      border-color: #4d4d4d;
+    }
+
+    &.active {
+      background-color: #2196F3;
+      border-color: #2196F3;
+      color: white;
+    }
   }
 }
 
 .chart-container {
-  @extend .chart-base;
+  height: 350px;
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 300px;
+  background-color: #2d2d2d;
+  border-radius: 8px;
+  padding: 1rem;
 }
 
-@include mq(768px) {
+@media (max-width: 768px) {
   .analysis-container {
     padding: 1rem;
+    max-width: 100%;
   }
 
   .filter-buttons {
@@ -43,7 +80,7 @@
   }
 }
 
-@include mq(480px) {
+@media (max-width: 480px) {
   .filter-buttons {
     gap: 0.3rem;
     
