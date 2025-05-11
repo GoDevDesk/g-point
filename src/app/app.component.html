@@ -4,6 +4,10 @@
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #guestMenu="matMenu">
+    <button mat-menu-item (click)="navigateToHome()">
+      <mat-icon>home</mat-icon>
+      Inicio
+    </button>
     <button mat-menu-item (click)="navigateToLogin()">
       <mat-icon>login</mat-icon>
       Iniciar sesión
