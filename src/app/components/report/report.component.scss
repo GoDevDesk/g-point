@@ -10,16 +10,7 @@
 }
 
 .sidebar {
-  width: 250px;
-  background-color: $bg-card;
-  color: $text;
-  padding: 1rem 0;
-  position: fixed;
-  height: calc(100vh - 70px);
-  top: 70px;
-  overflow-y: auto;
-  transition: transform $t;
-  z-index: 1000;
+  @extend .sidebar-base;
 
   .sidebar-header {
     padding: 0 1.5rem 0.5rem;
@@ -107,19 +98,7 @@
 }
 
 .progress-bar {
-  width: 100%;
-  height: 20px;
-  background-color: #e9ecef;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 0.5rem;
-
-  .progress {
-    height: 100%;
-    background-color: #4caf50;
-    transition: width 0.5s ease;
-    border-radius: 10px;
-  }
+  @extend .progress-base;
 }
 
 .progress-info {
@@ -128,91 +107,16 @@
   font-size: 0.9rem;
 }
 
-.rango-info {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  padding: 1rem;
-  z-index: 1000;
-  width: 300px;
-  margin-top: 0.5rem;
-
-  h4 {
-    margin: 0 0 1rem 0;
-    font-size: 1.1rem;
-  }
-
-  .rangos-list .rango-item {
-    @include flex;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #eee;
-
-    &:last-child {
-      border-bottom: none;
-    }
-
-    .rango-icon {
-      font-size: 1.5rem;
-      margin-right: 0.5rem;
-    }
-
-    .rango-nombre {
-      flex: 1;
-      font-weight: 500;
-    }
-
-    .rango-objetivo {
-      color: #6c757d;
-      font-size: 0.9rem;
-    }
-  }
-}
-
 .donations-row {
-  @include flex(column);
-  gap: 0.5rem;
-
-  .donations-count {
-    font-size: 2rem;
-    font-weight: bold;
-    color: $text;
-  }
-
-  .donations-amount {
-    font-size: 1.2rem;
-    color: $text-muted;
-  }
+  @extend .donations-base;
 }
 
 .rango-actual {
-  @include flex;
-  padding: 1.5rem;
-  border-radius: $radius;
-  margin: 1rem 0;
-  background-color: rgba(255, 255, 255, 0.05);
+  @extend .rank-base;
+}
 
-  .rango-icon {
-    font-size: 3rem;
-    margin-right: 1rem;
-  }
-
-  .rango-details {
-    .amount {
-      font-size: 2.5rem;
-      font-weight: bold;
-      margin: 0;
-      color: $text;
-    }
-
-    .rango-nombre {
-      margin: 0.5rem 0 0 0;
-      font-size: 1.2rem;
-      color: $text-muted;
-    }
-  }
+.rango-info {
+  @extend .rango-info-base;
 }
 
 .menu-toggle {

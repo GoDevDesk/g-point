@@ -32,10 +32,7 @@ $radius: 8px;
   @include card;
   text-align: center;
   transition: transform $t;
-
-  &:hover {
-    transform: translateY(-5px);
-  }
+  &:hover { transform: translateY(-5px); }
 }
 
 .amount {
@@ -75,4 +72,121 @@ $radius: 8px;
   background: $bg-hover;
   border-radius: $radius;
   padding: 1rem;
+}
+
+// Nuevas utilidades
+.sidebar-base {
+  width: 250px;
+  background: $bg-card;
+  color: $text;
+  padding: 1rem 0;
+  position: fixed;
+  height: calc(100vh - 70px);
+  top: 70px;
+  overflow-y: auto;
+  transition: transform $t;
+  z-index: 1000;
+}
+
+.progress-base {
+  width: 100%;
+  height: 20px;
+  background: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+
+  .progress {
+    height: 100%;
+    background: #4caf50;
+    transition: width 0.5s ease;
+    border-radius: 10px;
+  }
+}
+
+.donations-base {
+  @include flex(column);
+  gap: 0.5rem;
+
+  .donations-count {
+    font-size: 2rem;
+    font-weight: bold;
+    color: $text;
+  }
+
+  .donations-amount {
+    font-size: 1.2rem;
+    color: $text-muted;
+  }
+}
+
+.rank-base {
+  @include flex;
+  padding: 1.5rem;
+  border-radius: $radius;
+  margin: 1rem 0;
+  background: rgba(255,255,255,.05);
+
+  .rango-icon {
+    font-size: 3rem;
+    margin-right: 1rem;
+  }
+
+  .rango-details {
+    .amount {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 0;
+      color: $text;
+    }
+
+    .rango-nombre {
+      margin: 0.5rem 0 0 0;
+      font-size: 1.2rem;
+      color: $text-muted;
+    }
+  }
+}
+
+.rango-info-base {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: $radius;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  padding: 1rem;
+  z-index: 1000;
+  width: 300px;
+  margin-top: 0.5rem;
+
+  h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+  }
+
+  .rangos-list .rango-item {
+    @include flex;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .rango-icon {
+      font-size: 1.5rem;
+      margin-right: 0.5rem;
+    }
+
+    .rango-nombre {
+      flex: 1;
+      font-weight: 500;
+    }
+
+    .rango-objetivo {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+  }
 } 
