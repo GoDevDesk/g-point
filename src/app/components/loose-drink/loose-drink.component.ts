@@ -58,6 +58,7 @@ export class LooseDrinkComponent implements OnInit {
           this.donationForm.reset();
           this.isExpanded = false;
           this.isSubmitting = false;
+          window.location.href = response.initPoint;
         },
         error: (error) => {
           console.error('Error al enviar donación:', error);

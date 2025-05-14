@@ -47,6 +47,11 @@ export class PersonalPhotosComponent implements OnInit {
   loadPersonalPhotos(page: number): void {
     this.isLoading = true;
 
+    // Si estamos en la primera página y ya sabemos que hay pocos elementos, ajustamos el tamaño de página
+    if (page === 1 && this.totalItems > 0 && this.totalItems <= this.pageSize) {
+      this.pageSize = this.totalItems;
+    }
+
     this.personalPhotosService.getPersonalPhotosByUserId(Number(this.profileId), page, this.pageSize)
       .subscribe({
         next: (response: PaginatedResultResponse<PersonalPhoto>) => {
@@ -111,6 +116,11 @@ export class PersonalPhotosComponent implements OnInit {
 
   @HostListener("window:scroll", [])
   onScroll(): void {
+    // Si hay menos elementos que el tamaño de página, no necesitamos paginar
+    if (this.totalItems <= this.pageSize) {
+      return;
+    }
+
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
