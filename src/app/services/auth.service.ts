@@ -5,21 +5,23 @@ import { User } from '../models/user';
 import { environment } from 'src/environments/environment';
 import { UserRegister } from '../models/userRegister';
 import { ProfileService } from './profile.service';
+import { getAuth, signInWithCustomToken, signOut } from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import 'firebase/compat/auth'; // 👈 NECESARIO
+import * as firebase from 'firebase/compat';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  //private apiUrl = 'https://localhost:44335/api'; // URL base del backend
-  private apiUrl = `${environment.apiPtUsersBaseUrl}/api`;  // Concatenar el subpath
-
-
-  // private currentUser: any; // Almacena el usuario actual
+  private apiUrl = `${environment.apiPtUsersBaseUrl}/api`;
   private visitedProfileId = 0; // Almacena el id del perfil visitado
   public CurrentUserLoggedId = 0;
   private currentUserIdBehavior = new BehaviorSubject<number>(0); // Inicialmente no hay usuario logueado
 
-  constructor(private http: HttpClient, private profileService: ProfileService) { }
+  constructor(private http: HttpClient, private profileService: ProfileService) { initializeApp(environment.firebaseConfig); }
+
 
   // Método para enviar el login y recibir el token
   login(credentials: { username: string; password: string }): Observable<any> {
@@ -73,10 +75,22 @@ export class AuthService {
     this.setCurrentUserIdBehavior(0);
   }
 
+  async loginFirebaseAuth(firebaseToken: string): Promise<void> {
+    const auth = getAuth();
+    await signInWithCustomToken(auth, firebaseToken);
+  }
+
   cleanStorage() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('avatarUrl');
+    try {
+      const auth = getAuth();
+      signOut(auth); // Esperar a que Firebase cierre sesión
+      console.log('Sesión de Firebase cerrada correctamente');
+    } catch (error) {
+      console.error('Error al cerrar sesión de Firebase:', error);
+    }
     this.profileService.removeAvatarPhoto();
   }
 

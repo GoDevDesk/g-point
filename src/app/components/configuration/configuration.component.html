@@ -1,0 +1,187 @@
+<div class="configuration-container">
+  <!-- Botón de menú para móvil -->
+  <button class="menu-toggle" (click)="toggleSidebar()">
+    <span>☰</span>
+  </button>
+
+  <!-- Barra lateral de navegación -->
+  <nav class="sidebar" [class.active]="sidebarActive">
+    <div class="sidebar-header">
+      <h3>Configuración</h3>
+    </div>
+    <ul>
+      <li *ngFor="let section of sections" (click)="scrollToSection(section.id)">
+        {{ section.name }}
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main class="content">
+    <!-- Sección de Perfil -->
+    <section id="profile" class="section">
+      <h2>Datos Personales</h2>
+      <div class="card">
+        <div class="form-group">
+          <label for="name">Nombre</label>
+          <input type="text" id="name" [(ngModel)]="profileData.name" placeholder="Tu nombre">
+        </div>
+        <div class="form-group">
+          <label for="username">Nombre de Usuario</label>
+          <input type="text" id="username" [(ngModel)]="profileData.username" placeholder="@usuario">
+        </div>
+        <div class="form-group">
+          <label for="aboutMe">Acerca de mí</label>
+          <textarea id="aboutMe" [(ngModel)]="profileData.aboutMe" rows="4" placeholder="Cuéntanos sobre ti..."></textarea>
+        </div>
+        <button class="save-button" (click)="saveProfile()">Guardar Cambios</button>
+      </div>
+    </section>
+
+    <!-- Sección de Etiquetas -->
+    <section id="tags" class="section">
+      <h2>Etiquetas del Perfil</h2>
+      <div class="card">
+        <div class="tags-container">
+          <div class="selected-tags">
+            <h3>Mis Etiquetas Seleccionadas</h3>
+            <div class="tags-grid">
+              <div class="tag-item selected" *ngFor="let tag of selectedTags">
+                <span class="tag-name">{{ tag.name }}</span>
+                <span class="tag-count">({{ tag.usageCount }})</span>
+                <button class="remove-tag" (click)="removeTag(tag)">×</button>
+              </div>
+              <div class="tag-item custom selected" *ngFor="let tag of customTags">
+                <span class="tag-name">{{ tag.name }}</span>
+                <span class="tag-count">({{ tag.usageCount }})</span>
+                <button class="remove-tag" (click)="removeTag(tag)">×</button>
+              </div>
+            </div>
+            <p class="tag-limit" *ngIf="selectedTags.length + customTags.length >= maxTotalTags">
+              Has alcanzado el límite de {{ maxTotalTags }} etiquetas
+            </p>
+          </div>
+
+          <div class="available-tags">
+            <h3>Etiquetas Disponibles</h3>
+            <div class="tags-grid">
+              <div class="tag-item" 
+                   *ngFor="let tag of availableTags"
+                   [class.selected]="tag.isSelected"
+                   (click)="toggleTag(tag)">
+                <span class="tag-name">{{ tag.name }}</span>
+                <span class="tag-count">({{ tag.usageCount }})</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="custom-tags">
+            <h3>Crear Nueva Etiqueta</h3>
+            <div class="tag-input-group">
+              <input type="text" 
+                     [(ngModel)]="newTagName" 
+                     placeholder="Nueva etiqueta" 
+                     maxlength="20"
+                     [disabled]="selectedTags.length + customTags.length >= maxTotalTags">
+              <button (click)="addCustomTag()" 
+                      [disabled]="selectedTags.length + customTags.length >= maxTotalTags">
+                Agregar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Redes Sociales -->
+    <section id="social" class="section">
+      <h2>Redes Sociales</h2>
+      <div class="card">
+        <div class="social-networks">
+          <div class="social-item" *ngFor="let network of socialNetworks">
+            <div class="social-input">
+              <label>{{ network.platform }}</label>
+              <input type="url" 
+                     [(ngModel)]="network.url" 
+                     (change)="updateSocialNetwork(network.platform, network.url)"
+                     placeholder="URL de tu perfil">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Privacidad -->
+    <section id="privacy" class="section">
+      <h2>Privacidad</h2>
+      <div class="card">
+        <div class="privacy-options">
+          <div class="privacy-item">
+            <h3>Comunicación</h3>
+            <div class="toggle-group">
+              <label>Habilitar Chat</label>
+              <label class="switch">
+                <input type="checkbox" 
+                       [(ngModel)]="privacySettings.chatEnabled"
+                       (change)="togglePrivacySetting('chatEnabled')">
+                <span class="slider round"></span>
+              </label>
+            </div>
+            <p class="privacy-description">Permitir que otros usuarios te envíen mensajes</p>
+          </div>
+
+          <div class="privacy-item">
+            <h3>Notificaciones</h3>
+            <div class="toggle-group">
+              <label>Notificaciones por Email</label>
+              <label class="switch">
+                <input type="checkbox" 
+                       [(ngModel)]="privacySettings.emailNotifications"
+                       (change)="togglePrivacySetting('emailNotifications')">
+                <span class="slider round"></span>
+              </label>
+            </div>
+            <p class="privacy-description">Recibir notificaciones por correo electrónico</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Bloqueos -->
+    <section id="blocks" class="section">
+      <h2>Usuarios Bloqueados</h2>
+      <div class="card">
+        <div class="blocked-users">
+          <div class="block-input-group">
+            <input type="text" placeholder="Nombre de usuario a bloquear">
+            <button>Bloquear</button>
+          </div>
+          <div class="blocked-list">
+            <div class="blocked-item" *ngFor="let user of blockedUsers">
+              <div class="blocked-info">
+                <span class="username">{{ user.username }}</span>
+                <span class="block-date">Bloqueado el {{ user.blockedDate | date:'dd/MM/yyyy' }}</span>
+                <span class="block-reason" *ngIf="user.reason">Razón: {{ user.reason }}</span>
+              </div>
+              <button class="unblock-button" (click)="unblockUser(user.id)">Desbloquear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Cuenta -->
+    <section id="account" class="section">
+      <h2>Gestión de Cuenta</h2>
+      <div class="card danger-zone">
+        <div class="danger-actions">
+          <div class="danger-item">
+            <h4>Eliminar Cuenta</h4>
+            <p>Elimina permanentemente tu cuenta y todos tus datos. Esta acción no se puede deshacer.</p>
+            <button class="danger-button" (click)="deleteAccount()">Eliminar Cuenta</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

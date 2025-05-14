@@ -45,6 +45,7 @@ import { CreatePlanModalComponent } from './components/create-plan-modal/create-
 import { PurchaseSuscriptionComponent } from './components/purchase-suscription/purchase-suscription.component';
 import { HomeComponent } from './components/home/home.component';
 import { ReportComponent } from './components/report/report.component';
+import { ConfigurationComponent } from './components/configuration/configuration.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { ReportComponent } from './components/report/report.component';
     CreatePlanModalComponent,
     PurchaseSuscriptionComponent,
     HomeComponent,
-    ReportComponent
+    ReportComponent,
+    ConfigurationComponent
   ],
   imports: [
     SharedModule,
