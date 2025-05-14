@@ -1,92 +1,159 @@
+<!-- Overlay for mobile -->
+<div class="sidebar-overlay" [class.show]="showSidebar" (click)="toggleSidebar()"></div>
+
 <div *ngIf="isLoading" class="loading-overlay">
   <mat-spinner color="primary"></mat-spinner>
 </div>
-<div class="flex h-[94vh] overflow-hidden">
+<div class="flex h-[94vh] overflow-hidden bg-gray-900 chat-container">
+  <!-- Toggle sidebar button (visible only on mobile) -->
+  <button 
+    *ngIf="!showSidebar"
+    class="absolute top-4 left-4 z-20 bg-pink-600 p-2 rounded-full shadow-lg md:hidden sidebar-toggle" 
+    (click)="toggleSidebar()">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+    </svg>
+  </button>
+
   <!-- Sidebar -->
-  <div class="w-1/4 bg-black border-r border-gray-800">
+  <div class="sidebar" [class.show]="showSidebar">
     <!-- Sidebar Header -->
-    <header class="p-4 mt-6 border-b bg-black border-gray-800 flex justify-between items-center bg-black text-white">
-      <h1 class="chat-web-title">Chat Web</h1>
+    <header class="p-4 border-b border-gray-700 flex justify-between items-center bg-gray-800 text-white sticky top-0 z-10 mt-6 responsive-header">
+      <div class="chat-title-container">
+        <h1 class="chat-web-title text-xl font-bold text-pink-400">Chat G-Point</h1>
+      </div>
       <div class="relative">
-        <button id="menuButton" class="focus:outline-none">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-100" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-            <path d="M2 10a2 2 0 012-2h12a2 2 0 012 2 2 2 0 01-2 2H4a2 2 0 01-2-2z" />
+        <button class="focus:outline-none hover:bg-gray-700 p-2 rounded-full transition-all duration-200 md:hidden" 
+                (click)="toggleSidebar()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-300" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
           </svg>
         </button>
-        <!-- Menu Dropdown -->
-        <div id="menuDropdown"
-          class="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg hidden">
-          <ul class="py-2 px-3">
-            <li><a href="#" class="block px-4 py-2 text-gray-800 hover:text-gray-400">Option 1</a></li>
-            <li><a href="#" class="block px-4 py-2 text-gray-800 hover:text-gray-400">Option 2</a></li>
-          </ul>
-        </div>
       </div>
     </header>
 
     <!-- Contact List -->
     <div class="overflow-y-auto h-screen p-3 mb-9 pb-20">
       <div *ngFor="let recentChat of recentChats"
-        class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md" (click)="selectChatById(recentChat.otherUserId)">
-        <div class="w-12 h-12 bg-gray-300 rounded-full mr-3">
-          <img [src]="recentChat.avatar" alt="User Avatar" class="w-12 h-12 rounded-full">
+        class="flex items-center mb-1 cursor-pointer hover:bg-gray-700 p-3 rounded-lg transition-all duration-200"
+        [class.bg-gray-700]="selectedChat.otherUserId === recentChat.otherUserId"
+        (click)="selectChatAndCloseSidebar(recentChat.otherUserId)">
+        <div class="w-12 h-12 bg-gray-600 rounded-full mr-3 overflow-hidden border-2 border-pink-400 flex-shrink-0">
+          <img [src]="recentChat.avatar" alt="User Avatar" class="w-12 h-12 rounded-full object-cover">
         </div>
-        <div class="flex-1">
-          <h2 class="text-lg font-semibold">{{ recentChat.otherUserName +" - "}}</h2>
-        </div>
-        <div class="flex-1">
-          <h2 class="text-lg font-semibold">{{ recentChat.lastMessage }}</h2>
+        <div class="flex-1 overflow-hidden my-auto">
+          <h2 class="text-lg font-semibold text-white truncate leading-tight">{{ recentChat.otherUserName }}</h2>
+          <p class="text-gray-300 text-sm truncate">{{ recentChat.lastMessage || 'Comienza a chatear...' }}</p>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Main Chat Area -->
-  <div class="flex-1">
-    <!-- Chat Header -->
-    <header class="bg-black mt-6 p-4 text-white">
-      <h1 class="text-2xl font-semibold">{{ selectedChat.otherUserName }}</h1>
+  <div class="flex-1 flex flex-col bg-gradient-to-b from-gray-900 to-black main-content">
+    <!-- Chat Header - Solo mostrar cuando hay un chat seleccionado -->
+    <header *ngIf="selectedChat.otherUserId" class="bg-gray-800 py-3 px-4 text-white shadow-md z-10 flex items-center responsive-header fixed-header">
+      <button 
+        class="mr-2 focus:outline-none hover:bg-gray-700 p-2 rounded-full md:hidden menu-button" 
+        (click)="toggleSidebar()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-300" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+        </svg>
+      </button>
+      <div class="flex items-center">
+        <div class="w-8 h-8 bg-gray-600 rounded-full mr-2 overflow-hidden border-2 border-pink-400 flex-shrink-0">
+          <img [src]="selectedChat.avatar || defaultPhoto" alt="User Avatar" class="w-8 h-8 rounded-full object-cover">
+        </div>
+        <div class="my-auto chat-user-info">
+          <h1 class="text-lg font-semibold text-pink-400 truncate">{{ selectedChat.otherUserName }}</h1>
+          <p class="text-xs text-gray-400">En línea</p>
+        </div>
+      </div>
     </header>
 
-    <!-- Chat Messages -->
-    <div #messageContainer class="h-screen overflow-y-auto p-4 pb-6 bg-gray-950">
-      <div *ngFor="let message of messages">
-        <!-- Incoming Message -->
-        <div *ngIf="message.senderId !== currentUserLoggedId" class="flex mb-4 cursor-pointer">
-          <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
-            <img [src]="selectedChat.avatar" alt="User Avatar" class="w-8 h-8 rounded-full">
-          </div>
-          <div class="flex max-w-96 bg-white rounded-lg p-3 gap-3">
-            <span class="block text-sm font-bold text-pink-500">{{ selectedChat.otherUserName }}</span>
-            <p class="text-pink-500">{{ message.message }}</p>
+    <!-- Botón de menú para móvil cuando no hay chat seleccionado (solo visible en móvil) -->
+    <div *ngIf="!selectedChat.otherUserId" class="py-4 px-6 hidden sm:hidden md:hidden lg:hidden xl:hidden">
+      <button 
+        class="focus:outline-none hover:bg-gray-700 p-2 rounded-full" 
+        (click)="toggleSidebar()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-300" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Contenido cuando no hay chat seleccionado -->
+    <div *ngIf="!selectedChat.otherUserId" class="flex-1 flex flex-col items-center justify-center p-5 welcome-screen">
+      <div class="text-center max-w-md p-8 rounded-2xl bg-gray-800 bg-opacity-70 shadow-lg">
+        <div class="mb-6 flex justify-center">
+          <div class="w-20 h-20 bg-gray-700 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
           </div>
         </div>
+        <h2 class="text-xl font-bold text-pink-400 mb-2">Bienvenido al Chat</h2>
+        <p class="text-gray-300 mb-4">Selecciona un contacto para comenzar a chatear</p>
+        <div class="flex justify-center">
+          <div class="text-sm text-gray-400 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-pink-400 arrow-left-animation" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span>Toca en un chat de la izquierda</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Messages (solo visible cuando hay un chat seleccionado) -->
+    <div *ngIf="selectedChat.otherUserId" #messageContainer class="flex-1 overflow-y-auto p-4 pb-6 bg-transparent message-container">
+      <div *ngFor="let message of messages; let i = index" class="mb-4">
+        <!-- Date separator if needed -->
+        <div *ngIf="i === 0 || shouldShowDateSeparator(message, messages[i-1])" 
+             class="flex justify-center my-4">
+          <span class="bg-gray-700 text-gray-300 px-3 py-1 text-xs rounded-full">
+            {{ getMessageDate(message) }}
+          </span>
+        </div>
+        
+        <!-- Incoming Message -->
+        <div *ngIf="message.senderId !== currentUserLoggedId" class="flex mb-2 cursor-pointer animate-fadeIn">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+            <img [src]="selectedChat.avatar || defaultPhoto" alt="User Avatar" class="w-8 h-8 rounded-full">
+          </div>
+          <div class="flex max-w-96 bg-gray-700 rounded-2xl p-3 gap-3 shadow-lg">
+            <p class="text-white">{{ message.message }}</p>
+          </div>
+        </div>
+        
         <!-- Outgoing Message -->
-        <div *ngIf="message.senderId === currentUserLoggedId" class="flex justify-end mb-4 cursor-pointer">
-          <div class="flex max-w-96 bg-pink-500 text-white rounded-lg p-3 gap-3"> <span
-              class="block text-sm font-bold white-700">Yo-</span>
+        <div *ngIf="message.senderId === currentUserLoggedId" class="flex justify-end mb-2 cursor-pointer animate-fadeIn">
+          <div class="flex max-w-96 bg-pink-600 text-white rounded-2xl p-3 gap-3 shadow-lg"> 
             <p>{{ message.message }}</p>
           </div>
-          <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2 flex-shrink-0">
             <img [src]="currentAvatarPhoto" alt="My Avatar" class="w-8 h-8 rounded-full">
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Chat Input -->
-    <footer class="border-t border-gray-300 bg-black p-4">
+    <!-- Chat Input (solo visible cuando hay un chat seleccionado) -->
+    <footer *ngIf="selectedChat.otherUserId" class="border-t border-gray-700 bg-gray-800 p-4 shadow-lg chat-input-footer">
       <div class="flex items-center gap-2">
         <input 
           type="text" 
-          placeholder="Type a message..." 
+          placeholder="Escribe un mensaje..." 
           [(ngModel)]="newMessage"
           (keydown.enter)="sendMessage()"
-          class="flex-1 p-2 rounded-md border border-gray-400 focus:outline-none focus:border-blue-500">
+          class="flex-1 p-3 rounded-full border border-gray-600 bg-gray-700 text-white focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400">
         <button 
-          class="bg-indigo-500 text-white px-4 py-2 rounded-md" 
-          (click)="sendMessage()">Send</button> <!-- Envía el mensaje al hacer clic -->
+          class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-3 rounded-full transition-all duration-200 shadow-md flex-shrink-0" 
+          (click)="sendMessage()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+          </svg>
+        </button>
       </div>
     </footer>
   </div>

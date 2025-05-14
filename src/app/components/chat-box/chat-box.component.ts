@@ -9,7 +9,7 @@ import { ProfileService } from 'src/app/services/profile.service';
   templateUrl: './chat-box.component.html',
   styleUrls: ['./chat-box.component.scss']
 })
-export class ChatBoxComponent {
+export class ChatBoxComponent implements OnInit {
   // @Input() currentUserId!: string;
   // @Input() otherUserId!: string;
   // @Input() otherUserName!: string;
@@ -22,6 +22,7 @@ export class ChatBoxComponent {
   defaultPhoto = 'assets/defaultIcons/defaultProfilePhoto.png';
   currentAvatarPhoto = this.defaultPhoto;
   isLoading = false; // Simula la carga inicial
+  showSidebar = true; // Controla la visibilidad del sidebar
 
   selectedChat: { id: number; name: string; avatar: string; lastMessage: string; otherUserId: string; otherUserName: string; } = {
     id: 0,
@@ -224,6 +225,51 @@ export class ChatBoxComponent {
 
     } catch (error) {
       console.error('Error al enviar el mensaje:', error);
+    }
+  }
+
+  // Método para verificar si debe mostrar un separador de fecha
+  shouldShowDateSeparator(currentMessage: any, previousMessage: any): boolean {
+    if (!previousMessage) return true;
+    
+    const currentDate = new Date(currentMessage.timestamp.seconds * 1000);
+    const prevDate = new Date(previousMessage.timestamp.seconds * 1000);
+    
+    return currentDate.toDateString() !== prevDate.toDateString();
+  }
+
+  // Método para formatear la fecha del mensaje
+  getMessageDate(message: any): string {
+    const date = new Date(message.timestamp.seconds * 1000);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    if (date.toDateString() === today.toDateString()) {
+      return 'Hoy';
+    } else if (date.toDateString() === yesterday.toDateString()) {
+      return 'Ayer';
+    } else {
+      return date.toLocaleDateString('es-ES', { 
+        day: '2-digit', 
+        month: 'short', 
+        year: 'numeric' 
+      });
+    }
+  }
+
+  // Método para mostrar/ocultar el sidebar
+  toggleSidebar(): void {
+    this.showSidebar = !this.showSidebar;
+  }
+
+  // Método para seleccionar chat y cerrar sidebar en móvil
+  selectChatAndCloseSidebar(otherUserId: string): void {
+    this.selectChatById(otherUserId);
+    
+    // En móvil, cierra el sidebar automáticamente
+    if (window.innerWidth < 768) {
+      this.showSidebar = false;
     }
   }
 }

@@ -7,68 +7,497 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
-  z-index: 1000; /* Asegura que está sobre todo */
+  background-color: rgba(0, 0, 0, 0.7); 
+  z-index: 1000;
 }
 
 .opacity-50 {
   opacity: 0.5;
-  pointer-events: none; /* Evita que se interactúe con los elementos detrás */
+  pointer-events: none;
 }
 
+/* Estructura principal */
+.chat-container {
+  position: relative;
+}
 
-/* LOS ESTILOS DE ARRIBA SON DEL LOADING, SE PUEDEN UNIFICAR EN UN ESTILO GLOBAL POR QUE LOS REPITO EN MUCHAS CLASES */
+/* Sidebar */
+.sidebar {
+  width: 25%;
+  background-color: #1f2937;
+  border-right: 1px solid #374151;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  z-index: 30;
+}
 
-/* Estilos para el contenedor principal */
-.flex {
-    display: flex;
+/* Ajustar la alineación de los nombres de usuario en los chats */
+.sidebar .flex-1.overflow-hidden.my-auto {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 15px;  /* Aumentamos para bajar más el texto en la barra lateral */
+  height: 100%;
+}
+
+/* Contenido principal */
+.main-content {
+  transition: all 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    height: 100%;
+    z-index: 40;
+    padding-top: 0;
   }
   
-  /* El área de chat debe ocupar el espacio restante */
-  .flex-1 {
-    flex: 1;
+  /* Ajustar el header del sidebar en móvil */
+  header.responsive-header {
+    position: sticky !important;
+    top: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+    background-color: #1f2937 !important;
+    border-bottom: 1px solid #374151 !important;
+    z-index: 45 !important;
+  }
+  
+  /* Asegurar que el contenido del sidebar empiece después del header */
+  .sidebar .overflow-y-auto {
+    padding-top: 0.5rem;
+  }
+  
+  .sidebar.show {
+    left: 0;
+  }
+  
+  .sidebar-toggle {
+    display: block;
+  }
+  
+  /* Ajustar el header del contenido principal en móvil */
+  .main-content header {
+    margin-top: 0 !important;
+    padding-top: 1.25rem !important;
+    padding-bottom: 1.25rem !important;
+  }
+  
+  /* Mejorar la visualización general en móvil */
+  .chat-container {
     display: flex;
     flex-direction: column;
-   // height: 100vh; /* Limita el alto al viewport */
+    height: 100vh !important;
+    max-height: 100vh !important;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    overflow: hidden;
+  }
+  
+  .message-container {
+    flex: 1 1 0% !important;
+    overflow-y: auto !important;
+    max-height: calc(100vh - 130px) !important; /* Altura de pantalla menos header y footer */
+  }
+  
+  .chat-input-footer {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 30 !important;
+    background-color: #1f2937 !important;
+    padding: 10px !important;
+    flex-shrink: 0 !important;
+  }
 
+  /* Agregar padding-bottom al contenedor de mensajes para evitar que los mensajes queden ocultos */
+  .message-container {
+    padding-bottom: 80px !important; /* Para compensar el espacio del footer fijo */
   }
   
-  
-  /* Para el sidebar, ocupamos 1/4 del ancho de la pantalla */
-//   .w-1/4 {
-//     width: 25%;
-//   }
-  
-  /* Estilos para la lista de contactos (asegúrate que ocupa todo el alto) */
-  .overflow-y-auto {
-    overflow-y: auto;
-    //height: 100%;
+  /* Ajustar el tamaño de los mensajes para móvil */
+  .max-w-96 {
+    max-width: 75vw; /* Limitar el ancho en pantallas pequeñas */
   }
-  
-  /* Estilos generales del contenedor del área principal */
-  .h-screen {
-   // height: 100vh;
-  }
-  
-  /* Opcionales para el contenedor del header */
-  .bg-indigo-600 {
-    background-color: #4f46e5; /* Color de fondo del header */
-  }
-  
-  footer {
-    position: relative;
+}
+
+/* Estilos generales */
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Mejoras visuales */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(31, 41, 55, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ec4899;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #db2777;
+}
+
+/* Mejoras para chat */
+.chat-web-title {
+  background: linear-gradient(to right, #ec4899, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+  margin-top: 8px; /* Añadir margen superior para bajar el título */
+  display: inline-block; /* Necesario para que el margen funcione correctamente */
+  padding-top: 5px; /* Padding adicional */
+}
+
+/* Efectos para mensajes */
+.bg-pink-600, .bg-gray-700 {
+  transition: all 0.2s ease;
+}
+
+.bg-pink-600:hover {
+  box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4);
+  transform: translateY(-2px);
+}
+
+.bg-gray-700:hover {
+  box-shadow: 0 4px 12px rgba(55, 65, 81, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Overlay para cuando el sidebar está abierto en móvil */
+.sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 35;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  .sidebar-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .chat-container {
+    height: 100vh !important;
+  }
+  
+  .main-content {
+    padding-top: 10px;
+  }
+}
+
+/* Mejorar alineación en el header */
+header.mt-6 {
+  margin-top: 2rem !important;
+}
+
+/* Ajustar alineación del nombre de usuario en el header */
+header .my-auto {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 8px;  /* Aumentar el padding-top para bajar más el texto */
+}
+
+/* Ajustar el espacio entre el avatar y el nombre */
+.main-content header .flex.items-center > div.my-auto {
+  padding-top: 10px; /* Mayor padding para el nombre en el header principal */
+}
+
+/* Ajustar específicamente el nombre del usuario en el header principal */
+.main-content header h1.text-xl {
+  margin-bottom: 2px; /* Pequeño espacio entre el nombre y el estado */
+}
+
+@media (max-width: 768px) {
+  /* Ajustes específicos para móvil */
+  .main-content header .my-auto {
+    padding-top: 12px !important; /* Aún más padding en móvil */
+  }
+}
+
+/* Clases específicas para garantizar que el input sea visible */
+.message-container {
+  overflow-y: auto;
+  flex: 1 1 0%;
+}
+
+.chat-input-footer {
+  flex-shrink: 0;
+  width: 100%;
+}
+
+/* Ajustes específicos para el nombre de usuario en el header */
+.chat-user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 20px;  /* Aumentamos considerablemente para bajar más el texto */
+  height: 100%;
+}
+
+.chat-user-info h1 {
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.chat-user-info p {
+  margin-top: 0;
+  line-height: 1;
+}
+
+/* Media query para ajustar en diferentes tamaños */
+@media (max-width: 768px) {
+  .chat-user-info {
+    padding-top: 22px !important;  /* Aún más padding en móvil */
+  }
+  
+  .sidebar .flex-1.overflow-hidden.my-auto {
+    padding-top: 18px !important;
+  }
+}
+
+/* Estilos para la pantalla de bienvenida */
+.welcome-screen {
+  background-image: radial-gradient(circle at center, rgba(31, 41, 55, 0.4) 0%, rgba(17, 24, 39, 0.8) 70%);
+}
+
+.welcome-screen .bg-gray-800 {
+  backdrop-filter: blur(5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.welcome-screen .bg-gray-800:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px -5px rgba(236, 72, 153, 0.2);
+}
+
+/* Animación para el icono */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.welcome-screen .w-20 {
+  animation: pulse 3s infinite ease-in-out;
+}
+
+/* Transición suave para mensajes */
+.message-container {
+  transition: opacity 0.3s ease;
+}
+
+/* Animación para la flecha izquierda */
+@keyframes moveLeft {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.arrow-left-animation {
+  animation: moveLeft 2s infinite ease-in-out;
+}
+
+/* Ajuste para eliminar el espacio entre header y toolbar en versión escritorio */
+@media (min-width: 769px) {
+  /* Eliminar el espacio entre header y toolbar */
+  .main-content header.responsive-header {
+    margin-top: 0 !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
   }
 
-  .chat-web-title {
-   // font-family: 'Georgia', serif; /* Cambia la fuente a una serif específica */
-    font-size: 18px; /* Cambia el tamaño del texto */
-    font-weight: bold; /* Cambia el grosor del texto */
-    color: white; /* Asegura que el color sea blanco */
+  /* Ajustamos también el header del sidebar para mantener consistencia */
+  .sidebar header.responsive-header {
+    margin-top: 0 !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
   }
 
-  @media (max-width: 768px) {
-    #main-container {
-      height: 92vh;
-    }
+  /* Ajustamos la altura máxima del contenedor de mensajes */
+  .message-container {
+    max-height: calc(100vh - 116px); /* Ajustamos para compensar la altura del header y footer */
   }
+  
+  /* Ajustamos el contenedor principal para eliminar cualquier espacio no deseado */
+  .chat-container {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  /* Ajuste fino para el header principal */
+  .main-content header.responsive-header {
+    margin-top: 0 !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+  }
+  
+  /* Ajuste para el nombre de usuario en el header */
+  .main-content header .chat-user-info {
+    padding-top: 22px !important;
+  }
+  
+  /* Ajuste para la barra lateral */
+  .sidebar header.responsive-header {
+    margin-top: 0 !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+  }
+  
+  /* Ajuste para los nombres en la barra lateral */
+  .sidebar .flex-1.overflow-hidden.my-auto {
+    padding-top: 17px !important;
+  }
+}
+
+/* Reducir el espacio entre chats en la barra lateral */
+.sidebar .overflow-y-auto > div {
+  margin-bottom: 1px !important; /* Reducir el espaciado entre chats */
+}
+
+/* Ajuste adicional para el sidebar header */
+.sidebar header.responsive-header h1 {
+  padding-top: 6px; /* Bajar más el título */
+}
+
+/* Contenedor para el título del chat */
+.chat-title-container {
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
+}
+
+/* Asegurar que el header permanezca fijo en todas las vistas */
+.main-content header.responsive-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
+}
+
+/* Ajustes específicos para móvil */
+@media (max-width: 768px) {
+  /* Asegurar que el header se mantenga fijo y visible en móvil al hacer scroll */
+  .main-content header.responsive-header {
+    position: fixed !important;
+    top: 56px !important; /* Ajuste fino para evitar que se oculte detrás de la toolbar */
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 50 !important;
+    width: 100% !important;
+    margin-top: 0 !important;
+    padding: 8px 12px !important; /* Padding reducido para móvil */
+    height: auto !important;
+  }
+  
+  /* Ajustes para el avatar y texto en el header */
+  .fixed-header .w-8 {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  
+  .fixed-header .chat-user-info h1 {
+    font-size: 16px !important;
+    padding-top: 2px !important;
+  }
+  
+  /* Añadir padding para compensar el header fijo */
+  .main-content .message-container {
+    padding-top: 100px !important; /* Ajustado para compensar la nueva altura del header */
+    margin-top: 0 !important;
+  }
+  
+  /* Asegurar que el header siempre esté por encima del contenido */
+  .main-content {
+    position: relative !important;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+}
+
+/* Estilos específicos para el header en diferentes tamaños */
+@media (min-width: 769px) {
+  .main-content header.fixed-header {
+    position: sticky !important;
+    top: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+  }
+}
+
+/* Estilos específicos para el header fijo */
+.fixed-header {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Botón de menú en el header */
+.menu-button {
+  z-index: 60 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Ajustes para el botón de menú en móvil */
+@media (max-width: 768px) {
+  .menu-button {
+    position: relative;
+    z-index: 60;
+  }
+  
+  /* Asegurar que el contenedor de mensajes no tape el header */
+  .message-container {
+    margin-top: 60px !important;
+  }
+}
