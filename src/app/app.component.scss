@@ -1,20 +1,46 @@
 .app-toolbar {
     position: fixed;
-     top: 0;
-     margin-bottom: 60px; /* Asegura que el contenido empiece debajo de la toolbar */
+    top: 0;
+    margin-bottom: 60px;
+    z-index: 1000;
+    height: 60px;
+}
 
-    // left: 0;
-    // right: 0;
-     z-index: 1000; /* Asegura que la barra se quede encima */
-     height: 60px; /* Ajusta según la altura de tu toolbar */
-  }
-  
-  /* Contenedor principal de contenido */
-  .content {
-   margin-top: 46px; /* Margen normal cuando el usuario está logueado */
- }
+.home-logo-button {
+    position: fixed;
+    top: 14px;
+    left: 0;
+    padding: 10px;
+    z-index: 1000;
+    min-width: unset;
+}
+
+.guest-menu-button {
+    position: fixed;
+    top: 16px;
+    right: 0;
+    padding: 10px;
+    z-index: 1000;
+    color: white;
+}
+
+.app-logo {
+    height: 40px;
+    width: auto;
+}
+
+.content {
+    &.logged-out {
+        background-color: #121212;
+    }
+}
+
+/* Contenedor principal de contenido */
+.content {
+ margin-top: 46px; /* Margen normal cuando el usuario está logueado */
+}
  
- .logged-out {
+.logged-out {
    margin-top: 0px; /* Si isUserLoggedIn es falso, elimina el margen */
  }
 
@@ -24,9 +50,5 @@
     right: 0;
     padding: 10px;
     z-index: 1000;
-}
-
-.guest-menu-button {
-    color: white;
 }
   

@@ -69,16 +69,12 @@ const routes: Routes = [
   {
     path: 'configuration', component: ConfigurationComponent,
     canActivate: [AuthGuard]
-  }
-  // },
-  // {
-  //   path:"*",
-  //   //component: PageNotFoundComponent,
-
-  // }
-
+  },
+   {
+     path:"*",
+     component: HomeComponent
+   }
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

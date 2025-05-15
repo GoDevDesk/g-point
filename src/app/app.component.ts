@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { map, Observable } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,18 +11,17 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'g-POINT';
   isUserLoggedIn = false;
+  showGuestNav = true;
 
   constructor(private authService: AuthService, private router: Router) {
- //   this.router.events.subscribe(() => {
- //     const currentUrl = this.router.url;
-   //   this.isUserLoggedIn = !(
-    //    this.isUserLoggedIn = true
-        // this.isUserLoggedIn = true &&
-        // currentUrl.startsWith('/login') || 
-        // currentUrl.startsWith('/register') || 
-        // currentUrl.includes('/album-detail/') // Detecta album-detail con ID dinámico
-  //    );
- //   });
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        // Ocultar el menú de invitados en login y home
+        this.showGuestNav = !this.isUserLoggedIn && 
+                           !event.url.startsWith('/login') && 
+                           !event.url.startsWith('/home');
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -30,11 +29,15 @@ export class AppComponent implements OnInit {
       .getCurrentUserIdLoggedBehavior()
       .pipe(map((userId: number) => userId !== 0))
       .subscribe((isLoggedIn: boolean) => {
-        this.isUserLoggedIn = isLoggedIn; // Actualiza dinámicamente el estado
-        if (!this.isUserLoggedIn){
+        this.isUserLoggedIn = isLoggedIn;
+        if (!this.isUserLoggedIn) {
           var userIdFromStorage = this.authService.getCurrentUserLoggedIdFromStorage();
           this.isUserLoggedIn = userIdFromStorage != 0 ? true : false;
         }
+        // Actualizar showGuestNav cuando cambia el estado de login
+        this.showGuestNav = !this.isUserLoggedIn && 
+                           !this.router.url.startsWith('/login') && 
+                           !this.router.url.startsWith('/home');
       });
   }
 

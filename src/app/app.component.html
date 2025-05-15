@@ -1,5 +1,8 @@
 <app-toolbar *ngIf="isUserLoggedIn" class="app-toolbar"></app-toolbar>
-<div *ngIf="!isUserLoggedIn" class="guest-nav">
+<div *ngIf="showGuestNav">
+  <button mat-button (click)="navigateToHome()" class="home-logo-button">
+    <img src="assets/images/gpointLogoBlanco0.png" class="app-logo" alt="G-Point Logo">
+  </button>
   <button mat-button [matMenuTriggerFor]="guestMenu" class="guest-menu-button">
     <mat-icon>more_vert</mat-icon>
   </button>
