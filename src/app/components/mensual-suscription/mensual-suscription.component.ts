@@ -104,6 +104,8 @@ export class MensualSuscriptionComponent implements OnInit {
 
   onSubscriptionClick(): void {
     if (this.isOwner) return;    
-    this.router.navigate(['/purchase-suscription']);
+    if (this.plan?.productId) {
+      this.router.navigate(['/purchase-suscription', this.plan.productId]);
+    }
   }
 }

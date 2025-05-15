@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlanService } from 'src/app/services/plan.service';
 import { Plan } from 'src/app/models/plan';
+import { PaymentService } from 'src/app/services/payment.service';
 
 @Component({
   selector: 'app-purchase-suscription',
@@ -11,22 +12,23 @@ import { Plan } from 'src/app/models/plan';
 export class PurchaseSuscriptionComponent implements OnInit {
   plan: Plan | null = null;
   isLoading = false;
-  profileId: string = '';
+  productId: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private planService: PlanService
-  ) {}
+    private planService: PlanService,
+    private paymentService: PaymentService
+  ) { }
 
   ngOnInit(): void {
-    this.profileId = this.route.snapshot.paramMap.get('id') || '';
-  //  this.loadPlan();
+    this.productId = this.route.snapshot.paramMap.get('productid') || '';
+    //  this.loadPlan();
   }
-
-  loadPlan(): void {
+  /* TENGO QUE TRAER TODA LA INFORMACION DEL PRODUCTO SUBSCRIPCION Y ACLARAR DE QUE SE TRATA*/
+  loadProduct(): void {
     this.isLoading = true;
-    this.planService.getByUserId(Number(this.profileId)).subscribe({
+ /*   this.planService.getByUserId(Number(this.profileId)).subscribe({
       next: (response) => {
         this.plan = response;
         this.isLoading = false;
@@ -36,16 +38,21 @@ export class PurchaseSuscriptionComponent implements OnInit {
         this.isLoading = false;
         this.router.navigate(['/']);
       }
-    });
+    });*/
   }
 
   goBack(): void {
-    this.router.navigate(['/profile', this.profileId]);
+    //  this.router.navigate(['/profile', this.profileId]);
   }
 
   proceedToPayment(): void {
-    // Aquí se implementará la lógica para redirigir a Mercado Pago
-    console.log('Procediendo al pago con Mercado Pago');
-    // this.router.navigate(['/mercadopago', this.plan?.id]);
+    this.paymentService.createPurchase(Number(this.productId)).subscribe({
+      next: (response) => {
+        window.location.href = response.initPoint;
+      },
+      error: (error) => {
+        console.error('Error al crear el pago:', error);
+      }
+    });
   }
 }

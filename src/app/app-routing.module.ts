@@ -56,7 +56,7 @@ const routes: Routes = [
     canActivate: [AuthGuard] 
   },
   {
-    path: 'purchase-suscription', component: PurchaseSuscriptionComponent,
+    path: 'purchase-suscription/:productid', component: PurchaseSuscriptionComponent,
     canActivate: [AuthPurchaseSuscriptionGuard] 
   },
   {
