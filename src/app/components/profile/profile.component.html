@@ -1,119 +1,120 @@
-<div *ngIf="isLoading" class="loading-overlay">
-  <mat-spinner color="primary"></mat-spinner>
-</div>
-<div class="flex flex-col gap-1 text-center">
-  <!-- Foto de portada -->
-  <div class="relative w-full h-80 bg-cover bg-center group" style="background-image: url({{currentCoverPhoto}})">
-    <!-- Ícono de lápiz (se muestra al hacer hover) -->
-    <a *ngIf="isOwner" href="#"
-      class="absolute bottom-4 right-8 bg-white p-1 rounded-full shadow opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      (click)="openCoverModal($event)">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-600" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M15.232 5.232l3.536 3.536M4 13v6a2 2 0 002 2h6M16.828 4.586a2 2 0 112.828 2.828L7 19l-4 1 1-4 12.828-12.828z" />
-      </svg>
-    </a>
+<div class="min-h-screen w-full bg-black">
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner color="primary"></mat-spinner>
   </div>
+  <div class="flex flex-col gap-1 text-center">
+    <!-- Foto de portada -->
+    <div class="relative w-full h-80 bg-cover bg-center group" style="background-image: url({{currentCoverPhoto}})">
+      <!-- Ícono de lápiz (se muestra al hacer hover) -->
+      <a *ngIf="isOwner" href="#"
+        class="absolute bottom-4 right-8 bg-white p-1 rounded-full shadow opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        (click)="openCoverModal($event)">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-600" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M15.232 5.232l3.536 3.536M4 13v6a2 2 0 002 2h6M16.828 4.586a2 2 0 112.828 2.828L7 19l-4 1 1-4 12.828-12.828z" />
+        </svg>
+      </a>
+    </div>
+  </div>
+  <div class="max-w-2xl mx-auto">
+    <div class="px-3 py-2">
+      <!--descripciopn-->
+      <div class="flex flex-col gap-1 text-center">
+        <div class="relative w-20 h-20 mx-auto profile-container">
+          <!-- Foto de perfil -->
+          <div class="block bg-center bg-no-repeat bg-cover w-20 h-20 rounded-full border border-gray-400 shadow-lg"
+            href="" style="background-image: url({{currentProfilePhoto}})">
+          </div>
+          <!-- Ícono de lápiz -->
+          <a *ngIf="isOwner" href="#" class="edit-icon" (click)="openProfileModal($event)">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15.232 5.232l3.536 3.536M4 13v6a2 2 0 002 2h6M16.828 4.586a2 2 0 112.828 2.828L7 19l-4 1 1-4 12.828-12.828z" />
+            </svg>
+          </a>
+        </div>
+        <p class="font-serif font-semibold">{{ userProfile.userName }}</p>
+        <span class="text-sm text-gray-400">{{ userProfile.aboutMe }}</span>
+      </div>
+      <!-- Modal PORTADA -->
+      <app-edit-photo-modal [isOpen]="isCoverModalOpen" [currentPhoto]="currentCoverPhoto" [currentPhotoId]="coverPictureId" (close)="closeCoverModal()"
+        (updatePhoto)="handleCoverPhotoSelected($event)" (deletePhoto)="deleteCoverPhotoSelected($event)"></app-edit-photo-modal>
+      <!-- Modal PERFIL -->
+      <app-edit-photo-modal [isOpen]="isProfileModalOpen" [currentPhoto]="currentProfilePhoto"[currentPhotoId]="profilePictureId" 
+        (close)="closeProfileModal()" (updatePhoto)="handleProfilePhotoSelected($event)" (deletePhoto)="deleteProfilePhotoSelected($event)"></app-edit-photo-modal>
+      <!--informacion del usuario-->
+      <div class="flex justify-center items-center gap-2 my-3">
+        <div class="font-semibold text-center mx-4">
+          <p class="text-gray-400">{{userProfile.postsCount}}</p>
+          <span class="text-gray-400">Posts</span>
+        </div>
+        <div class="font-semibold text-center mx-4">
+          <p class="text-gray-400">{{userProfile.followersCount}}</p>
+          <span class="text-gray-400">Followers</span>
+        </div>
+        <div class="font-semibold text-center mx-4">
+          <p class="text-gray-400">{{userProfile.photosCount}}</p>
+          <span class="text-gray-400">Photos</span>
+        </div>
+        <div class="font-semibold text-center mx-4">
+          <p class="text-gray-400">{{userProfile.videosCount}}</p>
+          <span class="text-gray-400">Videos</span>
+        </div>
+      </div>
 
-</div>
-<div class="max-w-2xl mx-auto">
-  <div class="px-3 py-2">
-    <!--descripciopn-->
-    <div class="flex flex-col gap-1 text-center">
-      <div class="relative w-20 h-20 mx-auto profile-container">
-        <!-- Foto de perfil -->
-        <div class="block bg-center bg-no-repeat bg-cover w-20 h-20 rounded-full border border-gray-400 shadow-lg"
-          href="" style="background-image: url({{currentProfilePhoto}})">
-        </div>
-        <!-- Ícono de lápiz -->
-        <a *ngIf="isOwner" href="#" class="edit-icon" (click)="openProfileModal($event)">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M15.232 5.232l3.536 3.536M4 13v6a2 2 0 002 2h6M16.828 4.586a2 2 0 112.828 2.828L7 19l-4 1 1-4 12.828-12.828z" />
-          </svg>
-        </a>
-      </div>
-      <p class="font-serif font-semibold">{{ userProfile.userName }}</p>
-      <span class="text-sm text-gray-400">{{ userProfile.aboutMe }}</span>
-    </div>
-    <!-- Modal PORTADA -->
-    <app-edit-photo-modal [isOpen]="isCoverModalOpen" [currentPhoto]="currentCoverPhoto" [currentPhotoId]="coverPictureId" (close)="closeCoverModal()"
-      (updatePhoto)="handleCoverPhotoSelected($event)" (deletePhoto)="deleteCoverPhotoSelected($event)"></app-edit-photo-modal>
-    <!-- Modal PERFIL -->
-    <app-edit-photo-modal [isOpen]="isProfileModalOpen" [currentPhoto]="currentProfilePhoto"[currentPhotoId]="profilePictureId" 
-      (close)="closeProfileModal()" (updatePhoto)="handleProfilePhotoSelected($event)" (deletePhoto)="deleteProfilePhotoSelected($event)"></app-edit-photo-modal>
-    <!--informacion del usuario-->
-    <div class="flex justify-center items-center gap-2 my-3">
-      <div class="font-semibold text-center mx-4">
-        <p class="text-gray-400">{{userProfile.postsCount}}</p>
-        <span class="text-gray-400">Posts</span>
-      </div>
-      <div class="font-semibold text-center mx-4">
-        <p class="text-gray-400">{{userProfile.followersCount}}</p>
-        <span class="text-gray-400">Followers</span>
-      </div>
-      <div class="font-semibold text-center mx-4">
-        <p class="text-gray-400">{{userProfile.photosCount}}</p>
-        <span class="text-gray-400">Photos</span>
-      </div>
-      <div class="font-semibold text-center mx-4">
-        <p class="text-gray-400">{{userProfile.videosCount}}</p>
-        <span class="text-gray-400">Videos</span>
-      </div>
-    </div>
-
-    <!--boton seguir y mensaje-->
-    <div *ngIf="!isOwner && userId !=0" class="flex justify-center gap-2 my-5">
-      <div class="flex justify-center gap-2 my-5">
-        <button [ngClass]="{'bg-pink-500 text-white': isFollowed, 'bg-white text-black border-gray-500': !isFollowed}"
-          class="px-10 py-2 rounded-full shadow-lg" (click)="toggleFollow()">
-          Follow
-        </button>
-        <button class="bg-white border border-gray-500 px-4 py-1 rounded-full shadow-lg" (click)="setChats()">Envíame un
-          Mensaje</button>
-      </div>
-      <!-- <button class="bg-white border border-gray-500 px-10 py-2 rounded-full shadow-lg">Message</button> -->
-    </div>
-    <!--botones tab-->
-    <div class="flex justify-between items-center">
-      <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'albums'"
-        (click)="activeTab = 'albums'">
-        <!-- Ícono -->
-        Albums
-      </button>
-      <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'photos'"
-        (click)="activeTab = 'photos'">
-        <!-- Ícono -->
-        Photos
-      </button>
-    </div>
-    <app-mensual-suscription *ngIf="hasPlan"></app-mensual-suscription>
-    <div *ngIf="!hasPlan && isOwner" class="bg-[#080808] p-6 rounded-lg shadow-lg mt-6">
-      <div class="flex items-center justify-between">
-        <h1 class="text-2xl font-bold text-pink-500">Suscripción Mensual</h1>
-        <span class="text-pink-500 text-2xl font-bold">&gt;</span>
-      </div>
-      <div class="flex flex-col gap-3 text-left mt-4">
-        <div class="flex items-center text-white">
-          <i class="fas fa-exclamation-circle text-yellow-500 mr-3"></i>
-          <span>No hay plan de suscripción creado</span>
-        </div>
-        <div class="flex items-center text-white">
-          <i class="fas fa-info-circle text-blue-500 mr-3"></i>
-          <span>Crea un plan para que tus seguidores puedan suscribirse</span>
-        </div>
-        <div class="flex items-center text-white">
-          <i class="fas fa-plus-circle text-green-500 mr-3"></i>
-          <button class="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors" (click)="openCreatePlanModal()">
-            Crear Plan
+      <!--boton seguir y mensaje-->
+      <div *ngIf="!isOwner && userId !=0" class="flex justify-center gap-2 my-5">
+        <div class="flex justify-center gap-2 my-5">
+          <button [ngClass]="{'bg-pink-500 text-white': isFollowed, 'bg-white text-black border-gray-500': !isFollowed}"
+            class="px-10 py-2 rounded-full shadow-lg" (click)="toggleFollow()">
+            Follow
           </button>
+          <button class="bg-white border border-gray-500 px-4 py-1 rounded-full shadow-lg" (click)="setChats()">Envíame un
+            Mensaje</button>
+        </div>
+        <!-- <button class="bg-white border border-gray-500 px-10 py-2 rounded-full shadow-lg">Message</button> -->
+      </div>
+      <!--botones tab-->
+      <div class="flex justify-between items-center">
+        <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'albums'"
+          (click)="activeTab = 'albums'">
+          <!-- Ícono -->
+          Albums
+        </button>
+        <button class="w-full py-2 border-b-2" [class.border-yellow-400]="activeTab === 'photos'"
+          (click)="activeTab = 'photos'">
+          <!-- Ícono -->
+          Photos
+        </button>
+      </div>
+      <app-mensual-suscription *ngIf="hasPlan"></app-mensual-suscription>
+      <div *ngIf="!hasPlan && isOwner" class="bg-[#080808] p-6 rounded-lg shadow-lg mt-6">
+        <div class="flex items-center justify-between">
+          <h1 class="text-2xl font-bold text-pink-500">Suscripción Mensual</h1>
+          <span class="text-pink-500 text-2xl font-bold">&gt;</span>
+        </div>
+        <div class="flex flex-col gap-3 text-left mt-4">
+          <div class="flex items-center text-white">
+            <i class="fas fa-exclamation-circle text-yellow-500 mr-3"></i>
+            <span>No hay plan de suscripción creado</span>
+          </div>
+          <div class="flex items-center text-white">
+            <i class="fas fa-info-circle text-blue-500 mr-3"></i>
+            <span>Crea un plan para que tus seguidores puedan suscribirse</span>
+          </div>
+          <div class="flex items-center text-white">
+            <i class="fas fa-plus-circle text-green-500 mr-3"></i>
+            <button class="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors" (click)="openCreatePlanModal()">
+              Crear Plan
+            </button>
+          </div>
         </div>
       </div>
+      <app-create-plan-modal [isOpen]="isCreatePlanModalOpen" (close)="closeCreatePlanModal()" (planCreated)="handlePlanCreated()"></app-create-plan-modal>
+      <app-albums-grid *ngIf="activeTab === 'albums'"></app-albums-grid>
+      <app-personal-photos *ngIf="activeTab === 'photos'"></app-personal-photos>
     </div>
-    <app-create-plan-modal [isOpen]="isCreatePlanModalOpen" (close)="closeCreatePlanModal()" (planCreated)="handlePlanCreated()"></app-create-plan-modal>
-    <app-albums-grid *ngIf="activeTab === 'albums'"></app-albums-grid>
-    <app-personal-photos *ngIf="activeTab === 'photos'"></app-personal-photos>
   </div>
 </div>
