@@ -13,6 +13,7 @@ export class AuthProfileGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot) {
     const userId = route.params['id'];
     
+    //ver si se puede hacer de otra manera validar si el perfil existe
     return this.userService.getUserById(userId).pipe(
       map(user => {
         if (user) {

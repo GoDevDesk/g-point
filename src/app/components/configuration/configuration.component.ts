@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-
-interface Tag {
-  id: number;
-  name: string;
-  isCustom: boolean;
-  usageCount?: number;
-  isSelected?: boolean;
-}
+import { tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+import { ProfileData } from 'src/app/models/profileData';
+import { UserProfile } from 'src/app/models/userProfile';
+import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services/user.service';
+import { TagService, Tag } from 'src/app/services/tag.service';
 
 interface SocialNetwork {
   platform: string;
@@ -20,19 +19,16 @@ interface BlockedUser {
   reason?: string;
 }
 
-interface ProfileData {
-  name: string;
-  username: string;
-  aboutMe: string;
-}
-
 @Component({
   selector: 'app-configuration',
   templateUrl: './configuration.component.html',
   styleUrls: ['./configuration.component.scss']
 })
-export class ConfigurationComponent implements OnInit {
+export class ConfigurationComponent implements OnInit {  
   sidebarActive: boolean = false;
+
+  userProfile: UserProfile = {} as UserProfile; // Para almacenar los datos del usuario
+
   
   // Secciones de navegación
   sections = [
@@ -46,7 +42,8 @@ export class ConfigurationComponent implements OnInit {
 
   // Datos del perfil
   profileData: ProfileData = {
-    name: '',
+    id: 0,
+    firstName: '',
     username: '',
     aboutMe: ''
   };
@@ -87,43 +84,71 @@ export class ConfigurationComponent implements OnInit {
   // Usuarios bloqueados
   blockedUsers: BlockedUser[] = [];
 
-  constructor() { }
+  constructor(
+    private userService: UserService, 
+    private authService: AuthService,
+    private tagService: TagService
+  ) { }
 
   ngOnInit(): void {
     this.loadData();
   }
 
-  loadData(): void {
-    // Aquí se cargarían los datos reales del servicio
-    this.profileData = {
-      name: 'Usuario Ejemplo',
-      username: '@usuario',
-      aboutMe: 'Descripción del perfil...'
-    };
+  fetchUserProfile(userId: number): void {
+    this.userService.getUserById(userId).pipe(
+      tap((response: UserProfile) => {
+        this.profileData = {
+          id: response.id,
+          firstName: response.firstName,
+          username: response.userName,
+          aboutMe: response.aboutMe
+        };
+      }),
+      catchError((error) => {
+        throw error;
+      })
+    ).subscribe();
+  }
 
+  loadData(): void {
+    var userId = this.authService.getCurrentUserLoggedIdFromStorage();
+    if (userId) {
+      this.fetchUserProfile(userId);
+      this.loadTags(userId);
+    }  
+    
     this.privacySettings = {
       chatEnabled: true,
       emailNotifications: true
     };
 
-    // Cargar etiquetas seleccionadas (ejemplo)
-    this.selectedTags = [
-      { id: 1, name: 'Fotografía', isCustom: false, usageCount: 150, isSelected: true },
-      { id: 3, name: 'Música', isCustom: false, usageCount: 90, isSelected: true }
-    ];
-
-    this.customTags = [
-      { id: 11, name: 'Mi Etiqueta 1', isCustom: true, usageCount: 45, isSelected: true },
-      { id: 12, name: 'Mi Etiqueta 2', isCustom: true, usageCount: 30, isSelected: true }
-    ];
-
-    // Actualizar estado de selección en availableTags
-    this.updateAvailableTagsSelection();
-
     this.blockedUsers = [
       { id: 1, username: '@usuario1', blockedDate: new Date('2024-01-01') },
       { id: 2, username: '@usuario2', blockedDate: new Date('2024-02-01'), reason: 'Spam' }
     ];
+  }
+
+  loadTags(userId: number): void {
+    // Cargar etiquetas disponibles
+    this.tagService.getAvailableTags().subscribe({
+      next: (tags) => {
+        this.availableTags = tags.map(tag => ({ ...tag, isSelected: false }));
+        // Cargar etiquetas del usuario
+        this.tagService.getUserTags(userId).subscribe({
+          next: (userTags) => {
+            this.selectedTags = userTags.filter(tag => !tag.isCustom);
+            this.customTags = userTags.filter(tag => tag.isCustom);
+            this.updateAvailableTagsSelection();
+          },
+          error: (error) => {
+            console.error('Error al cargar las etiquetas del usuario:', error);
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error al cargar las etiquetas disponibles:', error);
+      }
+    });
   }
 
   updateAvailableTagsSelection(): void {
@@ -134,6 +159,12 @@ export class ConfigurationComponent implements OnInit {
 
   toggleTag(tag: Tag): void {
     const totalSelectedTags = this.selectedTags.length + this.customTags.length;
+    const userId = this.authService.getCurrentUserLoggedIdFromStorage();    
+    if (!userId) {
+
+      console.error('No hay usuario logueado');
+      return;
+    }
     
     if (!tag.isSelected && totalSelectedTags >= this.maxTotalTags) {
       alert(`Solo puedes tener un máximo de ${this.maxTotalTags} etiquetas en total`);
@@ -143,50 +174,115 @@ export class ConfigurationComponent implements OnInit {
     if (tag.isCustom) {
       // Manejar etiquetas personalizadas
       if (tag.isSelected) {
-        this.customTags = this.customTags.filter(t => t.id !== tag.id);
+        this.tagService.removeTagFromUser(userId, tag.id).subscribe({
+          next: () => {
+            this.customTags = this.customTags.filter(t => t.id !== tag.id);
+            tag.usageCount--;
+          },
+          error: (error) => {
+            console.error('Error al remover la etiqueta personalizada:', error);
+            alert('Error al remover la etiqueta. Por favor, intente nuevamente.');
+          }
+        });
       } else {
-        this.customTags.push(tag);
+        this.tagService.addTagToUser(tag.id).subscribe({
+          next: () => {
+            this.customTags.push(tag);
+            tag.usageCount++;
+          },
+          error: (error) => {
+            console.error('Error al agregar la etiqueta personalizada:', error);
+            alert('Error al agregar la etiqueta. Por favor, intente nuevamente.');
+          }
+        });
       }
     } else {
       // Manejar etiquetas predeterminadas
       if (tag.isSelected) {
-        this.selectedTags = this.selectedTags.filter(t => t.id !== tag.id);
+        this.tagService.removeTagFromUser(userId, tag.id).subscribe({
+          next: () => {
+            this.selectedTags = this.selectedTags.filter(t => t.id !== tag.id);
+            tag.isSelected = false;
+            const index = this.availableTags.findIndex(t => t.id === tag.id);
+            if (index !== -1) {
+              this.availableTags[index].usageCount--;
+            }
+          },
+          error: (error) => {
+            console.error('Error al remover la etiqueta:', error);
+            alert('Error al remover la etiqueta. Por favor, intente nuevamente.');
+          }
+        });
       } else {
-        this.selectedTags.push(tag);
+        this.tagService.addTagToUser(tag.id).subscribe({
+          next: () => {
+            this.selectedTags.push(tag);
+            tag.isSelected = true;
+            tag.usageCount++;
+          },
+          error: (error) => {
+            console.error('Error al agregar la etiqueta:', error);
+            alert('Error al agregar la etiqueta. Por favor, intente nuevamente.');
+          }
+        });
       }
-      tag.isSelected = !tag.isSelected;
     }
   }
 
   addCustomTag(): void {
+    const userId = this.authService.getCurrentUserLoggedIdFromStorage();
+    if (!userId) {
+      console.error('No hay usuario logueado');
+      return;
+    }
+
     if (this.selectedTags.length + this.customTags.length >= this.maxTotalTags) {
       alert(`Solo puedes tener un máximo de ${this.maxTotalTags} etiquetas en total`);
       return;
     }
 
     if (this.newTagName.trim()) {
-      const newTag: Tag = {
-        id: Date.now(),
-        name: this.newTagName.trim(),
-        isCustom: true,
-        usageCount: 0,
-        isSelected: true
-      };
-      this.customTags.push(newTag);
-      this.newTagName = '';
+      this.tagService.createCustomTag( this.newTagName.trim()).subscribe({
+        next: (newTag) => {
+          this.customTags.push(newTag);
+          this.newTagName = '';
+        },
+        error: (error) => {
+          console.error('Error al crear la etiqueta personalizada:', error);
+          alert('Error al crear la etiqueta. Por favor, intente nuevamente.');
+        }
+      });
     }
   }
 
   removeTag(tag: Tag): void {
-    if (tag.isCustom) {
-      this.customTags = this.customTags.filter(t => t.id !== tag.id);
-    } else {
-      this.selectedTags = this.selectedTags.filter(t => t.id !== tag.id);
-      const availableTag = this.availableTags.find(t => t.id === tag.id);
-      if (availableTag) {
-        availableTag.isSelected = false;
-      }
+    const userId = this.authService.getCurrentUserLoggedIdFromStorage();
+    if (!userId) {
+      console.error('No hay usuario logueado');
+      return;
     }
+
+    this.tagService.removeTagFromUser(userId, tag.id).subscribe({
+      next: () => {
+        if (tag.isCustom) {
+          this.customTags = this.customTags.filter(t => t.id !== tag.id);
+        } else {
+          this.selectedTags = this.selectedTags.filter(t => t.id !== tag.id);
+          const availableTag = this.availableTags.find(t => t.id === tag.id);
+          if (availableTag) {
+            availableTag.isSelected = false;
+          }
+          const index = this.availableTags.findIndex(t => t.id === tag.id);
+          if (index !== -1) {
+            this.availableTags[index].usageCount--;
+          }
+        }
+      },
+      error: (error) => {
+        console.error('Error al remover la etiqueta:', error);
+        alert('Error al remover la etiqueta. Por favor, intente nuevamente.');
+      }
+    });
   }
 
   toggleSidebar(): void {
@@ -232,8 +328,16 @@ export class ConfigurationComponent implements OnInit {
   }
 
   saveProfile(): void {
-    // Aquí iría la lógica para guardar los cambios del perfil
-    console.log('Perfil guardado', this.profileData);
+    this.userService.updateUser(this.profileData).subscribe({
+      next: () => {
+        console.log('Perfil actualizado exitosamente');
+        alert('¡Perfil actualizado exitosamente!');
+      },
+      error: (error) => {
+        console.error('Error al actualizar el perfil:', error);
+        alert('Error al actualizar el perfil. Por favor, intente nuevamente.');
+      }
+    });
   }
 
   togglePrivacySetting(setting: 'chatEnabled' | 'emailNotifications'): void {

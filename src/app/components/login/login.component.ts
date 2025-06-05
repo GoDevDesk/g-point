@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  credentials = { username: '', password: '' };
+  credentials = { username: '', password: '', email: '' };
   isLoading = false; // Simula la carga inicial
 
   constructor(private authService: AuthService, private router: Router) {
@@ -28,9 +28,12 @@ export class LoginComponent implements OnInit {
   async onLogin(): Promise<void> {
     this.isLoading = true;
     this.authService.login(this.credentials).subscribe({
-      next: async (response) => this.handleLoginResponse(response),
+      next: async (response) => {
+        await this.handleLoginResponse(response);
+      },
       error: (error) => {
         console.error('Error al iniciar sesión', error);
+        alert('Error al iniciar sesión: ' + error);
         this.isLoading = false;
       },
     });

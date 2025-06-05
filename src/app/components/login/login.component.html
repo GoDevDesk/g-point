@@ -19,6 +19,19 @@
                 />
             </div>
             <div class="my-5 text-sm">
+                <label for="email" class="block text-black">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    [(ngModel)]="credentials.email"
+                    (ngModelChange)="onInputChange()"
+                    name="email"
+                    class="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                    placeholder="Email"
+                    required
+                />
+            </div>
+            <div class="my-5 text-sm">
                 <label for="password" class="block text-black">Password</label>
                 <input
                     type="password"

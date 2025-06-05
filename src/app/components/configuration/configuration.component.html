@@ -24,7 +24,7 @@
       <div class="card">
         <div class="form-group">
           <label for="name">Nombre</label>
-          <input type="text" id="name" [(ngModel)]="profileData.name" placeholder="Tu nombre">
+          <input type="text" id="name" [(ngModel)]="profileData.firstName" placeholder="Tu nombre">
         </div>
         <div class="form-group">
           <label for="username">Nombre de Usuario</label>
@@ -78,13 +78,16 @@
           <div class="custom-tags">
             <h3>Crear Nueva Etiqueta</h3>
             <div class="tag-input-group">
-              <input type="text" 
-                     [(ngModel)]="newTagName" 
-                     placeholder="Nueva etiqueta" 
-                     maxlength="20"
-                     [disabled]="selectedTags.length + customTags.length >= maxTotalTags">
+              <div class="search-container">
+                <input type="text" 
+                       [(ngModel)]="newTagName" 
+                       placeholder="Buscar o crear etiqueta" 
+                       maxlength="20"
+                       [disabled]="selectedTags.length + customTags.length >= maxTotalTags">
+              </div>
+              
               <button (click)="addCustomTag()" 
-                      [disabled]="selectedTags.length + customTags.length >= maxTotalTags">
+                      [disabled]="selectedTags.length + customTags.length >= maxTotalTags || !newTagName">
                 Agregar
               </button>
             </div>
