@@ -3,14 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-export interface Tag {
-  id: number;
-  name: string;
-  isCustom: boolean;
-  usageCount: number;
-  isSelected?: boolean;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -35,8 +27,10 @@ export class TagService {
   }
   
   // Crear una nueva etiqueta personalizada
-  createCustomTag(tagName: string): Observable<Tag> {
-    return this.http.post<Tag>(`${this.apiUrl}/custom`, tagName);
+  createCustomTag(tagName: string): Observable<number> {
+    return this.http.post<number>(`${this.apiUrl}/custom`, `"${tagName}"`, {
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 
   // Remover una etiqueta de un usuario
