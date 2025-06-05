@@ -20,7 +20,7 @@ export class UserService {
   }
 
   // Método para actualizar la información del usuario por ID
-  updateUser(profileData: ProfileData): Observable<void> {
+  updateUser(profileData: UserProfile): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/user`, profileData);
   }
 

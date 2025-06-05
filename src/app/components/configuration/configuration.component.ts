@@ -93,9 +93,9 @@ export class ConfigurationComponent implements OnInit {
       tap((response: UserProfile) => {
         this.profileData = {
           id: response.id,
-          firstName: response.firstName,
-          username: response.userName,
-          aboutMe: response.aboutMe
+          firstName: response.firstName ?? '',
+          username: response.userName ?? '',
+          aboutMe: response.aboutMe ?? ''
         };
       }),
       catchError((error) => {
@@ -344,7 +344,14 @@ export class ConfigurationComponent implements OnInit {
   }
 
   saveProfile(): void {
-    this.userService.updateUser(this.profileData).subscribe({
+    const userProfile: UserProfile = {
+      id: this.profileData.id,
+      firstName: this.profileData.firstName,
+      userName: this.profileData.username,
+      aboutMe: this.profileData.aboutMe
+    };
+
+    this.userService.updateUser(userProfile).subscribe({
       next: () => {
         console.log('Perfil actualizado exitosamente');
         alert('¡Perfil actualizado exitosamente!');
