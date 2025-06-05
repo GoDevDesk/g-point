@@ -97,6 +97,15 @@ export class ConfigurationComponent implements OnInit {
           username: response.userName ?? '',
           aboutMe: response.aboutMe ?? ''
         };
+
+        // Actualizar redes sociales con la información del perfil
+        this.socialNetworks = [
+          new SocialNetwork('Instagram', response.igSocialMedia ?? ''),
+          new SocialNetwork('Twitter', response.xSocialMedia ?? ''),
+          new SocialNetwork('TikTok', response.otherSocialMedia ?? ''),
+          new SocialNetwork('YouTube', response.ytSocialMedia ?? ''),
+          new SocialNetwork('OnlyFans', response.otherSocialMedia ?? '')
+        ];
       }),
       catchError((error) => {
         console.error('Error al cargar el perfil:', error);
@@ -320,6 +329,27 @@ export class ConfigurationComponent implements OnInit {
     const network = this.socialNetworks.find(n => n.platform === platform);
     if (network) {
       network.url = url;
+      
+      // Actualizar el perfil en el backend
+      const userProfile: UserProfile = {
+        id: this.profileData.id,
+        igSocialMedia: platform === 'Instagram' ? url : this.socialNetworks.find(n => n.platform === 'Instagram')?.url ?? '',
+        xSocialMedia: platform === 'Twitter' ? url : this.socialNetworks.find(n => n.platform === 'Twitter')?.url ?? '',
+        ytSocialMedia: platform === 'YouTube' ? url : this.socialNetworks.find(n => n.platform === 'YouTube')?.url ?? '',
+        otherSocialMedia: platform === 'TikTok' || platform === 'OnlyFans' ? url : this.socialNetworks.find(n => n.platform === 'TikTok')?.url ?? ''
+      };
+
+      this.userService.updateUser(userProfile).subscribe({
+        next: () => {
+          console.log('Red social actualizada exitosamente');
+        },
+        error: (error) => {
+          console.error('Error al actualizar la red social:', error);
+          alert('Error al actualizar la red social. Por favor, intente nuevamente.');
+          // Revertir el cambio local si falla la actualización
+          network.url = this.socialNetworks.find(n => n.platform === platform)?.url ?? '';
+        }
+      });
     }
   }
 

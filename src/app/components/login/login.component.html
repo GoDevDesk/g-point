@@ -1,84 +1,100 @@
 <div *ngIf="isLoading" class="loading-overlay">
-    <mat-spinner color="primary"></mat-spinner>
+    <mat-spinner color="accent"></mat-spinner>
 </div>
-<div [class.opacity-50]="isLoading" class="bg-white lg:w-4/12 md:6/12 w-10/12 m-auto my-10 shadow-md">
-    <div class="py-8 px-8 rounded-xl">         
-        <h1 class="font-medium text-2xl mt-3 text-center">Login</h1>
-        <form (ngSubmit)="onLogin()" class="mt-6">
-            <div class="my-5 text-sm">
-                <label for="username" class="block text-black">Username</label>
-                <input
-                    type="text"
-                    id="username"
-                    [(ngModel)]="credentials.username"
-                    (ngModelChange)="onInputChange()"
-                    name="username"
-                    class="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                    placeholder="Username"
-                    required
-                />
-            </div>
-            <div class="my-5 text-sm">
-                <label for="email" class="block text-black">Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    [(ngModel)]="credentials.email"
-                    (ngModelChange)="onInputChange()"
-                    name="email"
-                    class="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                    placeholder="Email"
-                    required
-                />
-            </div>
-            <div class="my-5 text-sm">
-                <label for="password" class="block text-black">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    [(ngModel)]="credentials.password"
-                    (ngModelChange)="onInputChange()"
-                    name="password"
-                    class="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                    placeholder="Password"
-                    required
-                />
-                <div class="flex justify-end mt-2 text-xs text-gray-600">
-                   <a href="#">Forget Password?</a>
+
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+    <div [class.opacity-50]="isLoading" class="max-w-md w-full space-y-8 bg-gray-800 p-10 rounded-2xl shadow-2xl border border-pink-500/20">
+        <div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
+                Bienvenido de nuevo
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-400">
+                Ingresa tus credenciales para continuar
+            </p>
+        </div>
+        
+        <form (ngSubmit)="onLogin()" class="mt-8 space-y-6">
+            <div class="rounded-md shadow-sm space-y-4">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-300">Usuario</label>
+                    <div class="mt-1">
+                        <input
+                            type="text"
+                            id="username"
+                            [(ngModel)]="credentials.username"
+                            (ngModelChange)="onInputChange()"
+                            name="username"
+                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
+                            placeholder="Tu nombre de usuario"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
+                    <div class="mt-1">
+                        <input
+                            type="email"
+                            id="email"
+                            [(ngModel)]="credentials.email"
+                            (ngModelChange)="onInputChange()"
+                            name="email"
+                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
+                            placeholder="tu@email.com"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-300">Contraseña</label>
+                    <div class="mt-1">
+                        <input
+                            type="password"
+                            id="password"
+                            [(ngModel)]="credentials.password"
+                            (ngModelChange)="onInputChange()"
+                            name="password"
+                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
+                            placeholder="Tu contraseña"
+                            required
+                        />
+                    </div>
+                    <div class="flex justify-end mt-2">
+                        <a href="#" class="text-sm text-pink-500 hover:text-pink-400 transition duration-150 ease-in-out">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <button
-                type="submit"
-                class="block text-center text-white bg-gray-800 p-3 duration-300 rounded-sm hover:bg-black w-full"
-            >
-                Login
-            </button>
+            <div>
+                <button
+                    type="submit"
+                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 focus:ring-offset-gray-800 transition duration-150 ease-in-out transform hover:scale-[1.02]"
+                >
+                    Iniciar Sesión
+                </button>
+            </div>
         </form>
 
-        <div class="flex md:justify-between justify-center items-center mt-10">
-            <div style="height: 1px;" class="bg-gray-300 md:block hidden w-4/12"></div>
-            <!-- <p class="md:mx-2 text-sm font-light text-gray-400"> Login With Social </p>  -->
-            <div style="height: 1px;" class="bg-gray-300 md:block hidden w-4/12"></div>
+        <div class="mt-6">
+            <div class="relative">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-700"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-gray-800 text-gray-400">¿No tienes una cuenta?</span>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <a [routerLink]="'/register'" 
+                   class="w-full flex justify-center py-2 px-4 border border-pink-500/20 rounded-lg shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 focus:ring-offset-gray-800 transition duration-150 ease-in-out">
+                    Crear una cuenta
+                </a>
+            </div>
         </div>
-
-        <!-- <div class="grid md:grid-cols-2 gap-2 mt-7">
-            <div>
-                <button class="text-center w-full text-white bg-blue-900 p-3 duration-300 rounded-sm hover:bg-blue-700">
-                    Facebook
-                </button>
-            </div>
-            <div>
-                <button class="text-center w-full text-white bg-blue-400 p-3 duration-300 rounded-sm hover:bg-blue-500">
-                    Twitter
-                </button>
-            </div>
-        </div> -->
-
-        <p class="mt-24 text-xs text-center font-light text-gray-500">
-            Don't have an account?
-            <a [routerLink]="'/register'" class="text-black font-medium"> Create One </a>
-        </p>
-          
     </div>
 </div>

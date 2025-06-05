@@ -7,11 +7,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
-    z-index: 1000; /* Asegura que está sobre todo */
-  }
-  
-  .opacity-50 {
+    background-color: rgba(17, 24, 39, 0.9);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+}
+
+.opacity-50 {
     opacity: 0.5;
-    pointer-events: none; /* Evita que se interactúe con los elementos detrás */
-  }
+    pointer-events: none;
+    filter: blur(2px);
+    transition: all 0.3s ease-in-out;
+}
