@@ -1,20 +1,26 @@
 // Estilos para las tarjetas de contenido
 .content-card {
   transition: all 0.3s ease-in-out;
+  background-color: #1f2937;
+  border: 1px solid rgba(236, 72, 153, 0.2);
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    border-color: rgba(236, 72, 153, 0.4);
   }
 }
 
 // Estilos para las tarjetas de creadoras
 .creator-card {
   transition: all 0.3s ease-in-out;
+  background-color: #1f2937;
+  border: 1px solid rgba(236, 72, 153, 0.2);
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    border-color: rgba(236, 72, 153, 0.4);
   }
 
   img {
@@ -29,15 +35,19 @@
 // Estilos para las categorías
 .category-card {
   transition: all 0.3s ease-in-out;
+  background-color: #1f2937;
+  border: 1px solid rgba(236, 72, 153, 0.2);
   
   &:hover {
     transform: translateY(-5px);
-    background-color: #fdf2f8;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    background-color: #374151;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    border-color: rgba(236, 72, 153, 0.4);
   }
 
   i {
     transition: transform 0.3s ease-in-out;
+    color: #ec4899;
   }
 
   &:hover i {
@@ -65,7 +75,7 @@
 
 // Estilos para los botones
 button {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s ease-in-out;
   
   &:hover {
     transform: translateY(-2px);
@@ -84,4 +94,53 @@ button {
 .badge {
   backdrop-filter: blur(4px);
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+// Estilos para el fondo principal
+main {
+  background-color: #000000;
+  min-height: 100vh;
+}
+
+// Estilos para los títulos
+h2 {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+// Estilos para los textos
+p {
+  color: #9ca3af;
+}
+
+// Estilos para los enlaces
+a {
+  transition: all 0.3s ease-in-out;
+  
+  &:hover {
+    color: #ec4899;
+  }
+}
+
+// Estilos para los iconos
+i {
+  &.text-pink-500 {
+    color: #ec4899;
+  }
+}
+
+// Estilos para los bordes
+.border-pink-500\/20 {
+  border-color: rgba(236, 72, 153, 0.2);
+}
+
+// Estilos para las sombras
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}
+
+// Estilos para el footer
+footer {
+  background-color: #111827;
+  border-top: 1px solid rgba(236, 72, 153, 0.2);
 }

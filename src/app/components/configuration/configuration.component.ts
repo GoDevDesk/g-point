@@ -20,12 +20,12 @@ export class ConfigurationComponent implements OnInit {
   // Propiedades de navegación
   public sidebarActive: boolean = false;
   public readonly sections: NavigationSection[] = [
-    new NavigationSection('profile', 'Perfil'),
-    new NavigationSection('tags', 'Etiquetas'),
-    new NavigationSection('social', 'Redes Sociales'),
-    new NavigationSection('privacy', 'Privacidad'),
-    new NavigationSection('blocks', 'Bloqueos'),
-    new NavigationSection('account', 'Cuenta')
+    { id: 'profile', name: 'Datos Personales', icon: 'fa-user' },
+    { id: 'tags', name: 'Etiquetas', icon: 'fa-tags' },
+    { id: 'social', name: 'Redes Sociales', icon: 'fa-share-alt' },
+    { id: 'privacy', name: 'Privacidad', icon: 'fa-lock' },
+    { id: 'blocks', name: 'Usuarios Bloqueados', icon: 'fa-ban' },
+    { id: 'account', name: 'Gestión de Cuenta', icon: 'fa-cog' }
   ];
 
   // Propiedades del perfil
@@ -50,11 +50,11 @@ export class ConfigurationComponent implements OnInit {
 
   // Propiedades de redes sociales
   public socialNetworks: SocialNetwork[] = [
-    new SocialNetwork('Instagram', ''),
-    new SocialNetwork('Twitter', ''),
-    new SocialNetwork('TikTok', ''),
-    new SocialNetwork('YouTube', ''),
-    new SocialNetwork('OnlyFans', '')
+    { platform: 'Instagram', url: '', icon: 'fa-instagram' },
+    { platform: 'Twitter', url: '', icon: 'fa-twitter' },
+    { platform: 'TikTok', url: '', icon: 'fa-tiktok' },
+    { platform: 'YouTube', url: '', icon: 'fa-youtube' },
+    { platform: 'OnlyFans', url: '', icon: 'fa-heart' }
   ];
 
   constructor(
@@ -100,11 +100,11 @@ export class ConfigurationComponent implements OnInit {
 
         // Actualizar redes sociales con la información del perfil
         this.socialNetworks = [
-          new SocialNetwork('Instagram', response.igSocialMedia ?? ''),
-          new SocialNetwork('Twitter', response.xSocialMedia ?? ''),
-          new SocialNetwork('TikTok', response.otherSocialMedia ?? ''),
-          new SocialNetwork('YouTube', response.ytSocialMedia ?? ''),
-          new SocialNetwork('OnlyFans', response.otherSocialMedia ?? '')
+          { platform: 'Instagram', url: response.igSocialMedia ?? '', icon: 'fa-instagram' },
+          { platform: 'Twitter', url: response.xSocialMedia ?? '', icon: 'fa-twitter' },
+          { platform: 'TikTok', url: response.otherSocialMedia ?? '', icon: 'fa-tiktok' },
+          { platform: 'YouTube', url: response.ytSocialMedia ?? '', icon: 'fa-youtube' },
+          { platform: 'OnlyFans', url: response.otherSocialMedia ?? '', icon: 'fa-heart' }
         ];
       }),
       catchError((error) => {

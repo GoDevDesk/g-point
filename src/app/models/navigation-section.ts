@@ -1,6 +1,5 @@
-export class NavigationSection {
-    constructor(
-        public id: string,
-        public name: string
-    ) {}
+export interface NavigationSection {
+    id: string;
+    name: string;
+    icon: string;
 } 

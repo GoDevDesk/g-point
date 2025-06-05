@@ -1,4 +1,3 @@
-
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -8,36 +7,69 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
-  z-index: 1000; /* Asegura que está sobre todo */
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  transition: all 0.3s ease-in-out;
 }
 
 .opacity-50 {
   opacity: 0.5;
-  pointer-events: none; /* Evita que se interactúe con los elementos detrás */
+  pointer-events: none;
+  filter: blur(2px);
+  transition: all 0.3s ease-in-out;
 }
 
 .profile-container {
-    position: relative;
-    width: 5rem;  /* Tamaño ancho del contenedor */
-    height: 5rem; /* Tamaño alto del contenedor */
+  position: relative;
+  width: 6rem;
+  height: 6rem;
 }
 
 .edit-icon {
-    position: absolute;
-    bottom: 0.25rem; /* bottom-1 */
-    right: 0.25rem;  /* right-1 */
-    background-color: white; /* bg-white */
-    border-radius: 9999px; /* rounded-full */
-    padding: 0.25rem; /* p-1 */
-    border: 1px solid #D1D5DB; /* border-gray-300 */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
-    opacity: 0; /* opacity-0 */
-    transition: opacity 0.2s ease-in-out; /* transition-opacity duration-200 */
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #1f2937;
+  border-radius: 9999px;
+  padding: 0.5rem;
+  border: 1px solid #ec4899;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #374151;
+    transform: scale(1.1);
+  }
 }
 
 .profile-container:hover .edit-icon {
-    opacity: 1; /* Visible al hacer hover en el contenedor */  //NO FUNCIONA 
+  opacity: 1;
+}
+
+// Estilos para los botones
+button {
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+// Estilos para las transiciones
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+// Estilos para los bordes y sombras
+.border-pink-500\/20 {
+  border-color: rgba(236, 72, 153, 0.2);
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .bg-pink-500 {

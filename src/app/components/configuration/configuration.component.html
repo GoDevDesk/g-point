@@ -1,16 +1,19 @@
 <div class="configuration-container">
   <!-- Botón de menú para móvil -->
   <button class="menu-toggle" (click)="toggleSidebar()">
-    <span>☰</span>
+    <i class="fas fa-bars text-pink-500"></i>
   </button>
 
   <!-- Barra lateral de navegación -->
   <nav class="sidebar" [class.active]="sidebarActive">
     <div class="sidebar-header">
-      <h3>Configuración</h3>
+      <h3 class="text-pink-500">Configuración</h3>
     </div>
     <ul>
-      <li *ngFor="let section of sections" (click)="scrollToSection(section.id)">
+      <li *ngFor="let section of sections" 
+          (click)="scrollToSection(section.id)"
+          class="hover:text-pink-500 transition-colors">
+        <i class="fas {{section.icon}} mr-2"></i>
         {{ section.name }}
       </li>
     </ul>
@@ -20,7 +23,7 @@
   <main class="content">
     <!-- Sección de Perfil -->
     <section id="profile" class="section">
-      <h2>Datos Personales</h2>
+      <h2 class="text-pink-500">Datos Personales</h2>
       <div class="card">
         <div class="form-group">
           <label for="name">Nombre</label>
@@ -34,13 +37,15 @@
           <label for="aboutMe">Acerca de mí</label>
           <textarea id="aboutMe" [(ngModel)]="profileData.aboutMe" rows="4" placeholder="Cuéntanos sobre ti..."></textarea>
         </div>
-        <button class="save-button" (click)="saveProfile()">Guardar Cambios</button>
+        <button class="save-button" (click)="saveProfile()">
+          <i class="fas fa-save mr-2"></i>Guardar Cambios
+        </button>
       </div>
     </section>
 
     <!-- Sección de Etiquetas -->
     <section id="tags" class="section">
-      <h2>Etiquetas del Perfil</h2>
+      <h2 class="text-pink-500">Etiquetas del Perfil</h2>
       <div class="card">
         <div class="tags-container">
           <div class="selected-tags">
@@ -49,15 +54,20 @@
               <div class="tag-item selected" *ngFor="let tag of selectedTags">
                 <span class="tag-name">{{ tag.name }}</span>
                 <span class="tag-count">({{ tag.usageCount }})</span>
-                <button class="remove-tag" (click)="removeTag(tag)">×</button>
+                <button class="remove-tag" (click)="removeTag(tag)">
+                  <i class="fas fa-minus-circle"></i>
+                </button>
               </div>
               <div class="tag-item custom selected" *ngFor="let tag of customTags">
                 <span class="tag-name">{{ tag.name }}</span>
                 <span class="tag-count">({{ tag.usageCount }})</span>
-                <button class="remove-tag" (click)="removeTag(tag)">×</button>
+                <button class="remove-tag" (click)="removeTag(tag)">
+                  <i class="fas fa-minus-circle"></i>
+                </button>
               </div>
             </div>
             <p class="tag-limit" *ngIf="selectedTags.length + customTags.length >= maxTotalTags">
+              <i class="fas fa-exclamation-circle mr-2"></i>
               Has alcanzado el límite de {{ maxTotalTags }} etiquetas
             </p>
           </div>
@@ -88,7 +98,7 @@
               
               <button (click)="addCustomTag()" 
                       [disabled]="selectedTags.length + customTags.length >= maxTotalTags || !newTagName">
-                Agregar
+                <i class="fas fa-plus mr-2"></i>Agregar
               </button>
             </div>
           </div>
@@ -98,12 +108,15 @@
 
     <!-- Sección de Redes Sociales -->
     <section id="social" class="section">
-      <h2>Redes Sociales</h2>
+      <h2 class="text-pink-500">Redes Sociales</h2>
       <div class="card">
         <div class="social-networks">
           <div class="social-item" *ngFor="let network of socialNetworks">
             <div class="social-input">
-              <label>{{ network.platform }}</label>
+              <label>
+                <i class="fab {{network.icon}} mr-2 text-pink-500"></i>
+                {{ network.platform }}
+              </label>
               <input type="url" 
                      [(ngModel)]="network.url" 
                      (change)="updateSocialNetwork(network.platform, network.url)"
@@ -116,7 +129,7 @@
 
     <!-- Sección de Privacidad -->
     <section id="privacy" class="section">
-      <h2>Privacidad</h2>
+      <h2 class="text-pink-500">Privacidad</h2>
       <div class="card">
         <div class="privacy-options">
           <div class="privacy-item">
@@ -130,7 +143,10 @@
                 <span class="slider round"></span>
               </label>
             </div>
-            <p class="privacy-description">Permitir que otros usuarios te envíen mensajes</p>
+            <p class="privacy-description">
+              <i class="fas fa-info-circle mr-2"></i>
+              Permitir que otros usuarios te envíen mensajes
+            </p>
           </div>
 
           <div class="privacy-item">
@@ -144,7 +160,10 @@
                 <span class="slider round"></span>
               </label>
             </div>
-            <p class="privacy-description">Recibir notificaciones por correo electrónico</p>
+            <p class="privacy-description">
+              <i class="fas fa-info-circle mr-2"></i>
+              Recibir notificaciones por correo electrónico
+            </p>
           </div>
         </div>
       </div>
@@ -152,21 +171,31 @@
 
     <!-- Sección de Bloqueos -->
     <section id="blocks" class="section">
-      <h2>Usuarios Bloqueados</h2>
+      <h2 class="text-pink-500">Usuarios Bloqueados</h2>
       <div class="card">
         <div class="blocked-users">
           <div class="block-input-group">
             <input type="text" placeholder="Nombre de usuario a bloquear">
-            <button>Bloquear</button>
+            <button>
+              <i class="fas fa-ban mr-2"></i>Bloquear
+            </button>
           </div>
           <div class="blocked-list">
             <div class="blocked-item" *ngFor="let user of blockedUsers">
               <div class="blocked-info">
                 <span class="username">{{ user.username }}</span>
-                <span class="block-date">Bloqueado el {{ user.blockedDate | date:'dd/MM/yyyy' }}</span>
-                <span class="block-reason" *ngIf="user.reason">Razón: {{ user.reason }}</span>
+                <span class="block-date">
+                  <i class="far fa-clock mr-2"></i>
+                  Bloqueado el {{ user.blockedDate | date:'dd/MM/yyyy' }}
+                </span>
+                <span class="block-reason" *ngIf="user.reason">
+                  <i class="fas fa-exclamation-circle mr-2"></i>
+                  Razón: {{ user.reason }}
+                </span>
               </div>
-              <button class="unblock-button" (click)="unblockUser(user.id)">Desbloquear</button>
+              <button class="unblock-button" (click)="unblockUser(user.id)">
+                <i class="fas fa-unlock mr-2"></i>Desbloquear
+              </button>
             </div>
           </div>
         </div>
@@ -175,13 +204,18 @@
 
     <!-- Sección de Cuenta -->
     <section id="account" class="section">
-      <h2>Gestión de Cuenta</h2>
+      <h2 class="text-pink-500">Gestión de Cuenta</h2>
       <div class="card danger-zone">
         <div class="danger-actions">
           <div class="danger-item">
-            <h4>Eliminar Cuenta</h4>
+            <h4>
+              <i class="fas fa-exclamation-triangle mr-2"></i>
+              Eliminar Cuenta
+            </h4>
             <p>Elimina permanentemente tu cuenta y todos tus datos. Esta acción no se puede deshacer.</p>
-            <button class="danger-button" (click)="deleteAccount()">Eliminar Cuenta</button>
+            <button class="danger-button" (click)="deleteAccount()">
+              <i class="fas fa-trash-alt mr-2"></i>Eliminar Cuenta
+            </button>
           </div>
         </div>
       </div>

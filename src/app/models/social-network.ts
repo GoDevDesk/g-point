@@ -1,6 +1,5 @@
-export class SocialNetwork {
-    constructor(
-        public platform: string,
-        public url: string
-    ) {}
+export interface SocialNetwork {
+    platform: string;
+    url: string;
+    icon: string;
 } 
