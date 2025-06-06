@@ -138,8 +138,8 @@
               <label>Habilitar Chat</label>
               <label class="switch">
                 <input type="checkbox" 
-                       [(ngModel)]="privacySettings.chatEnabled"
-                       (change)="togglePrivacySetting('chatEnabled')">
+                       [(ngModel)]="privacySettings.enabledChat"
+                       (change)="togglePrivacySetting('enabledChat')">
                 <span class="slider round"></span>
               </label>
             </div>
@@ -155,8 +155,8 @@
               <label>Notificaciones por Email</label>
               <label class="switch">
                 <input type="checkbox" 
-                       [(ngModel)]="privacySettings.emailNotifications"
-                       (change)="togglePrivacySetting('emailNotifications')">
+                       [(ngModel)]="privacySettings.receiveEmailNotifications"
+                       (change)="togglePrivacySetting('receiveEmailNotifications')">
                 <span class="slider round"></span>
               </label>
             </div>

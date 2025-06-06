@@ -144,3 +144,18 @@ footer {
   background-color: #111827;
   border-top: 1px solid rgba(236, 72, 153, 0.2);
 }
+
+// Estilos específicos para el botón de Ver Contenido en móvil
+@media (max-width: 768px) {
+  .content-card {
+    .flex.justify-between.items-center {
+      gap: 0.5rem;
+    }
+    
+    button {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      white-space: nowrap;
+    }
+  }
+}

@@ -8,8 +8,9 @@ import { TagService } from 'src/app/services/tag.service';
 import { Tag } from 'src/app/models/tag';
 import { SocialNetwork } from 'src/app/models/social-network';
 import { BlockedUser } from 'src/app/models/blocked-user';
-import { PrivacySettings } from 'src/app/models/privacy-settings';
 import { NavigationSection } from 'src/app/models/navigation-section';
+import { PrivacySettings, PrivacySettingsResponse } from 'src/app/models/privacy-settings';
+import { ConfigurationService } from 'src/app/services/configuration.service';
 
 @Component({
   selector: 'app-configuration',
@@ -45,7 +46,11 @@ export class ConfigurationComponent implements OnInit {
   public newTagName: string = '';
 
   // Propiedades de privacidad y bloqueos
-  public privacySettings: PrivacySettings = new PrivacySettings();
+  public privacySettings: PrivacySettings = {
+    userId: 0,
+    enabledChat: false,
+    receiveEmailNotifications: false
+  };
   public blockedUsers: BlockedUser[] = [];
 
   // Propiedades de redes sociales
@@ -60,7 +65,8 @@ export class ConfigurationComponent implements OnInit {
   constructor(
     private readonly userService: UserService,
     private readonly authService: AuthService,
-    private readonly tagService: TagService
+    private readonly tagService: TagService,
+    private readonly configurationService: ConfigurationService
   ) { }
 
   // Métodos del ciclo de vida
@@ -80,12 +86,32 @@ export class ConfigurationComponent implements OnInit {
   }
 
   private initializeDefaultSettings(): void {
-    this.privacySettings = new PrivacySettings();
+    const userId = this.authService.getCurrentUserLoggedIdFromStorage();
+    if (userId) {
+      this.privacySettings = {
+        userId: userId,
+        enabledChat: false,
+        receiveEmailNotifications: false
+      };
+      this.loadPrivacySettings();
+    }
 
     this.blockedUsers = [
       new BlockedUser(1, '@usuario1', new Date('2024-01-01')),
       new BlockedUser(2, '@usuario2', new Date('2024-02-01'), 'Spam')
     ];
+  }
+
+  private loadPrivacySettings(): void {
+    this.configurationService.getPrivacySettings().subscribe({
+      next: (response: PrivacySettingsResponse) => {
+        this.privacySettings.enabledChat = response.enabledChat;
+        this.privacySettings.receiveEmailNotifications = response.receiveEmailNotifications;
+      },
+      error: (error: Error) => {
+        console.error('Error al cargar la configuración de privacidad:', error);
+      }
+    });
   }
 
   private fetchUserProfile(userId: number): void {
@@ -393,8 +419,40 @@ export class ConfigurationComponent implements OnInit {
     });
   }
 
-  togglePrivacySetting(setting: 'chatEnabled' | 'emailNotifications'): void {
-    this.privacySettings[setting] = !this.privacySettings[setting];
-    console.log('Configuración de privacidad actualizada:', this.privacySettings);
+  togglePrivacySetting(setting: 'enabledChat' | 'receiveEmailNotifications'): void {
+    const userId = this.authService.getCurrentUserLoggedIdFromStorage();
+    if (!userId) {
+      console.error('No hay usuario logueado');
+      return;
+    }
+
+    const newValue = this.privacySettings[setting];
+
+    const request = {
+      userId: userId,
+      [setting]: newValue
+    };
+
+    if (setting === 'enabledChat') {
+      this.configurationService.toggleChat(request).subscribe({
+        next: () => {
+          this.privacySettings.enabledChat = newValue;
+          console.log('Configuración de chat actualizada:', this.privacySettings.enabledChat);
+        },
+        error: (error: Error) => {
+          console.error('Error al actualizar la configuración de chat:', error);
+        }
+      });
+    } else {
+      this.configurationService.toggleEmailNotifications(request).subscribe({
+        next: () => {
+          this.privacySettings.receiveEmailNotifications = newValue;
+          console.log('Configuración de notificaciones actualizada:', this.privacySettings.receiveEmailNotifications);
+        },
+        error: (error: Error) => {
+          console.error('Error al actualizar la configuración de notificaciones:', error);
+        }
+      });
+    }
   }
 }
