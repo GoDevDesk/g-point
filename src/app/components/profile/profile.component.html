@@ -87,12 +87,16 @@
           (click)="activeTab = 'albums'">
           Albums
         </button>
-        <button class="w-full py-3 text-lg font-semibold transition-colors duration-300"
+        <button class="w-full py-3 text-lg font-semibold transition-colors duration-300 flex items-center justify-center gap-2"
           [class.text-pink-500]="activeTab === 'photos'"
           [class.border-b-2]="activeTab === 'photos'"
           [class.border-pink-500]="activeTab === 'photos'"
           (click)="activeTab = 'photos'">
-          Photos
+          Premium
+          <span class="bg-pink-500 text-white text-sm px-2 py-1 rounded-full flex items-center gap-1">
+            <i class="fas fa-crown"></i>
+            Suscriptores
+          </span>
         </button>
       </div>
 
