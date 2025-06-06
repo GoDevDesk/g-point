@@ -38,10 +38,12 @@ export class RegisterComponent implements OnInit {
     this.authService.register(requestData).subscribe({
       next: () => {
         this.isLoading = false;
+        alert('¡Registro exitoso! Serás redirigido al inicio de sesión.');
         this.router.navigate(['/login']); // Redirige al login después de registrar
       },
       error: (error) => {
         this.isLoading = false;
+        alert('Error al registrarse: ' + (error.error?.message || 'Por favor, intente nuevamente.'));
       },
     });
   }}
