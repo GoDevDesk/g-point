@@ -501,3 +501,166 @@ header .my-auto {
     margin-top: 60px !important;
   }
 }
+
+/* Estilos para las notas en los chats */
+.group {
+  position: relative;
+  min-height: 24px;
+}
+
+.group:hover {
+  .opacity-0 {
+    opacity: 1 !important;
+  }
+}
+
+/* Ajustar el espacio para las notas */
+.flex-1.overflow-hidden.my-auto {
+  padding-bottom: 4px;
+}
+
+/* Estilos para el textarea de notas */
+textarea {
+  resize: none;
+  min-height: 60px;
+  max-height: 120px;
+}
+
+/* Asegurar que el formulario de notas esté por encima de otros elementos */
+.absolute.z-50 {
+  z-index: 100;
+  min-width: 200px;
+  max-width: 100%;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Estilos para el botón de agregar/editar nota */
+button.text-xs {
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: rgba(236, 72, 153, 0.1);
+  }
+}
+
+/* Ajustar el espaciado de las notas */
+.text-pink-300.italic {
+  padding: 2px 0;
+  line-height: 1.2;
+}
+
+// Estilos para mensajes premium
+.premium-content {
+  max-width: 300px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .premium-thumbnail {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: filter 0.3s ease;
+    }
+
+    &.blurred img {
+      filter: blur(8px);
+    }
+
+    .premium-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 500;
+      font-size: 1.1em;
+      backdrop-filter: blur(4px);
+    }
+  }
+
+  .premium-info {
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+
+    .premium-title {
+      font-size: 1.1em;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .premium-price {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #4CAF50;
+      color: white;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 0.9em;
+    }
+
+    .premium-actions {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+
+      a {
+        flex: 1;
+        padding: 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 0.9em;
+        transition: all 0.2s ease;
+
+        &.payment-link {
+          background: #4CAF50;
+          color: white;
+
+          &:hover {
+            background: darken(#4CAF50, 10%);
+          }
+        }
+
+        &.content-link {
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.2);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Ajustes para mensajes enviados y recibidos
+.message.sent .premium-content {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.message.received .premium-content {
+  background: rgba(255, 255, 255, 0.1);
+}

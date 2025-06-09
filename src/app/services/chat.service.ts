@@ -1,17 +1,33 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { HttpClient } from '@angular/common/http';
 
 import { combineLatest, map, Observable, switchMap } from 'rxjs';
 import { Message } from '../models/message';
 import { environment } from 'src/environments/environment';
 
+export interface PremiumContentPaymentRequest {
+  title: string;
+  price: string;
+  contentLink: string;
+  thumbnailUrl: string;
+}
+
+export interface PremiumContentPaymentResponse {
+  paymentId: string;
+  paymentLink: string;
+  contentLink: string;
+  thumbnailUrl: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  private token = environment.token; // Token obtenido desde environment
+  private token = environment.token;
+  private apiUrl = environment.apiPtUsersBaseUrl; // Usando la URL base existente
 
-  constructor(private firestore: AngularFirestore) {}
+  constructor(private firestore: AngularFirestore, private http: HttpClient) {}
 
   // Enviar un mensaje
   sendMessage(senderId: string, receiverId: string, message: string): void {
@@ -162,5 +178,13 @@ export class ChatService {
       },
       { merge: true }
     );
+  }
+
+  createPremiumContentPayment(data: PremiumContentPaymentRequest): Observable<PremiumContentPaymentResponse> {
+    return this.http.post<PremiumContentPaymentResponse>(`${this.apiUrl}/premium-content/payment`, data, {
+      headers: {
+        'Authorization': `Bearer ${this.token}`
+      }
+    });
   }
 }

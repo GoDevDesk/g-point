@@ -35,6 +35,7 @@
     <!-- Contact List -->
     <div class="overflow-y-auto h-screen p-3 mb-9 pb-20">
       <div *ngFor="let recentChat of recentChats"
+        [attr.data-chat-id]="recentChat.otherUserId"
         class="flex items-center mb-1 cursor-pointer hover:bg-gray-700 p-3 rounded-lg transition-all duration-200"
         [class.bg-gray-700]="selectedChat.otherUserId === recentChat.otherUserId"
         (click)="selectChatAndCloseSidebar(recentChat.otherUserId)">
@@ -43,7 +44,56 @@
         </div>
         <div class="flex-1 overflow-hidden my-auto">
           <h2 class="text-lg font-semibold text-white truncate leading-tight">{{ recentChat.otherUserName }}</h2>
-          <p class="text-gray-300 text-sm truncate">{{ recentChat.lastMessage || 'Comienza a chatear...' }}</p>
+          <p class="text-gray-300 text-sm truncate mb-1">{{ getFormattedLastMessage(recentChat.lastMessage) || 'Comienza a chatear...' }}</p>
+          
+          <!-- Nota del chat -->
+          <div class="mt-1 relative group border-t border-gray-700 pt-2">
+            <!-- Mostrar nota existente o botón para agregar -->
+            <div *ngIf="!editingNote.isEditing || editingNote.chatId !== recentChat.otherUserId" 
+                 class="flex items-center justify-between">
+              <p *ngIf="getNoteForChat(recentChat.otherUserId)" 
+                 class="text-xs text-emerald-400 italic truncate flex items-center">
+                <span class="mr-1">📝</span>
+                {{ getNoteForChat(recentChat.otherUserId) }}
+              </p>
+              <div class="flex gap-2">
+                <button *ngIf="!getNoteForChat(recentChat.otherUserId)"
+                        (click)="$event.stopPropagation(); startEditingNote(recentChat.otherUserId)"
+                        class="text-xs text-emerald-400 hover:text-emerald-300 transition-opacity flex items-center">
+                  <span class="mr-1">+</span> Agregar nota
+                </button>
+                <button *ngIf="getNoteForChat(recentChat.otherUserId)"
+                        (click)="$event.stopPropagation(); startEditingNote(recentChat.otherUserId)"
+                        class="text-xs text-emerald-400 hover:text-emerald-300 transition-opacity">
+                  ✏️ Editar
+                </button>
+              </div>
+            </div>
+
+            <!-- Formulario de edición de nota -->
+            <div *ngIf="editingNote.isEditing && editingNote.chatId === recentChat.otherUserId"
+                 (click)="$event.stopPropagation()"
+                 class="fixed z-[1000] bg-gray-800 p-2 rounded-lg shadow-lg border border-emerald-400 w-[calc(100%-2rem)] max-w-md"
+                 [style.top.px]="getNoteInputPosition(recentChat.otherUserId)"
+                 [style.left.px]="16">
+              <textarea 
+                #noteInput
+                [value]="getNoteForChat(recentChat.otherUserId)"
+                class="w-full bg-gray-700 text-white text-sm rounded p-2 border border-gray-600 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400"
+                rows="2"
+                placeholder="Escribe una nota para este contacto..."></textarea>
+              <div class="flex justify-end gap-2 mt-2">
+                <button (click)="cancelEditingNote()"
+                        class="text-xs text-gray-400 hover:text-gray-300 px-2 py-1 rounded hover:bg-gray-700">
+                  Cancelar
+                </button>
+                <button (click)="addOrEditNote(recentChat.otherUserId, noteInput.value)"
+                        class="text-xs bg-emerald-600 text-white hover:bg-emerald-700 px-2 py-1 rounded">
+                  Guardar
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -116,31 +166,156 @@
           </span>
         </div>
         
-        <!-- Incoming Message -->
-        <div *ngIf="message.senderId !== currentUserLoggedId" class="flex mb-2 cursor-pointer animate-fadeIn">
-          <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2 flex-shrink-0">
-            <img [src]="selectedChat.avatar || defaultPhoto" alt="User Avatar" class="w-8 h-8 rounded-full">
+        <!-- Mensaje Premium -->
+        <ng-container *ngIf="isPremiumContent(message)">
+          <!-- Mensaje Premium Recibido (Vista del Comprador) -->
+          <div *ngIf="message.senderId !== currentUserLoggedId" class="flex mb-4 cursor-pointer animate-fadeIn">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+              <img [src]="selectedChat.avatar || defaultPhoto" alt="User Avatar" class="w-8 h-8 rounded-full">
+            </div>
+            <div class="flex flex-col max-w-96 bg-gray-700 rounded-2xl p-3 gap-3 shadow-lg">
+              <div class="premium-content-container">
+                <div class="relative group">
+                  <!-- Vista previa con efecto hover -->
+                  <div class="relative overflow-hidden rounded-lg">
+                    <img [src]="getPremiumContentThumbnail(message)" 
+                         [class.blur-sm]="!isPremiumContentPaid(message)"
+                         alt="Contenido Premium" 
+                         class="w-full h-48 object-cover rounded-lg transition-transform duration-300 group-hover:scale-105">
+                    
+                    <!-- Overlay para contenido no pagado -->
+                    <div *ngIf="!isPremiumContentPaid(message)" 
+                         class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 group-hover:bg-opacity-40">
+                      <div class="text-center transform transition-transform duration-300 group-hover:scale-110">
+                        <div class="bg-black bg-opacity-50 rounded-full p-3 mb-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                          </svg>
+                        </div>
+                        <p class="text-white font-semibold">Contenido Premium</p>
+                        <p class="text-emerald-400 text-sm">${{getPremiumContentPrice(message)}}</p>
+                        <p class="text-white text-xs mt-1">Haz clic para comprar</p>
+                      </div>
+                    </div>
+
+                    <!-- Overlay de detalles al hover -->
+                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-end opacity-0 group-hover:opacity-100">
+                      <div class="w-full p-3 transform transition-transform duration-300 group-hover:translate-y-0 translate-y-full">
+                        <div class="bg-black bg-opacity-75 rounded-lg p-2">
+                          <p class="text-white text-sm font-semibold">{{getPremiumContentTitle(message)}}</p>
+                          <p class="text-emerald-400 text-xs">${{getPremiumContentPrice(message)}}</p>
+                          <p class="text-gray-300 text-xs mt-1">Contenido exclusivo</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-2">
+                    <h3 class="text-white font-semibold">{{getPremiumContentTitle(message)}}</h3>
+                    <div class="flex justify-between items-center mt-2">
+                      <p class="text-emerald-400 text-sm">${{getPremiumContentPrice(message)}}</p>
+                      <a *ngIf="!isPremiumContentPaid(message)" 
+                         [href]="getPremiumContentPaymentLink(message)"
+                         target="_blank"
+                         class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+                        Comprar Ahora
+                      </a>
+                      <a *ngIf="isPremiumContentPaid(message)" 
+                         [href]="getPremiumContentLink(message)"
+                         target="_blank"
+                         class="inline-block bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+                        Ver Contenido
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="flex max-w-96 bg-gray-700 rounded-2xl p-3 gap-3 shadow-lg">
-            <p class="text-white">{{ message.message }}</p>
+
+          <!-- Mensaje Premium Enviado (Vista del Vendedor) -->
+          <div *ngIf="message.senderId === currentUserLoggedId" class="flex justify-end mb-4 cursor-pointer animate-fadeIn">
+            <div class="flex flex-col max-w-96 bg-pink-600 text-white rounded-2xl p-3 gap-3 shadow-lg">
+              <div class="premium-content-container">
+                <div class="relative group">
+                  <!-- Vista previa con efecto hover -->
+                  <div class="relative overflow-hidden rounded-lg">
+                    <img [src]="getPremiumContentThumbnail(message)" 
+                         alt="Contenido Premium" 
+                         class="w-full h-48 object-cover rounded-lg transition-transform duration-300 group-hover:scale-105">
+                    
+                    <!-- Overlay de detalles al hover -->
+                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-end opacity-0 group-hover:opacity-100">
+                      <div class="w-full p-3 transform transition-transform duration-300 group-hover:translate-y-0 translate-y-full">
+                        <div class="bg-black bg-opacity-75 rounded-lg p-2">
+                          <p class="text-white text-sm font-semibold">{{getPremiumContentTitle(message)}}</p>
+                          <p class="text-pink-400 text-xs">${{getPremiumContentPrice(message)}}</p>
+                          <p class="text-gray-300 text-xs mt-1" [class.text-emerald-400]="isPremiumContentPaid(message)" [class.text-yellow-400]="!isPremiumContentPaid(message)">
+                            {{isPremiumContentPaid(message) ? 'Contenido Pagado' : 'Pendiente de Pago'}}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-2">
+                    <h3 class="font-semibold">{{getPremiumContentTitle(message)}}</h3>
+                    <div class="flex justify-between items-center mt-2">
+                      <p class="text-sm opacity-75">${{getPremiumContentPrice(message)}}</p>
+                      <span class="text-sm px-2 py-1 rounded-full" 
+                            [class.bg-emerald-500]="isPremiumContentPaid(message)" 
+                            [class.bg-yellow-500]="!isPremiumContentPaid(message)">
+                        {{isPremiumContentPaid(message) ? 'Pagado' : 'Pendiente'}}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2 flex-shrink-0">
+              <img [src]="currentAvatarPhoto" alt="My Avatar" class="w-8 h-8 rounded-full">
+            </div>
           </div>
-        </div>
-        
-        <!-- Outgoing Message -->
-        <div *ngIf="message.senderId === currentUserLoggedId" class="flex justify-end mb-2 cursor-pointer animate-fadeIn">
-          <div class="flex max-w-96 bg-pink-600 text-white rounded-2xl p-3 gap-3 shadow-lg"> 
-            <p>{{ message.message }}</p>
+        </ng-container>
+
+        <!-- Mensaje Normal -->
+        <ng-container *ngIf="!isPremiumContent(message)">
+          <!-- Incoming Message -->
+          <div *ngIf="message.senderId !== currentUserLoggedId" class="flex mb-2 cursor-pointer animate-fadeIn">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+              <img [src]="selectedChat.avatar || defaultPhoto" alt="User Avatar" class="w-8 h-8 rounded-full">
+            </div>
+            <div class="flex max-w-96 bg-gray-700 rounded-2xl p-3 gap-3 shadow-lg">
+              <p class="text-white">{{ message.message }}</p>
+            </div>
           </div>
-          <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2 flex-shrink-0">
-            <img [src]="currentAvatarPhoto" alt="My Avatar" class="w-8 h-8 rounded-full">
+          
+          <!-- Outgoing Message -->
+          <div *ngIf="message.senderId === currentUserLoggedId" class="flex justify-end mb-2 cursor-pointer animate-fadeIn">
+            <div class="flex max-w-96 bg-pink-600 text-white rounded-2xl p-3 gap-3 shadow-lg"> 
+              <p>{{ message.message }}</p>
+            </div>
+            <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2 flex-shrink-0">
+              <img [src]="currentAvatarPhoto" alt="My Avatar" class="w-8 h-8 rounded-full">
+            </div>
           </div>
-        </div>
+        </ng-container>
       </div>
     </div>
 
     <!-- Chat Input (solo visible cuando hay un chat seleccionado) -->
     <footer *ngIf="selectedChat.otherUserId" class="border-t border-gray-700 bg-gray-800 p-4 shadow-lg chat-input-footer">
       <div class="flex items-center gap-2">
+        <!-- Botón de contenido premium -->
+        <button 
+          class="bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-full transition-all duration-200 shadow-md flex-shrink-0"
+          (click)="openPremiumContentModal()"
+          title="Enviar contenido premium">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+        </button>
+
         <input 
           type="text" 
           placeholder="Escribe un mensaje..." 
@@ -156,5 +331,151 @@
         </button>
       </div>
     </footer>
+
+    <!-- Modal de Contenido Premium -->
+    <div *ngIf="showPremiumContentModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div class="bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl">
+        <!-- Header del Modal -->
+        <div class="p-4 border-b border-gray-700 flex justify-between items-center">
+          <h3 class="text-xl font-semibold text-white">Enviar Contenido Premium</h3>
+          <button (click)="closePremiumContentModal()" class="text-gray-400 hover:text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Contenido del Modal -->
+        <div class="p-4">
+          <!-- Selector de tipo de contenido -->
+          <div class="mb-4">
+            <div class="flex space-x-2 border-b border-gray-700">
+              <button 
+                [class.bg-emerald-600]="contentType === 'url'"
+                [class.text-white]="contentType === 'url'"
+                [class.bg-gray-700]="contentType !== 'url'"
+                [class.text-gray-300]="contentType !== 'url'"
+                class="px-4 py-2 rounded-t-lg transition-colors"
+                (click)="changeContentType('url')">
+                URL Directa
+              </button>
+              <button 
+                [class.bg-emerald-600]="contentType === 'gallery'"
+                [class.text-white]="contentType === 'gallery'"
+                [class.bg-gray-700]="contentType !== 'gallery'"
+                [class.text-gray-300]="contentType !== 'gallery'"
+                class="px-4 py-2 rounded-t-lg transition-colors"
+                (click)="changeContentType('gallery')">
+                Galería
+              </button>
+              <button 
+                [class.bg-emerald-600]="contentType === 'upload'"
+                [class.text-white]="contentType === 'upload'"
+                [class.bg-gray-700]="contentType !== 'upload'"
+                [class.text-gray-300]="contentType !== 'upload'"
+                class="px-4 py-2 rounded-t-lg transition-colors"
+                (click)="changeContentType('upload')">
+                Subir Video
+              </button>
+            </div>
+          </div>
+
+          <!-- Campos comunes -->
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-1">Título</label>
+              <input 
+                type="text" 
+                [(ngModel)]="premiumContentMessage.title"
+                class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                placeholder="Título del contenido">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-1">Precio</label>
+              <input 
+                type="number" 
+                [(ngModel)]="premiumContentMessage.price"
+                class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                placeholder="Precio en USD">
+            </div>
+
+            <!-- Campos específicos según el tipo -->
+            <div *ngIf="contentType === 'url'">
+              <label class="block text-sm font-medium text-gray-300 mb-1">URL del Video</label>
+              <input 
+                type="url" 
+                [(ngModel)]="premiumContentMessage.contentLink"
+                class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                placeholder="https://ejemplo.com/video.mp4">
+            </div>
+
+            <div *ngIf="contentType === 'gallery'">
+              <label class="block text-sm font-medium text-gray-300 mb-1">Seleccionar de la Galería</label>
+              <div class="grid grid-cols-2 gap-4 mt-2">
+                <div *ngFor="let item of userGallery" 
+                     (click)="selectFromGallery(item)"
+                     class="cursor-pointer p-2 rounded border border-gray-600 hover:border-emerald-500 transition-colors">
+                  <img [src]="item.thumbnailUrl" alt="Thumbnail" class="w-full h-32 object-cover rounded mb-2">
+                  <p class="text-sm text-white truncate">{{item.title}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="contentType === 'upload'">
+              <label class="block text-sm font-medium text-gray-300 mb-1">Subir Video</label>
+              <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-600 border-dashed rounded-lg">
+                <div class="space-y-1 text-center">
+                  <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <div class="flex text-sm text-gray-400">
+                    <label class="relative cursor-pointer bg-gray-700 rounded-md font-medium text-emerald-500 hover:text-emerald-400 focus-within:outline-none">
+                      <span>Subir un archivo</span>
+                      <input type="file" class="sr-only" accept="video/*" (change)="onFileSelected($event)">
+                    </label>
+                    <p class="pl-1">o arrastrar y soltar</p>
+                  </div>
+                  <p class="text-xs text-gray-500">MP4, WebM hasta 100MB</p>
+                </div>
+              </div>
+              <!-- Barra de progreso -->
+              <div *ngIf="uploadProgress > 0" class="mt-2">
+                <div class="w-full bg-gray-700 rounded-full h-2">
+                  <div class="bg-emerald-500 h-2 rounded-full" [style.width.%]="uploadProgress"></div>
+                </div>
+                <p class="text-sm text-gray-400 mt-1">Subiendo... {{uploadProgress}}%</p>
+              </div>
+            </div>
+
+            <!-- Vista previa de la miniatura -->
+            <div *ngIf="premiumContentMessage.thumbnailUrl" class="mt-4">
+              <label class="block text-sm font-medium text-gray-300 mb-1">Vista previa</label>
+              <div class="relative w-full h-48 rounded-lg overflow-hidden">
+                <img [src]="premiumContentMessage.thumbnailUrl" 
+                     alt="Vista previa" 
+                     class="w-full h-full object-cover">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer del Modal -->
+        <div class="p-4 border-t border-gray-700 flex justify-end space-x-2">
+          <button 
+            (click)="closePremiumContentModal()"
+            class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors">
+            Cancelar
+          </button>
+          <button 
+            (click)="sendPremiumContent()"
+            [disabled]="!validatePremiumContent()"
+            [class.opacity-50]="!validatePremiumContent()"
+            [class.cursor-not-allowed]="!validatePremiumContent()"
+            class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors">
+            Enviar Contenido
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
