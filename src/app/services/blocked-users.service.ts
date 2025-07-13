@@ -16,7 +16,7 @@ export class BlockedUsersService {
     return this.http.get<BlockedUserResponse[]>(`${this.apiUrl}`);
   }
 
-  toggleBlockedUser(blockedUserId: number): void {
-    this.http.post(`${this.apiUrl}/toggle`, blockedUserId);
+  toggleBlockedUser(blockedUserId: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/toggle/${blockedUserId}`, null);
   }
 }

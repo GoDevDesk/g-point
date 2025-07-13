@@ -11,6 +11,8 @@ import { BlockedUser } from 'src/app/models/blocked-user';
 import { NavigationSection } from 'src/app/models/navigation-section';
 import { PrivacySettings, PrivacySettingsResponse } from 'src/app/models/privacy-settings';
 import { ConfigurationService } from 'src/app/services/configuration.service';
+import { BlockedUsersService } from 'src/app/services/blocked-users.service';
+import { BlockedUserResponse } from 'src/app/models/blockedUser';
 
 @Component({
   selector: 'app-configuration',
@@ -51,7 +53,7 @@ export class ConfigurationComponent implements OnInit {
     enabledChat: false,
     receiveEmailNotifications: false
   };
-  public blockedUsers: BlockedUser[] = [];
+  public blockedUsers: BlockedUserResponse[] = [];
 
   // Propiedades de redes sociales
   public socialNetworks: SocialNetwork[] = [
@@ -66,7 +68,8 @@ export class ConfigurationComponent implements OnInit {
     private readonly userService: UserService,
     private readonly authService: AuthService,
     private readonly tagService: TagService,
-    private readonly configurationService: ConfigurationService
+    private readonly configurationService: ConfigurationService,
+    private readonly blockedUsersService: BlockedUsersService
   ) { }
 
   // Métodos del ciclo de vida
@@ -80,6 +83,7 @@ export class ConfigurationComponent implements OnInit {
     if (userId) {
       this.fetchUserProfile(userId);
       this.loadTags(userId);
+      this.loadBlockedUsers();
     }
     
     this.initializeDefaultSettings();
@@ -95,11 +99,17 @@ export class ConfigurationComponent implements OnInit {
       };
       this.loadPrivacySettings();
     }
+  }
 
-    this.blockedUsers = [
-      new BlockedUser(1, '@usuario1', new Date('2024-01-01')),
-      new BlockedUser(2, '@usuario2', new Date('2024-02-01'), 'Spam')
-    ];
+  private loadBlockedUsers(): void {
+    this.blockedUsersService.GetBlockedUsers().subscribe({
+      next: (blockedUsers: BlockedUserResponse[]) => {
+        this.blockedUsers = blockedUsers;
+      },
+      error: (error: Error) => {
+        console.error('Error al cargar los usuarios bloqueados:', error);
+      }
+    });
   }
 
   private loadPrivacySettings(): void {
@@ -379,18 +389,27 @@ export class ConfigurationComponent implements OnInit {
     }
   }
 
+  toggleBlockedUser(userId: number): void {
+    this.blockedUsersService.toggleBlockedUser(userId).subscribe({
+      next: () => {
+        // Recargar la lista de usuarios bloqueados
+        this.loadBlockedUsers();
+        console.log('Usuario bloqueado/desbloqueado exitosamente');
+      },
+      error: (error: Error) => {
+        console.error('Error al bloquear/desbloquear usuario:', error);
+        alert('Error al bloquear/desbloquear usuario. Por favor, intente nuevamente.');
+      }
+    });
+  }
+
   blockUser(username: string, reason?: string): void {
-    const newBlock = new BlockedUser(
-      Date.now(),
-      username,
-      new Date(),
-      reason
-    );
-    this.blockedUsers.push(newBlock);
+    // Este método se implementará cuando tengamos el endpoint para bloquear por username
+    console.log('Funcionalidad de bloqueo por username en desarrollo');
   }
 
   unblockUser(userId: number): void {
-    this.blockedUsers = this.blockedUsers.filter(user => user.id !== userId);
+    this.toggleBlockedUser(userId);
   }
 
   deleteAccount(): void {

@@ -183,17 +183,13 @@
           <div class="blocked-list">
             <div class="blocked-item" *ngFor="let user of blockedUsers">
               <div class="blocked-info">
-                <span class="username">{{ user.username }}</span>
+                <span class="username">{{ user.name }}</span>
                 <span class="block-date">
                   <i class="far fa-clock mr-2"></i>
-                  Bloqueado el {{ user.blockedDate | date:'dd/MM/yyyy' }}
-                </span>
-                <span class="block-reason" *ngIf="user.reason">
-                  <i class="fas fa-exclamation-circle mr-2"></i>
-                  Razón: {{ user.reason }}
+                  Bloqueado el {{ user.createdAt | date:'dd/MM/yyyy' }}
                 </span>
               </div>
-              <button class="unblock-button" (click)="unblockUser(user.id)">
+              <button class="unblock-button" (click)="toggleBlockedUser(user.id)">
                 <i class="fas fa-unlock mr-2"></i>Desbloquear
               </button>
             </div>
