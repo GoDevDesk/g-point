@@ -175,11 +175,26 @@
       <div class="card">
         <div class="blocked-users">
           <div class="block-input-group">
-            <input type="text" placeholder="Nombre de usuario a bloquear">
-            <button>
-              <i class="fas fa-ban mr-2"></i>Bloquear
-            </button>
+            <div class="search-container">
+              <input 
+                type="text" 
+                [formControl]="searchControl"
+                placeholder="Buscar usuario para bloquear"
+                class="search-input"
+                (blur)="clearSearchWithDelay()">
+              
+              <!-- Resultados de búsqueda -->
+              <div class="search-results" *ngIf="showSearchResults && searchResults.length > 0" (click)="$event.stopPropagation()">
+                <div class="result-item" 
+                     *ngFor="let user of searchResults" 
+                     (click)="selectUserToBlock(user)">
+                  <img class="user-avatar" [src]="user.miniatureUrl || 'assets/defaultIcons/defaultProfilePhoto.png'" alt="Avatar">
+                  <span class="user-name">{{ user.userName }}</span>
+                </div>
+              </div>
+            </div>
           </div>
+          
           <div class="blocked-list">
             <div class="blocked-item" *ngFor="let user of blockedUsers">
               <div class="blocked-info">

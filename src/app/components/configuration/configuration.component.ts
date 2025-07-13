@@ -13,6 +13,9 @@ import { PrivacySettings, PrivacySettingsResponse } from 'src/app/models/privacy
 import { ConfigurationService } from 'src/app/services/configuration.service';
 import { BlockedUsersService } from 'src/app/services/blocked-users.service';
 import { BlockedUserResponse } from 'src/app/models/blockedUser';
+import { FormControl } from '@angular/forms';
+import { SearchService } from 'src/app/services/search.service';
+import { debounceTime, distinctUntilChanged, switchMap, of } from 'rxjs';
 
 @Component({
   selector: 'app-configuration',
@@ -64,23 +67,32 @@ export class ConfigurationComponent implements OnInit {
     { platform: 'OnlyFans', url: '', icon: 'fa-heart' }
   ];
 
+  // Propiedades para búsqueda de usuarios
+  public searchControl = new FormControl('');
+  public searchResults: any[] = [];
+  public showSearchResults = false;
+  public currentUserId: number = 0;
+
   constructor(
     private readonly userService: UserService,
     private readonly authService: AuthService,
     private readonly tagService: TagService,
     private readonly configurationService: ConfigurationService,
-    private readonly blockedUsersService: BlockedUsersService
+    private readonly blockedUsersService: BlockedUsersService,
+    private readonly searchService: SearchService
   ) { }
 
   // Métodos del ciclo de vida
   ngOnInit(): void {
     this.loadData();
+    this.initializeSearch();
   }
 
   // Métodos de carga de datos
   private loadData(): void {
     const userId = this.authService.getCurrentUserLoggedIdFromStorage();
     if (userId) {
+      this.currentUserId = userId;
       this.fetchUserProfile(userId);
       this.loadTags(userId);
       this.loadBlockedUsers();
@@ -390,27 +402,29 @@ export class ConfigurationComponent implements OnInit {
   }
 
   toggleBlockedUser(userId: number): void {
-    this.blockedUsersService.toggleBlockedUser(userId).subscribe({
-      next: () => {
-        // Recargar la lista de usuarios bloqueados
-        this.loadBlockedUsers();
-        console.log('Usuario bloqueado/desbloqueado exitosamente');
-      },
-      error: (error: Error) => {
-        console.error('Error al bloquear/desbloquear usuario:', error);
-        alert('Error al bloquear/desbloquear usuario. Por favor, intente nuevamente.');
-      }
-    });
+    // Buscar el usuario en la lista de bloqueados para obtener su nombre
+    const blockedUser = this.blockedUsers.find(user => user.id === userId);
+    const userName = blockedUser ? blockedUser.name : 'este usuario';
+    
+    // Confirmar la acción
+    const confirmed = confirm(`¿Estás seguro de que quieres desbloquear a ${userName}?`);
+    
+    if (confirmed) {
+      this.blockedUsersService.toggleBlockedUser(userId).subscribe({
+        next: () => {
+          // Recargar la lista de usuarios bloqueados
+          this.loadBlockedUsers();
+          console.log('Usuario bloqueado/desbloqueado exitosamente');
+        },
+        error: (error: Error) => {
+          console.error('Error al bloquear/desbloquear usuario:', error);
+          alert('Error al bloquear/desbloquear usuario. Por favor, intente nuevamente.');
+        }
+      });
+    }
   }
 
-  blockUser(username: string, reason?: string): void {
-    // Este método se implementará cuando tengamos el endpoint para bloquear por username
-    console.log('Funcionalidad de bloqueo por username en desarrollo');
-  }
 
-  unblockUser(userId: number): void {
-    this.toggleBlockedUser(userId);
-  }
 
   deleteAccount(): void {
     if (confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.')) {
@@ -473,5 +487,95 @@ export class ConfigurationComponent implements OnInit {
         }
       });
     }
+  }
+
+  // Métodos de búsqueda de usuarios
+  private initializeSearch(): void {
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((query) => {
+          const trimmedQuery = query?.trim();
+          if (!trimmedQuery) {
+            this.searchResults = [];
+            this.showSearchResults = false;
+            return of([]);
+          }
+
+          return this.searchService.search(trimmedQuery).pipe(
+            catchError((error) => {
+              console.error('Error en la búsqueda:', error);
+              this.searchResults = [];
+              return of([]);
+            })
+          );
+        })
+      )
+      .subscribe((data) => {
+        // Filtrar resultados: excluir usuario actual y usuarios ya bloqueados
+        this.searchResults = this.filterSearchResults(data);
+        this.showSearchResults = this.searchResults.length > 0;
+      });
+  }
+
+  private filterSearchResults(results: any[]): any[] {
+    return results.filter(user => {
+      // Excluir al usuario actual
+      if (user.id === this.currentUserId) {
+        return false;
+      }
+      
+      // Excluir usuarios que ya están bloqueados
+      if (this.isUserBlocked(user.id)) {
+        return false;
+      }
+      
+
+      
+      return true;
+    });
+  }
+
+  selectUserToBlock(user: any): void {
+    console.log('Usuario seleccionado:', user);
+    console.log('ID del usuario:', user.id);
+    console.log('Usuarios bloqueados:', this.blockedUsers);
+    
+    // Confirmar antes de bloquear/desbloquear
+    const action = this.isUserBlocked(user.id) ? 'desbloquear' : 'bloquear';
+    console.log('Acción a realizar:', action);
+    
+    const confirmed = confirm(`¿Estás seguro de que quieres ${action} a ${user.userName}?`);
+    
+    if (confirmed) {
+      console.log('Confirmado, ejecutando toggleBlockedUser con ID:', user.id);
+      // Usar el método toggleBlockedUser directamente con el usuario seleccionado
+      this.toggleBlockedUser(user.id);
+    } else {
+      console.log('Usuario canceló la acción');
+    }
+    
+    // Limpiar el campo de búsqueda
+    this.searchControl.setValue('');
+    this.showSearchResults = false;
+    this.searchResults = [];
+  }
+
+  private isUserBlocked(userId: number): boolean {
+    return this.blockedUsers.some(user => user.id === userId);
+  }
+
+  clearSearch(): void {
+    console.log('clearSearch ejecutado');
+    this.searchControl.setValue('');
+    this.showSearchResults = false;
+    this.searchResults = [];
+  }
+
+  clearSearchWithDelay(): void {
+    setTimeout(() => {
+      this.clearSearch();
+    }, 200);
   }
 }

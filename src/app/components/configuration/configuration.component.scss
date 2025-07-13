@@ -443,23 +443,84 @@
     display: flex;
     gap: 1rem;
     margin-bottom: 1.5rem;
+    flex-wrap: wrap;
 
-    input {
+    .search-container {
       flex: 1;
-      padding: 0.75rem;
-      border: 1px solid rgba(236, 72, 153, 0.2);
-      border-radius: 4px;
-      background-color: #1f2937;
-      color: #fff;
+      position: relative;
+      min-width: 200px;
 
-      &:focus {
-        outline: none;
-        border-color: #ec4899;
-        box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
+      .search-input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid rgba(236, 72, 153, 0.2);
+        border-radius: 4px;
+        background-color: #1f2937;
+        color: #fff;
+        font-size: 1rem;
+
+        &:focus {
+          outline: none;
+          border-color: #ec4899;
+          box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
+        }
+
+        &::placeholder {
+          color: #6b7280;
+        }
+      }
+
+      .search-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #1f2937;
+        border: 1px solid rgba(236, 72, 153, 0.2);
+        border-radius: 4px;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+                 .result-item {
+           display: flex;
+           align-items: center;
+           padding: 0.75rem;
+           cursor: pointer;
+           transition: all 0.3s ease;
+           border-bottom: 1px solid rgba(236, 72, 153, 0.1);
+
+           &:hover {
+             background-color: #ef4444;
+             color: #fff;
+             
+             .user-name {
+               color: #fff;
+             }
+           }
+
+           &:last-child {
+             border-bottom: none;
+           }
+
+           .user-avatar {
+             width: 32px;
+             height: 32px;
+             border-radius: 50%;
+             margin-right: 0.75rem;
+             object-fit: cover;
+           }
+
+           .user-name {
+             color: #fff;
+             font-weight: 500;
+           }
+         }
       }
     }
 
-    button {
+    .block-button {
       background-color: #ef4444;
       color: white;
       border: none;
@@ -467,12 +528,15 @@
       border-radius: 4px;
       cursor: pointer;
       transition: all 0.3s ease;
+      white-space: nowrap;
 
       &:hover {
         background-color: #dc2626;
         transform: translateY(-2px);
       }
     }
+
+
   }
 }
 
@@ -623,6 +687,17 @@
     .unblock-button {
       width: 100%;
     }
+  }
+
+  .block-input-group {
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .search-container {
+      min-width: auto;
+    }
+
+
   }
 }
 
