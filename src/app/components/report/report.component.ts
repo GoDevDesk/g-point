@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartType, ChartData, ChartOptions } from 'chart.js';
+import { InformationService } from '../../services/information.service';
+import { Information } from '../../models/information';
 
 interface Rank {
   name: string;
@@ -19,13 +21,14 @@ export class ReportComponent implements OnInit {
   billingGoal: number = 20000;
   sidebarActive: boolean = false;
   showRankInfo: boolean = false;
+  loading: boolean = true;
   
   // Rank system
   ranks: Rank[] = [
     { name: 'Bronze', goal: 0, color: '#CD7F32', icon: '🥉' },
-    { name: 'Silver', goal: 5000, color: '#C0C0C0', icon: '🥈' },
-    { name: 'Gold', goal: 15000, color: '#FFEB3B', icon: '🥇' },
-    { name: 'Diamond', goal: 30000, color: '#B9F2FF', icon: '💎' }
+    { name: 'Silver', goal: 500000, color: '#C0C0C0', icon: '🥈' },
+    { name: 'Gold', goal: 2500000, color: '#FFEB3B', icon: '🥇' },
+    { name: 'Diamond', goal: 10000000, color: '#B9F2FF', icon: '💎' }
   ];
 
   // Sales data
@@ -111,7 +114,7 @@ export class ReportComponent implements OnInit {
     donations: [800, 1200, 1500, 1300, 1600, 2000]
   };
 
-  constructor() { }
+  constructor(private informationService: InformationService) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -119,27 +122,42 @@ export class ReportComponent implements OnInit {
   }
 
   loadData(): void {
-    // Simulated data - Replace with real service call
-    this.totalBilled = 19000;
-    
-    this.sales = {
-      totalSales: 5000,
-      albumsSold: 25,
-      donationsReceived: 2000,
-      donationsCount: 15,
-      chatSales: 1000
-    };
+    this.loading = true;
+    this.informationService.getInformation().subscribe({
+      next: (data: Information) => {
+        // Actualizar datos de facturación
+        this.totalBilled = data.totalAmount;
+        
+        // Actualizar datos de ventas
+        this.sales = {
+          totalSales: data.totalSales,
+          albumsSold: data.selledAlbums,
+          donationsReceived: data.donationsAmount,
+          donationsCount: data.selledDonations,
+          chatSales: data.chatAmount
+        };
 
-    this.community = {
-      followers: 1000,
-      subscribers: 500
-    };
+        // Actualizar datos de comunidad
+        this.community = {
+          followers: 0, // No disponible en el modelo Information
+          subscribers: data.activeSubscriptions
+        };
 
-    this.content = {
-      albumsCount: 10,
-      photosCount: 150,
-      videosCount: 25
-    };
+        // Actualizar datos de contenido
+        this.content = {
+          albumsCount: data.publishedAlbums,
+          photosCount: data.photos,
+          videosCount: data.videos
+        };
+        
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar la información:', error);
+        // Mantener datos por defecto en caso de error
+        this.loading = false;
+      }
+    });
   }
 
   scrollToSection(sectionId: string): void {

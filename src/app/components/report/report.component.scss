@@ -6,6 +6,27 @@
   padding-top: 70px;
 }
 
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: #ec4899;
+  
+  p {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+  
+  mat-spinner {
+    ::ng-deep circle {
+      stroke: #ec4899;
+    }
+  }
+}
+
 .sidebar {
   width: 250px;
   background-color: #1f2937;
