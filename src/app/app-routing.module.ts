@@ -14,15 +14,22 @@ import { AuthProfileGuard } from './guard/auth-profile.guard';
 import { ProfileNotFoundComponent } from './components/profile-not-found/profile-not-found.component';
 import { AuthPurchaseSuscriptionGuard } from './guards/auth-purchase-suscription.guard';
 import { PurchaseSuscriptionComponent } from './components/purchase-suscription/purchase-suscription.component';
-import { HomeComponent } from './components/home/home.component';
 import { ReportComponent } from './components/report/report.component';
 import { AuthReportGuard } from './guard/auth-report.guard';
 import { ConfigurationComponent } from './components/configuration/configuration.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { AuthAdminGuard } from './guard/auth-admin.guard';
+import { LandingComponent } from './components/landing/landing.component';
+import { HomeComponent } from './components/home/home.component';
 
 
 const routes: Routes = [
   {
     path: '', redirectTo: 'login', pathMatch: 'full'
+  },
+  {
+    path: 'home', component: HomeComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'login', component: LoginComponent,
@@ -60,7 +67,7 @@ const routes: Routes = [
     canActivate: [AuthPurchaseSuscriptionGuard] 
   },
   {
-    path: 'home', component: HomeComponent
+    path: 'landing', component: LandingComponent
   },
   {
     path: 'report-content', component: ReportComponent,
@@ -70,9 +77,13 @@ const routes: Routes = [
     path: 'configuration', component: ConfigurationComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: 'admin', component: AdminComponent,
+    canActivate: [AuthAdminGuard]
+  },
    {
      path:"*",
-     component: HomeComponent
+     component: LandingComponent
    }
 ];
 

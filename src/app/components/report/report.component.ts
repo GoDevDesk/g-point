@@ -18,7 +18,6 @@ interface Rank {
 export class ReportComponent implements OnInit {
   // Billing data
   totalBilled: number = 0;
-  billingGoal: number = 20000;
   sidebarActive: boolean = false;
   showRankInfo: boolean = false;
   loading: boolean = true;
@@ -139,7 +138,7 @@ export class ReportComponent implements OnInit {
 
         // Actualizar datos de comunidad
         this.community = {
-          followers: 0, // No disponible en el modelo Information
+          followers: 0,
           subscribers: data.activeSubscriptions
         };
 

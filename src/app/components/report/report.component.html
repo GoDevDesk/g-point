@@ -20,10 +20,9 @@
 
   <!-- Contenido principal -->
   <main class="content">
-    <!-- Indicador de carga -->
-    <div class="loading-container" *ngIf="loading">
-      <mat-spinner></mat-spinner>
-      <p>Cargando información...</p>
+    <!-- Indicador de carga tipo overlay -->
+    <div *ngIf="loading" class="loading-overlay">
+      <mat-spinner color="primary"></mat-spinner>
     </div>
 
     <!-- Contenido cuando no está cargando -->

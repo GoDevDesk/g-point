@@ -1,0 +1,1155 @@
+<div class="admin-panel">
+  <!-- Header del panel de administración -->
+  <div class="admin-header">
+    <h1>Panel de Administración</h1>
+    <div class="admin-stats">
+      <div class="stat-card">
+        <span class="stat-number">{{totalUsers}}</span>
+        <span class="stat-label">Usuarios Totales</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">{{activeUsers}}</span>
+        <span class="stat-label">Usuarios Activos</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">{{totalRevenue}}</span>
+        <span class="stat-label">Ingresos Totales</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navegación del panel -->
+  <div class="admin-nav">
+    <button 
+      class="nav-btn" 
+      [class.active]="activeSection === 'users'"
+      (click)="setActiveSection('users')">
+      <i class="fas fa-users"></i>
+      Gestión de Usuarios
+    </button>
+    <button 
+      class="nav-btn" 
+      [class.active]="activeSection === 'requests'"
+      (click)="setActiveSection('requests')">
+      <i class="fas fa-user-plus"></i>
+      Solicitudes de Registro
+    </button>
+    <button 
+      class="nav-btn" 
+      [class.active]="activeSection === 'sales'"
+      (click)="setActiveSection('sales')">
+      <i class="fas fa-chart-line"></i>
+      Ventas y Suscripciones
+    </button>
+    <button 
+      class="nav-btn" 
+      [class.active]="activeSection === 'moderation'"
+      (click)="setActiveSection('moderation')">
+      <i class="fas fa-shield-alt"></i>
+      Moderación
+    </button>
+    <button 
+      class="nav-btn" 
+      [class.active]="activeSection === 'analytics'"
+      (click)="setActiveSection('analytics')">
+      <i class="fas fa-chart-bar"></i>
+      Análisis
+    </button>
+    <button 
+      class="nav-btn" 
+      [class.active]="activeSection === 'settings'"
+      (click)="setActiveSection('settings')">
+      <i class="fas fa-cog"></i>
+      Configuración
+    </button>
+  </div>
+
+  <!-- Contenido dinámico -->
+  <div class="admin-content">
+    <!-- Sección de Gestión de Usuarios -->
+    <div *ngIf="activeSection === 'users'" class="users-section">
+      <div class="section-header">
+        <h2>Gestión de Usuarios</h2>
+        <div class="filters">
+          <div class="search-group">
+            <input 
+              type="text" 
+              placeholder="Buscar usuarios..." 
+              [(ngModel)]="searchTerm"
+              class="search-input">
+            <button class="search-btn" (click)="applyFilters()">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          <select [(ngModel)]="statusFilter" class="filter-select">
+            <option value="">Todos los estados</option>
+            <option value="active">Activos</option>
+            <option value="inactive">Inactivos</option>
+            <option value="blocked">Bloqueados</option>
+          </select>
+          <select [(ngModel)]="subscriptionFilter" class="filter-select">
+            <option value="">Todos los planes</option>
+            <option value="free">Gratuito</option>
+            <option value="premium">Premium</option>
+            <option value="vip">VIP</option>
+          </select>
+          <button class="apply-filters-btn" (click)="applyFilters()">
+            <i class="fas fa-filter"></i>
+            Aplicar Filtros
+          </button>
+          <button class="clear-filters-btn" (click)="clearFilters()">
+            <i class="fas fa-times"></i>
+            Limpiar
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabla de usuarios -->
+      <!-- Vista Desktop -->
+      <div class="table-desktop">
+        <div class="users-table-container">
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Plan</th>
+                <th>Estado</th>
+                <th>Fecha Registro</th>
+                <th>Última Actividad</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of filteredUsers" class="user-row">
+                <td class="user-info">
+                  <img [src]="user.profilePicture || 'assets/defaultIcons/defaultProfilePhoto.png'" 
+                       [alt]="user.username" 
+                       class="user-avatar">
+                  <div class="user-details">
+                    <span class="username">{{user.username}}</span>
+                    <span class="user-id">ID: {{user.id}}</span>
+                  </div>
+                </td>
+                <td>{{user.email}}</td>
+                <td>
+                  <span class="plan-badge" [class]="'plan-' + user.subscriptionType">
+                    {{user.subscriptionType}}
+                  </span>
+                </td>
+                <td>
+                  <span class="status-badge" [class]="'status-' + user.status">
+                    {{user.status}}
+                  </span>
+                </td>
+                <td>{{user.registrationDate | date:'short'}}</td>
+                <td>{{user.lastActivity | date:'short'}}</td>
+                <td class="actions">
+                  <button class="action-btn view" 
+                          (click)="viewUser(user)"
+                          title="Ver detalles del usuario">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="action-btn edit" 
+                          (click)="editUser(user)"
+                          title="Editar usuario">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="action-btn block" 
+                          (click)="toggleUserBlock(user)"
+                          [title]="user.status === 'blocked' ? 'Desbloquear usuario' : 'Bloquear usuario'">
+                    <i class="fas" [class.fa-ban]="user.status !== 'blocked'" [class.fa-unlock]="user.status === 'blocked'"></i>
+                  </button>
+                  <button class="action-btn delete" 
+                          (click)="deleteUser(user)"
+                          title="Eliminar usuario">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Vista Mobile - Cards -->
+      <div class="table-cards">
+        <div *ngFor="let user of filteredUsers" class="table-card">
+          <div class="card-header">
+            <img [src]="user.profilePicture || 'assets/defaultIcons/defaultProfilePhoto.png'" 
+                 [alt]="user.username" 
+                 class="user-avatar">
+            <div class="user-details">
+              <span class="username">{{user.username}}</span>
+              <span class="user-id">ID: {{user.id}}</span>
+            </div>
+            <span class="status-badge" [class]="'status-' + user.status">
+              {{user.status}}
+            </span>
+          </div>
+          <div class="card-content">
+            <div class="info-row">
+              <span class="label">Email:</span>
+              <span class="value">{{user.email}}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Plan:</span>
+              <span class="plan-badge" [class]="'plan-' + user.subscriptionType">
+                {{user.subscriptionType}}
+              </span>
+            </div>
+            <div class="info-row">
+              <span class="label">Fecha Registro:</span>
+              <span class="value">{{user.registrationDate | date:'short'}}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Última Actividad:</span>
+              <span class="value">{{user.lastActivity | date:'short'}}</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn view" 
+                    (click)="viewUser(user)"
+                    title="Ver detalles del usuario">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="action-btn edit" 
+                    (click)="editUser(user)"
+                    title="Editar usuario">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="action-btn block" 
+                    (click)="toggleUserBlock(user)"
+                    [title]="user.status === 'blocked' ? 'Desbloquear usuario' : 'Bloquear usuario'">
+              <i class="fas" [class.fa-ban]="user.status !== 'blocked'" [class.fa-unlock]="user.status === 'blocked'"></i>
+            </button>
+            <button class="action-btn delete" 
+                    (click)="deleteUser(user)"
+                    title="Eliminar usuario">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paginación -->
+      <div class="pagination">
+        <button [disabled]="currentPage === 1" (click)="previousPage()" class="page-btn">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <span class="page-info">Página {{currentPage}} de {{totalPages}}</span>
+        <button [disabled]="currentPage === totalPages" (click)="nextPage()" class="page-btn">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sección de Solicitudes de Registro -->
+    <div *ngIf="activeSection === 'requests'" class="requests-section">
+      <div class="section-header">
+        <h2>Solicitudes de Registro</h2>
+        <div class="request-stats">
+          <div class="stat-item">
+            <span class="stat-number">{{pendingRequests.length}}</span>
+            <span class="stat-label">Pendientes</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{approvedRequests.length}}</span>
+            <span class="stat-label">Aprobadas</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{rejectedRequests.length}}</span>
+            <span class="stat-label">Rechazadas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros de solicitudes -->
+      <div class="request-filters">
+        <select [(ngModel)]="requestStatusFilter" class="filter-select">
+          <option value="">Todas las solicitudes</option>
+          <option value="pending">Pendientes</option>
+          <option value="approved">Aprobadas</option>
+          <option value="rejected">Rechazadas</option>
+        </select>
+        <button class="apply-filters-btn" (click)="applyRequestFilters()">
+          <i class="fas fa-filter"></i>
+          Aplicar Filtros
+        </button>
+        <button class="clear-filters-btn" (click)="clearRequestFilters()">
+          <i class="fas fa-times"></i>
+          Limpiar
+        </button>
+      </div>
+
+      <!-- Tabla de solicitudes -->
+      <!-- Vista Desktop -->
+      <div class="table-desktop">
+        <div class="requests-table-container">
+          <table class="requests-table">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Fecha Solicitud</th>
+                <th>Estado</th>
+                <th>Motivo</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let request of filteredRequests" class="request-row">
+                <td class="user-info">
+                  <img [src]="request.profilePicture || 'assets/defaultIcons/defaultProfilePhoto.png'" 
+                       [alt]="request.username" 
+                       class="user-avatar">
+                  <div class="user-details">
+                    <span class="username">{{request.username}}</span>
+                    <span class="user-id">ID: {{request.id}}</span>
+                  </div>
+                </td>
+                <td>{{request.email}}</td>
+                <td>{{request.requestDate | date:'short'}}</td>
+                <td>
+                  <span class="status-badge" [class]="'status-' + request.status">
+                    {{getStatusText(request.status)}}
+                  </span>
+                </td>
+                <td>
+                  <span class="motivo-text">{{request.motivo || 'Sin motivo especificado'}}</span>
+                </td>
+                <td class="actions">
+                  <button *ngIf="request.status === 'pending'" 
+                          class="action-btn approve" 
+                          (click)="approveRequest(request)"
+                          title="Aprobar solicitud">
+                    <i class="fas fa-check"></i>
+                  </button>
+                  <button *ngIf="request.status === 'pending'" 
+                          class="action-btn reject" 
+                          (click)="rejectRequest(request)"
+                          title="Rechazar solicitud">
+                    <i class="fas fa-times"></i>
+                  </button>
+                  <button class="action-btn view" 
+                          (click)="viewRequestDetails(request)"
+                          title="Ver detalles de la solicitud">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="action-btn delete" 
+                          (click)="deleteRequest(request)"
+                          title="Eliminar solicitud">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Vista Mobile - Cards -->
+      <div class="table-cards">
+        <div *ngFor="let request of filteredRequests" class="table-card">
+          <div class="card-header">
+            <img [src]="request.profilePicture || 'assets/defaultIcons/defaultProfilePhoto.png'" 
+                 [alt]="request.username" 
+                 class="user-avatar">
+            <div class="user-details">
+              <span class="username">{{request.username}}</span>
+              <span class="user-id">ID: {{request.id}}</span>
+            </div>
+            <span class="status-badge" [class]="'status-' + request.status">
+              {{getStatusText(request.status)}}
+            </span>
+          </div>
+          <div class="card-content">
+            <div class="info-row">
+              <span class="label">Email:</span>
+              <span class="value">{{request.email}}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Fecha Solicitud:</span>
+              <span class="value">{{request.requestDate | date:'short'}}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Motivo:</span>
+              <span class="value">{{request.motivo || 'Sin motivo especificado'}}</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button *ngIf="request.status === 'pending'" 
+                    class="action-btn approve" 
+                    (click)="approveRequest(request)"
+                    title="Aprobar solicitud">
+              <i class="fas fa-check"></i>
+            </button>
+            <button *ngIf="request.status === 'pending'" 
+                    class="action-btn reject" 
+                    (click)="rejectRequest(request)"
+                    title="Rechazar solicitud">
+              <i class="fas fa-times"></i>
+            </button>
+            <button class="action-btn view" 
+                    (click)="viewRequestDetails(request)"
+                    title="Ver detalles de la solicitud">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="action-btn delete" 
+                    (click)="deleteRequest(request)"
+                    title="Eliminar solicitud">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paginación de solicitudes -->
+      <div class="pagination">
+        <button [disabled]="currentRequestPage === 1" 
+                (click)="previousRequestPage()" 
+                class="page-btn">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <span class="page-info">Página {{currentRequestPage}} de {{totalRequestPages}}</span>
+        <button [disabled]="currentRequestPage === totalRequestPages" 
+                (click)="nextRequestPage()" 
+                class="page-btn">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sección de Ventas y Suscripciones -->
+    <div *ngIf="activeSection === 'sales'" class="sales-section">
+      <div class="section-header">
+        <h2>Ventas y Suscripciones</h2>
+        <div class="commission-settings">
+          <label>Comisión Estándar:</label>
+          <input 
+            type="number" 
+            [(ngModel)]="commissionRate" 
+            min="0" 
+            max="100" 
+            class="commission-input">
+          <span class="commission-percent">%</span>
+          <button class="update-commission-btn" (click)="showCommissionUpdateModal()">
+            <i class="fas fa-save"></i>
+            Actualizar
+          </button>
+        </div>
+      </div>
+
+      <!-- Resumen Financiero -->
+      <div class="financial-summary">
+        <div class="summary-card total-revenue">
+          <h3>Ingresos Totales</h3>
+          <span class="amount">${{financialData.totalRevenue}}</span>
+          <span class="period">Este mes</span>
+        </div>
+        <div class="summary-card total-payouts">
+          <h3>Pagos a Usuarios</h3>
+          <span class="amount">${{financialData.totalPayouts}}</span>
+          <span class="period">Este mes</span>
+        </div>
+        <div class="summary-card net-profit">
+          <h3>Ganancia Neta</h3>
+          <span class="amount">${{financialData.netProfit}}</span>
+          <span class="period">Este mes</span>
+        </div>
+        <div class="summary-card commission-earned">
+          <h3>Comisiones Ganadas</h3>
+          <span class="amount">${{financialData.commissionEarned}}</span>
+          <span class="period">Este mes</span>
+        </div>
+      </div>
+
+      <!-- Detalle por Categoría -->
+      <div class="sales-details">
+        <div class="sales-category">
+          <h3>Suscripciones</h3>
+          <div class="category-stats">
+            <div class="stat-item">
+              <span class="stat-label">Ingresos Brutos</span>
+              <span class="stat-value">${{salesData.subscriptions.grossRevenue}}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Pagos a Creadores</span>
+              <span class="stat-value">${{salesData.subscriptions.creatorPayouts}}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Comisión Ganada</span>
+              <span class="stat-value">${{salesData.subscriptions.commission}}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Suscripciones Activas</span>
+              <span class="stat-value">{{salesData.subscriptions.activeSubscriptions}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sales-category">
+          <h3>Álbumes</h3>
+          <div class="category-stats">
+            <div class="stat-item">
+              <span class="stat-label">Ingresos Brutos</span>
+              <span class="stat-value">${{salesData.albums.grossRevenue}}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Pagos a Creadores</span>
+              <span class="stat-value">${{salesData.albums.creatorPayouts}}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Comisión Ganada</span>
+              <span class="stat-value">${{salesData.albums.commission}}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Álbumes Vendidos</span>
+              <span class="stat-value">{{salesData.albums.soldAlbums}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sales-category">
+          <h3>Contenido Personalizado</h3>
+          <div class="category-stats">
+            <div class="stat-item">
+              <span class="stat-label">Ingresos Brutos</span>
+              <span class="stat-value">${{salesData.personalContent.grossRevenue}}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Pagos a Creadores</span>
+              <span class="stat-value">${{salesData.personalContent.creatorPayouts}}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Comisión Ganada</span>
+              <span class="stat-value">${{salesData.personalContent.commission}}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Contenido Vendido</span>
+              <span class="stat-value">{{salesData.personalContent.soldContent}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sales-category">
+          <h3>Donaciones</h3>
+          <div class="category-stats">
+            <div class="stat-item">
+              <span class="stat-label">Ingresos Brutos</span>
+              <span class="stat-value">${{salesData.donations.grossRevenue}}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Pagos a Creadores</span>
+              <span class="stat-value">${{salesData.donations.creatorPayouts}}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Comisión Ganada</span>
+              <span class="stat-value">${{salesData.donations.commission}}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Donaciones Recibidas</span>
+              <span class="stat-value">{{salesData.donations.totalDonations}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Creadores por Ingresos -->
+      <div class="top-creators">
+        <div class="creators-header">
+          <h3>Top Creadores por Ingresos</h3>
+          <div class="creators-controls">
+            <button class="view-all-btn" (click)="viewAllCreators()">
+              <i class="fas fa-list"></i>
+              Ver Todos los Creadores
+            </button>
+            <div class="creators-pagination">
+              <button 
+                [disabled]="currentCreatorsPage === 1" 
+                (click)="previousCreatorsPage()" 
+                class="page-btn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <span class="page-info">Página {{currentCreatorsPage}} de {{totalCreatorsPages}}</span>
+              <button 
+                [disabled]="currentCreatorsPage === totalCreatorsPages" 
+                (click)="nextCreatorsPage()" 
+                class="page-btn">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Vista Desktop -->
+        <div class="table-desktop">
+          <div class="creators-table-container">
+            <table class="creators-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Creador</th>
+                  <th>Ingresos Brutos</th>
+                  <th>Pago Recibido</th>
+                  <th>Comisión Aplicada</th>
+                  <th>Principales Fuentes y Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let creator of paginatedCreators; let i = index" class="creator-row">
+                  <td class="rank">#{{(currentCreatorsPage - 1) * creatorsPerPage + i + 1}}</td>
+                  <td class="creator-info">
+                    <img [src]="creator.profilePicture" [alt]="creator.username" class="creator-avatar">
+                    <span class="creator-name">{{creator.username}}</span>
+                  </td>
+                  <td class="gross-revenue">${{creator.grossRevenue}}</td>
+                  <td class="payout">${{creator.payout}}</td>
+                  <td class="commission">${{creator.commission}}</td>
+                  <td class="sources-and-actions">
+                    <div class="sources">
+                      <span class="source-badge subscription" *ngIf="creator.sources.subscriptions > 0">
+                        Suscripciones: {{creator.sources.subscriptions}}
+                      </span>
+                      <span class="source-badge albums" *ngIf="creator.sources.albums > 0">
+                        Álbumes: {{creator.sources.albums}}
+                      </span>
+                      <span class="source-badge content" *ngIf="creator.sources.personalContent > 0">
+                        Personal: {{creator.sources.personalContent}}
+                      </span>
+                      <span class="source-badge donations" *ngIf="creator.sources.donations > 0">
+                        Donaciones: {{creator.sources.donations}}
+                      </span>
+                    </div>
+                    <button class="action-btn view" 
+                            (click)="viewCreatorDetails(creator)"
+                            title="Ver historial financiero completo">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Vista Mobile - Cards -->
+        <div class="table-cards">
+          <div *ngFor="let creator of paginatedCreators; let i = index" class="table-card">
+            <div class="card-header">
+              <div class="rank-badge">#{{(currentCreatorsPage - 1) * creatorsPerPage + i + 1}}</div>
+              <img [src]="creator.profilePicture" [alt]="creator.username" class="user-avatar">
+              <div class="user-details">
+                <span class="username">{{creator.username}}</span>
+                <span class="user-id">Creador</span>
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="info-row">
+                <span class="label">Ingresos Brutos:</span>
+                <span class="value gross-revenue">${{creator.grossRevenue}}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Pago Recibido:</span>
+                <span class="value payout">${{creator.payout}}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Comisión Aplicada:</span>
+                <span class="value commission">${{creator.commission}}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Fuentes:</span>
+                <div class="sources">
+                  <span class="source-badge subscription" *ngIf="creator.sources.subscriptions > 0">
+                    Suscripciones: {{creator.sources.subscriptions}}
+                  </span>
+                  <span class="source-badge albums" *ngIf="creator.sources.albums > 0">
+                    Álbumes: {{creator.sources.albums}}
+                  </span>
+                  <span class="source-badge content" *ngIf="creator.sources.personalContent > 0">
+                    Personal: {{creator.sources.personalContent}}
+                  </span>
+                  <span class="source-badge donations" *ngIf="creator.sources.donations > 0">
+                    Donaciones: {{creator.sources.donations}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="card-actions">
+              <button class="action-btn view" 
+                      (click)="viewCreatorDetails(creator)"
+                      title="Ver historial financiero completo">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="activeSection === 'moderation'" class="section-placeholder">
+      <h2>Moderación de Contenido</h2>
+      <p>Esta sección estará disponible próximamente</p>
+    </div>
+
+    <!-- Sección de Análisis -->
+    <div *ngIf="activeSection === 'analytics'" class="analytics-section">
+      <div class="section-header">
+        <h2>Análisis y Estadísticas</h2>
+        <div class="analytics-period">
+          <select [(ngModel)]="analyticsPeriod" class="period-select">
+            <option value="7">Últimos 7 días</option>
+            <option value="30">Últimos 30 días</option>
+            <option value="90">Últimos 90 días</option>
+            <option value="365">Último año</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Métricas principales -->
+      <div class="analytics-grid">
+        <!-- Contenido del sistema -->
+        <div class="analytics-card content-metrics">
+          <h3>Contenido del Sistema</h3>
+          <div class="metrics-grid">
+            <div class="metric-item">
+              <span class="metric-number">{{contentStats.totalAlbums}}</span>
+              <span class="metric-label">Álbumes</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-number">{{contentStats.totalPhotos}}</span>
+              <span class="metric-label">Fotos</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-number">{{contentStats.totalVideos}}</span>
+              <span class="metric-label">Videos</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-number">{{contentStats.totalPersonalContent}}</span>
+              <span class="metric-label">Contenido Personalizado</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Búsquedas -->
+        <div class="analytics-card search-metrics">
+          <h3>Búsquedas Populares</h3>
+          <div class="search-stats">
+            <div class="top-tags">
+              <h4>Tags Más Buscados</h4>
+              <div class="tag-list">
+                <div *ngFor="let tag of searchStats.topTags" class="tag-item">
+                  <span class="tag-name">#{{tag.name}}</span>
+                  <span class="tag-count">{{tag.count}} búsquedas</span>
+                </div>
+              </div>
+            </div>
+            <div class="top-keywords">
+              <h4>Palabras Clave</h4>
+              <div class="keyword-list">
+                <div *ngFor="let keyword of searchStats.topKeywords" class="keyword-item">
+                  <span class="keyword-name">{{keyword.name}}</span>
+                  <span class="keyword-count">{{keyword.count}} búsquedas</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Vendedores -->
+        <div class="analytics-card top-sellers">
+          <h3>Top 5 Vendedores</h3>
+          <div class="sellers-list">
+            <div *ngFor="let seller of topSellers; let i = index" class="seller-item">
+              <div class="seller-rank">#{{i + 1}}</div>
+              <img [src]="seller.profilePicture" [alt]="seller.username" class="seller-avatar">
+              <div class="seller-info">
+                <span class="seller-name">{{seller.username}}</span>
+                <span class="seller-earnings">${{seller.totalEarnings}}</span>
+              </div>
+              <button class="view-details-btn" (click)="viewSellerDetails(seller, $event)">
+                <i class="fas fa-chart-line"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Suscripciones -->
+        <div class="analytics-card top-subscriptions">
+          <h3>Top 5 Suscripciones</h3>
+          <div class="subscriptions-list">
+            <div *ngFor="let user of topSubscriptions; let i = index" class="subscription-item">
+              <div class="subscription-rank">#{{i + 1}}</div>
+              <img [src]="user.profilePicture" [alt]="user.username" class="subscription-avatar">
+              <div class="subscription-info">
+                <span class="subscription-name">{{user.username}}</span>
+                <span class="subscription-count">{{user.subscriberCount}} suscriptores</span>
+              </div>
+              <button class="view-details-btn" (click)="viewSubscriptionDetails(user, $event)">
+                <i class="fas fa-users"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contenido del Sistema -->
+        <div class="analytics-card total-balance">
+          <h3>Contenido del Sistema</h3>
+          <div class="balance-breakdown">
+            <div class="balance-item">
+              <span class="balance-label">Cuentas Creadoras</span>
+              <span class="balance-amount">{{totalBalance.creatorAccounts}}</span>
+            </div>
+            <div class="balance-item">
+              <span class="balance-label">Cuentas No Creadoras</span>
+              <span class="balance-amount">{{totalBalance.nonCreatorAccounts}}</span>
+            </div>
+            <div class="balance-item">
+              <span class="balance-label">Álbumes Creados</span>
+              <span class="balance-amount">{{totalBalance.albums}}</span>
+            </div>
+            <div class="balance-item">
+              <span class="balance-label">Contenido Personalizado</span>
+              <span class="balance-amount">{{totalBalance.personalContent}}</span>
+            </div>
+            <div class="balance-item">
+              <span class="balance-label">Fotos Subidas</span>
+              <span class="balance-amount">{{totalBalance.donations}}</span>
+            </div>
+            <div class="balance-total">
+              <span class="total-label">Total Contenido</span>
+              <span class="total-amount">{{totalBalance.total}}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Crecimiento de la App -->
+        <div class="analytics-card app-growth">
+          <h3>Crecimiento de la App</h3>
+          <div class="growth-metrics">
+            <div class="growth-item positive">
+              <span class="growth-label">Nuevos Usuarios</span>
+              <span class="growth-number">+{{appGrowth.newUsers}}</span>
+              <span class="growth-percentage">+{{appGrowth.newUsersPercentage}}%</span>
+            </div>
+            <div class="growth-item positive">
+              <span class="growth-label">Usuarios Activos</span>
+              <span class="growth-number">{{appGrowth.activeUsers}}</span>
+              <span class="growth-percentage">+{{appGrowth.activeUsersPercentage}}%</span>
+            </div>
+            <div class="growth-item negative">
+              <span class="growth-label">Cuentas Eliminadas</span>
+              <span class="growth-number">-{{appGrowth.deletedUsers}}</span>
+              <span class="growth-percentage">-{{appGrowth.deletedUsersPercentage}}%</span>
+            </div>
+            <div class="growth-item positive">
+              <span class="growth-label">Contenido Creado</span>
+              <span class="growth-number">+{{appGrowth.newContent}}</span>
+              <span class="growth-percentage">+{{appGrowth.newContentPercentage}}%</span>
+            </div>
+            <div class="growth-item negative">
+              <span class="growth-label">Contenido Eliminado</span>
+              <span class="growth-number">-{{appGrowth.deletedContent}}</span>
+              <span class="growth-percentage">-{{appGrowth.deletedContentPercentage}}%</span>
+            </div>
+            <div class="growth-item positive">
+              <span class="growth-label">Ingresos</span>
+              <span class="growth-number">${{appGrowth.revenue}}</span>
+              <span class="growth-percentage">+{{appGrowth.revenuePercentage}}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Detalles del Vendedor -->
+    <div *ngIf="showSellerModal" class="modal-overlay" (click)="closeSellerModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Detalles de {{selectedSeller?.username}}</h3>
+          <button class="close-btn" (click)="closeSellerModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="seller-details">
+            <div class="detail-row">
+              <span class="detail-label">Total Ganado:</span>
+              <span class="detail-value">${{selectedSeller?.totalEarnings}}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Álbumes Vendidos:</span>
+              <span class="detail-value">{{selectedSeller?.albumsSold}}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Contenido Personalizado:</span>
+              <span class="detail-value">{{selectedSeller?.personalContentSold}}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Suscriptores:</span>
+              <span class="detail-value">{{selectedSeller?.subscribers}}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Donaciones Recibidas:</span>
+              <span class="detail-value">${{selectedSeller?.donationsReceived}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Detalles de Suscripción -->
+    <div *ngIf="showSubscriptionModal" class="modal-overlay" (click)="closeSubscriptionModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Detalles de Suscripción - {{selectedSubscription?.username}}</h3>
+          <button class="close-btn" (click)="closeSubscriptionModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="subscription-details">
+            <div class="detail-row">
+              <span class="detail-label">Total Suscriptores:</span>
+              <span class="detail-value">{{selectedSubscription?.subscriberCount}}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Suscripciones Premium:</span>
+              <span class="detail-value">{{selectedSubscription?.premiumSubscribers}}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Suscripciones VIP:</span>
+              <span class="detail-value">{{selectedSubscription?.vipSubscribers}}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Ingresos por Suscripciones:</span>
+              <span class="detail-value">${{selectedSubscription?.subscriptionRevenue}}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Tasa de Retención:</span>
+              <span class="detail-value">{{selectedSubscription?.retentionRate}}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="activeSection === 'settings'" class="section-placeholder">
+      <h2>Configuración del Sistema</h2>
+      <p>Esta sección estará disponible próximamente</p>
+    </div>
+  </div>
+
+  <!-- Modal de Detalles Financieros del Creador -->
+  <div *ngIf="showCreatorDetailsModal" class="modal-overlay" (click)="closeCreatorDetailsModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Historial Financiero - {{selectedCreatorDetail?.creator?.username || 'Creador'}}</h3>
+        <button class="close-btn" (click)="closeCreatorDetailsModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="creator-financial-details">
+          <!-- Resumen del Creador -->
+          <div class="creator-summary">
+            <div class="creator-info">
+              <img [src]="selectedCreatorDetail?.creator?.profilePicture || 'assets/defaultIcons/defaultProfilePhoto.png'" 
+                   [alt]="selectedCreatorDetail?.creator?.username || 'Creador'" 
+                   class="creator-avatar">
+              <div class="creator-details">
+                <h4>{{selectedCreatorDetail?.creator?.username || 'Creador'}}</h4>
+                <p>ID: {{selectedCreatorDetail?.creator?.id || 'N/A'}}</p>
+              </div>
+            </div>
+            <div class="financial-summary">
+              <div class="summary-item">
+                <span class="label">Ingresos Totales:</span>
+                <span class="value">${{selectedCreatorDetail?.totalGrossRevenue}}</span>
+              </div>
+              <div class="summary-item">
+                <span class="label">Comisiones Aplicadas:</span>
+                <span class="value">${{selectedCreatorDetail?.totalCommission}}</span>
+              </div>
+              <div class="summary-item">
+                <span class="label">Pagos Realizados:</span>
+                <span class="value">${{selectedCreatorDetail?.totalPayout}}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transacciones -->
+          <div class="transactions-section">
+            <div class="transactions-header">
+              <h4>Transacciones Recientes</h4>
+              <div class="transactions-pagination">
+                <button 
+                  [disabled]="currentTransactionsPage === 1" 
+                  (click)="previousTransactionsPage()" 
+                  class="page-btn">
+                  <i class="fas fa-chevron-left"></i>
+                </button>
+                <span class="page-info">Página {{currentTransactionsPage}} de {{totalTransactionsPages}}</span>
+                <button 
+                  [disabled]="currentTransactionsPage === totalTransactionsPages" 
+                  (click)="nextTransactionsPage()" 
+                  class="page-btn">
+                  <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+            <div class="transactions-table-container">
+              <table class="transactions-table">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Producto</th>
+                    <th>Ingreso Bruto</th>
+                    <th>Comisión</th>
+                    <th>Pago</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let transaction of paginatedTransactions" class="transaction-row">
+                    <td>{{transaction.date | date:'short'}}</td>
+                    <td>
+                      <span class="type-badge" [class]="'type-' + transaction.type">
+                        {{getTransactionTypeText(transaction.type)}}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="product-info">
+                        <span class="product-name">{{transaction.productName}}</span>
+                        <span class="product-type">{{transaction.productType}}</span>
+                      </div>
+                    </td>
+                    <td class="gross-amount">${{transaction.grossAmount}}</td>
+                    <td class="commission">${{transaction.commission}}</td>
+                    <td class="payout">${{transaction.payout}}</td>
+                    <td>
+                      <span class="status-badge" [class]="'status-' + transaction.status">
+                        {{getStatusText(transaction.status)}}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Historial de Pagos -->
+          <div class="payments-section">
+            <div class="payments-header">
+              <h4>Historial de Pagos Realizados</h4>
+              <div class="payments-summary">
+                <span class="total-payments">Total Pagado: ${{selectedCreatorDetail?.totalPayout}}</span>
+                <span class="payments-count">{{selectedCreatorDetail?.paymentHistory?.length || 0}} pagos realizados</span>
+              </div>
+            </div>
+            <div class="payments-container">
+              <div class="payments-list">
+                <div *ngFor="let payment of selectedCreatorDetail?.paymentHistory; let i = index" 
+                     class="payment-item" 
+                     [class.last-payment]="i === (selectedCreatorDetail?.paymentHistory?.length || 0) - 1">
+                  <div class="payment-info">
+                    <div class="payment-date">
+                      <i class="fas fa-calendar-alt"></i>
+                      {{payment.date | date:'medium'}}
+                    </div>
+                    <div class="payment-method">
+                      <i class="fas fa-credit-card"></i>
+                      {{payment.method}}
+                    </div>
+                  </div>
+                  <div class="payment-amount">
+                    <span class="amount">${{payment.amount}}</span>
+                    <span class="status" [class]="'status-' + payment.status.toLowerCase()">
+                      <i class="fas fa-check-circle"></i>
+                      {{payment.status}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+                             <!-- Indicador de más pagos si hay scroll -->
+               <div *ngIf="(selectedCreatorDetail?.paymentHistory?.length || 0) > 3" class="more-payments-indicator">
+                 <i class="fas fa-chevron-down"></i>
+                 <span>Desplázate para ver más pagos</span>
+               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmación de Comisión -->
+  <div *ngIf="showCommissionModal" class="modal-overlay" (click)="closeCommissionModal()">
+    <div class="modal-content commission-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Confirmar Actualización de Comisión</h3>
+        <button class="close-btn" (click)="closeCommissionModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="commission-confirmation">
+          <div class="warning-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Esta acción requiere confirmación de seguridad</span>
+          </div>
+          
+          <div class="commission-details">
+            <h4>Detalles del Cambio</h4>
+            <div class="detail-row">
+              <span class="label">Comisión Actual:</span>
+              <span class="value">{{currentCommissionRate}}%</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Nueva Comisión:</span>
+              <span class="value new-value">{{commissionRate}}%</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Diferencia:</span>
+              <span class="value" [class.positive]="commissionRate > currentCommissionRate" [class.negative]="commissionRate < currentCommissionRate">
+                {{commissionRate > currentCommissionRate ? '+' : ''}}{{commissionRate - currentCommissionRate}}%
+              </span>
+            </div>
+          </div>
+
+          <div class="password-section">
+            <label for="adminPassword">Contraseña de Administrador:</label>
+            <div class="password-input-group">
+              <input 
+                type="password" 
+                id="adminPassword"
+                [(ngModel)]="adminPassword" 
+                placeholder="Ingresa tu contraseña"
+                class="password-input"
+                (keyup.enter)="confirmCommissionUpdate()">
+              <button class="toggle-password-btn" (click)="togglePasswordVisibility()" type="button">
+                <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+              </button>
+            </div>
+            <div *ngIf="passwordError" class="password-error">
+              <i class="fas fa-exclamation-circle"></i>
+              {{passwordError}}
+            </div>
+          </div>
+
+          <div class="confirmation-actions">
+            <button class="cancel-btn" (click)="closeCommissionModal()">
+              <i class="fas fa-times"></i>
+              Cancelar
+            </button>
+            <button class="confirm-btn" (click)="confirmCommissionUpdate()" [disabled]="!adminPassword || isUpdating">
+              <i class="fas fa-check"></i>
+              {{isUpdating ? 'Actualizando...' : 'Confirmar Cambio'}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
