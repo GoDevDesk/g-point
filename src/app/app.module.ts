@@ -48,6 +48,7 @@ import { ConfigurationComponent } from './components/configuration/configuration
 import { AdminComponent } from './components/admin/admin.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { HomeComponent } from './components/home/home.component';
+import { ProfileNoCreatorComponent } from './components/profile-no-creator/profile-no-creator.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { HomeComponent } from './components/home/home.component';
     ReportComponent,
     ConfigurationComponent,
     AdminComponent,
-    HomeComponent
+    HomeComponent,
+    ProfileNoCreatorComponent
   ],
   imports: [
     SharedModule,

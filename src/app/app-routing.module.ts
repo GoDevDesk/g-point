@@ -21,6 +21,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { AuthAdminGuard } from './guard/auth-admin.guard';
 import { LandingComponent } from './components/landing/landing.component';
 import { HomeComponent } from './components/home/home.component';
+import { ProfileNoCreatorComponent } from './components/profile-no-creator/profile-no-creator.component';
 
 
 const routes: Routes = [
@@ -41,6 +42,10 @@ const routes: Routes = [
   },
   {
     path: 'profile/:id', component: ProfileComponent,
+    canActivate: [AuthProfileGuard] 
+  },
+  {
+    path: 'profile-no-creator/:id', component: ProfileNoCreatorComponent,
     canActivate: [AuthProfileGuard] 
   },
   {
