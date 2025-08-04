@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
   }
 
   navigateToHome() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/landing']);
   }
 
   navigateToRegister() {
