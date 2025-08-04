@@ -1,4 +1,5 @@
 export interface UserProfile {
+    isCreator?: boolean,
     aboutMe?: string,
     webSite?: string,
     igSocialMedia?: string,

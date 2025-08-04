@@ -22,6 +22,7 @@ import { AuthAdminGuard } from './guard/auth-admin.guard';
 import { LandingComponent } from './components/landing/landing.component';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileNoCreatorComponent } from './components/profile-no-creator/profile-no-creator.component';
+import { ProfileNoCreatorGuard } from './guard/profile-no-creator.guard';
 
 
 const routes: Routes = [
@@ -46,7 +47,7 @@ const routes: Routes = [
   },
   {
     path: 'profile-no-creator/:id', component: ProfileNoCreatorComponent,
-    canActivate: [AuthProfileGuard] 
+    canActivate: [ProfileNoCreatorGuard]
   },
   {
     path: 'profile-not-found', component: ProfileNotFoundComponent

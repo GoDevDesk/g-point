@@ -141,6 +141,7 @@ export class HomeComponent implements OnInit {
       contentType: 'image/jpeg',
       currentUserData: null,
       userProfile: {
+        isCreator: true,
         id: 5,
         userName: 'carla_lopez',
         firstName: 'Carla',

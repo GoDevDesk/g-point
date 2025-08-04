@@ -54,10 +54,14 @@ export class AlbumContentComponent implements OnInit {
     this.isLoading = true;
     this.albumId = this.route.snapshot.paramMap.get('albumId') || '';
     this.loggedUserId = this.authService.getCurrentUserLoggedIdFromStorage()
+    
+    // Cargar datos del álbum primero
     this.loadAlbumData(Number(this.albumId));
+    
+    // Cargar posts después de un pequeño delay
     setTimeout(() => {
       this.loadPosts();
-    }, 1000); // Timeout de 1 segundo
+    }, 500); // Reducido a 500ms para mejor UX
 
   }
 
@@ -95,7 +99,11 @@ export class AlbumContentComponent implements OnInit {
 
         // Calcular el total de páginas
         this.totalPages = Math.ceil(this.totalItems / this.pageSize);
-        this.isLoading = false;
+        
+        // Simular un pequeño delay para que se vea el spinner
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 500);
       },
       error: (err) => {
         this.isLoading = false;
@@ -182,12 +190,13 @@ export class AlbumContentComponent implements OnInit {
   }
 
   createPost(file: File): void {
+    this.isLoading = true;
     this.postService.createPost(file, this.albumId, this.loggedUserId.toString()).subscribe({
       next: (response) => {
         this.currentPhoto = URL.createObjectURL(file); // Actualiza la foto en la vista previa        
-        this.loadPosts();
         this.closeModal();
-        this.isLoading = false;
+        // Recargar posts después de crear uno nuevo
+        this.loadPosts();
       },
       error: (error) => {
         this.isLoading = false;
@@ -198,6 +207,60 @@ export class AlbumContentComponent implements OnInit {
 
   toggleLike(post: any): void {
     post.isLiked = !post.isLiked;
+  }
+
+  getPostDescription(post: any): string {
+    // Si ya tiene una descripción válida, la usamos
+    if (post.description && post.description.trim() !== '' && post.description !== 'asd') {
+      return post.description;
+    }
+    
+    // Array de descripciones ingeniosas para modelos
+    const photoDescriptions = [
+      '✨ Brillo natural en cada momento ✨',
+      '💫 Capturando la magia del día 💫',
+      '🌅 Amanecer perfecto para ti 🌅',
+      '💋 Un beso de luz y elegancia 💋',
+      '🔥 Pasión y fuego en cada frame 🔥',
+      '💎 Como diamantes, únicos y brillantes 💎',
+      '🌙 Noches de seducción y misterio 🌙',
+      '🌸 Delicada como una flor en primavera 🌸',
+      '💃 Bailando con la vida y la libertad 💃',
+      '🌟 Estrellas en mis ojos para ti 🌟',
+      '💕 Amor y pasión en cada pixel 💕',
+      '🌊 Olas de sensualidad y gracia 🌊',
+      '🔥 Incendio de belleza y fuego 🔥',
+      '💫 Magia pura en cada sonrisa 💫',
+      '🌹 Rosas rojas para corazones valientes 🌹',
+      '✨ Elegante como la noche estrellada ✨',
+      '💋 Dulce tentación en cada ángulo 💋',
+      '🌅 Momentos dorados de pura felicidad 🌅',
+      '💎 Preciosa como joyas en la noche 💎',
+      '🔥 Fuego interior que nunca se apaga 🔥'
+    ];
+    
+    // Array de descripciones para videos
+    const videoDescriptions = [
+      '🎬 Video exclusivo para ti amor 🎬',
+      '💫 Contenido premium que te encantará 💫',
+      '🔥 Video caliente y sensual 🔥',
+      '💋 Momentos íntimos solo para ti 💋',
+      '✨ Video especial con magia extra ✨',
+      '💎 Contenido exclusivo de alta calidad 💎',
+      '🌙 Video nocturno lleno de misterio 🌙',
+      '💕 Amor y pasión en movimiento 💕',
+      '🌟 Estrellas bailando en video 🌟',
+      '🔥 Fuego y pasión en cada frame 🔥'
+    ];
+    
+    // Generar descripción basada en el tipo de contenido
+    if (post.contentType === 'video/mp4') {
+      const randomIndex = Math.floor(Math.random() * videoDescriptions.length);
+      return videoDescriptions[randomIndex];
+    } else {
+      const randomIndex = Math.floor(Math.random() * photoDescriptions.length);
+      return photoDescriptions[randomIndex];
+    }
   }
 
   toggleMenu(postId: string): void {

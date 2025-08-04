@@ -1,7 +1,7 @@
-<div *ngIf="isLoading" class="loading-overlay">
-  <mat-spinner color="primary"></mat-spinner>
-</div>
 <div class="relative flex min-h-screen flex-col">
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner color="primary"></mat-spinner>
+  </div>
   <app-go-back></app-go-back>
   <div class="min-h-28">
     <div class="mx-auto py-18">
@@ -49,41 +49,58 @@
           class="text-center text-3xl font-black text-white uppercase bg-black border border-gray-500 rounded py-1 w-48 mx-auto"
           (blur)="savePrice()" (keyup.enter)="savePrice()" />
       </div>
-      <!-- Informacion del usuario -->
-      <div class="flex justify-center items-center gap-2 my-3">
-        <div class="font-semibold text-center mx-4">
-          <p class="text-gray-400">{{ album?.price }}</p>
-          <span class="text-gray-400">Posts {{totalItems}}</span>
+                                                                                                               <!-- Informacion del usuario -->
+          <div class="flex justify-center items-center gap-2 my-3">
+            <div class="font-semibold text-center mx-4">
+              <p class="text-gray-400">{{ album?.price }}</p>
+              <span class="text-gray-400">Posts {{totalItems}}</span>
+            </div>
+            <div class="font-semibold text-center mx-4">
+              <p class="text-gray-400">{{ album?.price }}</p>
+              <span class="text-gray-400">15 Vendidos</span>
+            </div>
+          </div>
+
+                           <!-- Botón de agregar foto en posición clásica -->
+        <div *ngIf="isOwner" class="flex justify-center mb-6">
+          <button 
+            (click)="openModal()"
+            class="add-photo-button text-black font-semibold py-3 px-6 rounded-lg flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            <span>Agregar</span>
+          </button>
         </div>
-        <div class="font-semibold text-center mx-4">
-          <p class="text-gray-400"></p>
-          <span class="text-gray-400">Followers</span>
-        </div>
-      </div>
 
       <!-- Video-container -->
-      <div  class="gap-6 mt-8 mx-4 video-container flex flex-wrap justify-center">
-        <div *ngIf="isOwner"
-          class="wrap-video add-photo-card card rounded-lg overflow-hidden bg-[#080808] h-[500px] flex flex-col justify-center items-center min-w-[300px] max-w-[47px]"
-          (click)="openModal()">
-          <div class="add-photo-content text-4xl font-bold text-gray-500">+</div>
-        </div>
+      <div class="gap-6 mt-8 mx-4 video-container flex flex-wrap justify-center">
         <!-- Posts -->
         <div class="wrap-video" *ngFor="let post of posts"
           class="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 p-2 min-w-[450px] max-w-[470px]">
-          <div class="card rounded-lg overflow-hidden h-[500px] flex flex-col bg-[#080808]">
+          <div class="card rounded-lg overflow-hidden h-[500px] flex flex-col bg-[#080808] shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
             <!-- Encabezado de la tarjeta -->
             <div class="h-18 flex justify-end items-center px-4 py-2">
               <div *ngIf="isOwner" class="relative">
-                <button class="text-gray-300 hover:text-white" (click)="toggleMenu(post.id)">
+                <button class="text-gray-300 hover:text-white menu-button" (click)="toggleMenu(post.id)">
                   &#x22EE;
                 </button>
                 <!-- Menú desplegable -->
                 <div *ngIf="isMenuOpen(post.id)"
-                  class="absolute top-6 right-0 bg-gray-700 text-white text-sm rounded shadow-md z-10">
+                  class="absolute top-6 right-0 bg-gray-800 text-white text-sm rounded-lg shadow-xl z-10 border border-gray-600 min-w-[120px]">
                   <ul>
-                    <li class="px-4 py-2 hover:bg-white cursor-pointer" (click)="editPost(post)">Editar</li>
-                    <li class="px-4 py-2 hover:bg-white cursor-pointer" (click)="deletePost(post)">Eliminar</li>
+                    <li class="px-4 py-2 hover:bg-gray-700 cursor-pointer transition-colors duration-200 flex items-center space-x-2" (click)="editPost(post)">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                      <span>Editar</span>
+                    </li>
+                    <li class="px-4 py-2 hover:bg-red-600 cursor-pointer transition-colors duration-200 flex items-center space-x-2" (click)="deletePost(post)">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                      <span>Eliminar</span>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -104,20 +121,10 @@
 
 
             <!-- Pie de la tarjeta -->
-            <div class="h-17 flex justify-between items-center px-4 py-2">
-              <h1 class="text-lg font-bold text-pink-500 truncate">
-                {{ post.description || 'Sin descripción' }}
+            <div class="h-17 flex items-center px-4 py-2">
+              <h1 class="text-xs font-medium text-pink-500 truncate">
+                {{ getPostDescription(post) }}
               </h1>
-              <!-- Icono de corazón -->
-              <button (click)="toggleLike(post)" class="focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" [ngClass]="post.isLiked ? 'text-red-500' : 'text-gray-400'"
-                  class="w-6 h-6 transition duration-300" fill="currentColor" viewBox="0 0 24 24">
-                  <path *ngIf="post.isLiked"
-                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                  <path *ngIf="!post.isLiked"
-                    d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-6.4 16.55L12 20.35l1.9-1.72C17.78 15.17 20 12.39 20 8.5 20 6.5 18.5 5 16.5 5c-1.54 0-3.04.99-3.57 2.36h-1.86C10.54 5.99 9.04 5 7.5 5 5.5 5 4 6.5 4 8.5c0 3.89 2.22 6.67 6.1 10.05z" />
-                </svg>
-              </button>
             </div>
           </div>
         </div>
@@ -125,8 +132,11 @@
       <!-- Footer -->
       <footer class="w-full text-right py-4 mt-24 mb-24 pr-8 lg:pr-60">
         <button *ngIf="isOwner" (click)="deleteAlbum()"
-          class="bg-red-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-700 transition">
-          Eliminar Álbum
+          class="bg-red-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-700 transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+          <span>Eliminar Álbum</span>
         </button>
       </footer>
       <!-- Modal -->

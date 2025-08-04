@@ -14,10 +14,6 @@ export class GoBackComponent  {
   constructor(private router: Router, private location: Location) { }
 
   goBack(): void {
-    if (this.userId) {
-      this.router.navigate([`/profile/${this.userId}`]); // Navega a la ruta profile/:id
-    }else{
-      this.location.back(); // Regresa a la página anterior      
+    this.router.navigate(['/home']); // Navega al home
   }
-}
 }

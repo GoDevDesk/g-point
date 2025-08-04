@@ -7,7 +7,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+  background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
+  backdrop-filter: blur(4px);
   z-index: 1000; /* Asegura que está sobre todo */
 }
 
@@ -109,30 +110,40 @@
     object-fit: cover;  /* Asegura que el video cubra todo el espacio sin distorsionar */
   }
 
-  /* Ajuste de tamaño más grande para la tarjeta de agregar fotos */
-  .add-photo-card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    aspect-ratio: 16 / 9;
-    height: 100%;
-    width: 100%;
-    max-width: 450px;
-    background-color: #1a1a1a;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
+  /* Estilos para el botón de agregar foto */
+  .add-photo-button {
+    background: linear-gradient(135deg, #67e8f9 0%, #22d3ee 100%);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(103, 232, 249, 0.3);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
   }
-  
-  .add-photo-card:hover {
-    background-color: #1a1a1a; /* Color de fondo gris oscuro */
-    transform: scale(1.05); /* Aumentar tamaño ligeramente al pasar el cursor */
-    cursor: pointer;
-}
-  
-  .add-photo-content {
-    color: white;
-    font-size: 72px; /* Aumentado para que sea más grande */
-    transition: transform 0.2s ease;
+
+  /* Mejoras para las tarjetas de contenido */
+  .card {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-4px);
+    }
+  }
+
+  /* Estilos para el botón de menú */
+  .menu-button {
+    transition: all 0.2s ease;
+    
+    &:hover {
+      color: #0891b2;
+      transform: scale(1.1);
+    }
   }
   
 //   .add-photo-card:hover .add-photo-content {

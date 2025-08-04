@@ -278,4 +278,25 @@ export class ProfileNoCreatorComponent implements OnInit {
   navigateToCreatorProfile(creatorId: number): void {
     this.router.navigate(['/profile', creatorId]);
   }
+
+  // Obtener foto del creador (mock)
+  getCreatorPhoto(creatorId?: number): string {
+    if (!creatorId) return 'assets/defaultIcons/defaultProfilePhoto.png';
+    
+    // Array de fotos mock para diferentes creadores
+    const creatorPhotos = [
+      'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg',
+      'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg',
+      'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg',
+      'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg',
+      'https://images.pexels.com/photos/1462630/pexels-photo-1462630.jpeg',
+      'https://images.pexels.com/photos/1642228/pexels-photo-1642228.jpeg',
+      'https://images.pexels.com/photos/1858175/pexels-photo-1858175.jpeg',
+      'https://images.pexels.com/photos/1898555/pexels-photo-1898555.jpeg'
+    ];
+    
+    // Usar el ID del creador para seleccionar una foto específica
+    const photoIndex = creatorId % creatorPhotos.length;
+    return creatorPhotos[photoIndex];
+  }
 }

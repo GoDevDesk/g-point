@@ -7,21 +7,22 @@ import { of } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthProfileGuard implements CanActivate {
+export class ProfileNoCreatorGuard implements CanActivate {
   constructor(private userService: UserService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot) {
     const userId = route.params['id'];
     
-    //ver si se puede hacer de otra manera validar si el perfil existe
     return this.userService.getUserById(userId).pipe(
       map(user => {
         if (user) {
           if (user.isCreator) {
-            return true;
-          }else{
-            this.router.navigate(['/profile-no-creator', userId]);
+            // Si es creator, redirigir a profile/userid
+            this.router.navigate(['/profile', userId]);
             return false;
+          } else {
+            // Si no es creator, permitir que continúe con este guard
+            return true;
           }
         } else {
           this.router.navigate(['/profile-not-found']);
