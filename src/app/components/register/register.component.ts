@@ -33,6 +33,7 @@ export class RegisterComponent implements OnInit {
       EmailAddress: this.user.EmailAddress,
       FirstName: this.user.FirstName,
       LastName: this.user.LastName || '',
+      isCreator: this.user.isCreator
     };
 
     this.authService.register(requestData).subscribe({

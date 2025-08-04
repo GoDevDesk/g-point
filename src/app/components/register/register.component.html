@@ -104,6 +104,53 @@
                         />
                     </div>
                 </div>
+
+                <!-- Tipo de perfil -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-3">Tipo de Perfil</label>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <input
+                                type="radio"
+                                id="isCreator-true"
+                                name="isCreator"
+                                [value]="true"
+                                [(ngModel)]="user.isCreator"
+                                class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-600 bg-gray-700"
+                            />
+                            <label for="isCreator-true" class="ml-3 text-sm text-gray-300">
+                                <span class="font-medium">Creadxr de Contenido</span>
+                            </label>
+                        </div>
+                        <div class="flex items-center">
+                            <input
+                                type="radio"
+                                id="isCreator-false"
+                                name="isCreator"
+                                [value]="false"
+                                [(ngModel)]="user.isCreator"
+                                class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-600 bg-gray-700"
+                            />
+                            <label for="isCreator-false" class="ml-3 text-sm text-gray-300">
+                                <span class="font-medium">Usuario Regular</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Explicación dinámica según la selección -->
+                    <div *ngIf="user.isCreator !== undefined" class="mt-4 p-4 bg-gray-700 rounded-lg border border-gray-600">
+                        <div class="text-sm text-gray-300">
+                            <div *ngIf="user.isCreator" class="flex items-start">
+                                <span class="text-pink-400 font-medium mr-2">🎨 Creadxr:</span>
+                                <span>Puedes crear y vender contenido exclusivo, gestionar suscripciones, recibir donaciones y monetizar tu contenido en la plataforma.</span>
+                            </div>
+                            <div *ngIf="!user.isCreator" class="flex items-start">
+                                <span class="text-blue-400 font-medium mr-2">👤 Usuario Regular:</span>
+                                <span>Disfruta del contenido de los creadores, suscríbete a perfiles, haz donaciones y explora la plataforma de forma simple.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div>
