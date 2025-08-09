@@ -25,7 +25,8 @@ import { debounceTime, distinctUntilChanged, switchMap, of } from 'rxjs';
 export class ConfigurationComponent implements OnInit {
   // Propiedades de navegación
   public sidebarActive: boolean = false;
-  public readonly sections: NavigationSection[] = [
+  public isCreator: boolean = true; // Por defecto asumimos que es creador
+  public readonly allSections: NavigationSection[] = [
     { id: 'profile', name: 'Datos Personales', icon: 'fa-user' },
     { id: 'tags', name: 'Etiquetas', icon: 'fa-tags' },
     { id: 'social', name: 'Redes Sociales', icon: 'fa-share-alt' },
@@ -33,6 +34,20 @@ export class ConfigurationComponent implements OnInit {
     { id: 'blocks', name: 'Usuarios Bloqueados', icon: 'fa-ban' },
     { id: 'account', name: 'Gestión de Cuenta', icon: 'fa-cog' }
   ];
+
+  // Secciones filtradas según el tipo de usuario
+  public get sections(): NavigationSection[] {
+    if (this.isCreator) {
+      return this.allSections;
+    } else {
+      // Para no-creadores: solo datos personales, usuarios bloqueados y gestión de cuenta
+      return this.allSections.filter(section => 
+        section.id === 'profile' || 
+        section.id === 'blocks' || 
+        section.id === 'account'
+      );
+    }
+  }
 
   // Propiedades del perfil
   public userProfile: UserProfile = {} as UserProfile;
@@ -145,6 +160,9 @@ export class ConfigurationComponent implements OnInit {
           username: response.userName ?? '',
           aboutMe: response.aboutMe ?? ''
         };
+
+        // Actualizar el estado de creador
+        this.isCreator = response.isCreator ?? true;
 
         // Actualizar redes sociales con la información del perfil
         this.socialNetworks = [

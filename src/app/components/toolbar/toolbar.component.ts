@@ -3,9 +3,11 @@ import { Router } from '@angular/router';
 import { authUser } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProfileService } from 'src/app/services/profile.service';
+import { UserService } from 'src/app/services/user.service';
 import { FormControl } from '@angular/forms';
-import { catchError, concatMap, debounceTime, distinctUntilChanged, filter, of, startWith, switchMap } from 'rxjs';
+import { catchError, concatMap, debounceTime, distinctUntilChanged, filter, of, startWith, switchMap, tap } from 'rxjs';
 import { SearchService } from 'src/app/services/search.service';
+import { UserProfile } from 'src/app/models/userProfile';
 
 
 @Component({
@@ -19,11 +21,27 @@ export class ToolbarComponent implements OnInit {
   currentUserLoggedId = ""
   currentAvatarPhoto = ""
   defaultPhoto = 'assets/defaultIcons/defaultProfilePhoto.png';
+  isCreator: boolean = true; // Por defecto asumimos que es creador
   constructor(private renderer: Renderer2, private el: ElementRef, private router: Router, private authService: AuthService,
-    private profileService: ProfileService, private searchService: SearchService) { }
+    private profileService: ProfileService, private searchService: SearchService, private userService: UserService) { }
 
   ngOnInit(): void {
     this.currentUserLoggedId = this.authService.getCurrentUserLoggedIdFromStorage().toString();
+    
+    // Obtener información del usuario para saber si es creador
+    const userId = this.authService.getCurrentUserLoggedIdFromStorage();
+    if (userId) {
+      this.userService.getUserById(userId).pipe(
+        tap((user: UserProfile) => {
+          this.isCreator = user.isCreator ?? true;
+        }),
+        catchError(() => {
+          this.isCreator = true; // Por defecto si hay error
+          return of(null);
+        })
+      ).subscribe();
+    }
+    
     //this.profileService.removeAvatarPhoto();
     this.profileService.getAvatarPhoto().subscribe(photoUrl => {
       this.currentAvatarPhoto = photoUrl;

@@ -47,7 +47,7 @@
         <mat-icon>settings</mat-icon>
         Configuración
       </button>
-      <button mat-menu-item (click)="navigateTo('report-content')">
+      <button mat-menu-item (click)="navigateTo('report-content')" *ngIf="isCreator">
         <mat-icon>bar_chart</mat-icon>
         Información
       </button>

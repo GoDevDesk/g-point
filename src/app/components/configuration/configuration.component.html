@@ -43,8 +43,8 @@
       </div>
     </section>
 
-    <!-- Sección de Etiquetas -->
-    <section id="tags" class="section">
+    <!-- Sección de Etiquetas - Solo para creadores -->
+    <section id="tags" class="section" *ngIf="isCreator">
       <h2 class="text-pink-500">Etiquetas del Perfil</h2>
       <div class="card">
         <div class="tags-container">
@@ -106,8 +106,8 @@
       </div>
     </section>
 
-    <!-- Sección de Redes Sociales -->
-    <section id="social" class="section">
+    <!-- Sección de Redes Sociales - Solo para creadores -->
+    <section id="social" class="section" *ngIf="isCreator">
       <h2 class="text-pink-500">Redes Sociales</h2>
       <div class="card">
         <div class="social-networks">
@@ -127,8 +127,8 @@
       </div>
     </section>
 
-    <!-- Sección de Privacidad -->
-    <section id="privacy" class="section">
+    <!-- Sección de Privacidad - Solo para creadores -->
+    <section id="privacy" class="section" *ngIf="isCreator">
       <h2 class="text-pink-500">Privacidad</h2>
       <div class="card">
         <div class="privacy-options">
