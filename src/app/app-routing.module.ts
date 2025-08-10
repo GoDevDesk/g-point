@@ -65,6 +65,10 @@ const routes: Routes = [
     canActivate: [AuthBuyerGuard] 
   },
   {
+    path: 'album/:albumId', component: AlbumDetailComponent,
+    canActivate: [AuthBuyerGuard] 
+  },
+  {
     path: 'chat', component: ChatBoxComponent,
     canActivate: [AuthGuard] 
   },

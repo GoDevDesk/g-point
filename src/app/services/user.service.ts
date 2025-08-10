@@ -5,6 +5,7 @@ import { UserProfile } from '../models/userProfile';
 import { environment } from 'src/environments/environment';
 import { ForeignProfileData } from '../models/foreignProfileData';
 import { ProfileData } from '../models/profileData';
+import { PurchasingInfo } from '../models/purchasingInfo';
 
 @Injectable({
   providedIn: 'root',
@@ -14,18 +15,19 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  // Método para obtener la información del usuario por ID
   getUserById(userId: number): Observable<UserProfile> {
-    return this.http.get<UserProfile>(`${this.apiUrl}/user/${userId}`); // Asumimos que el endpoint es /user/profile/:id
+    return this.http.get<UserProfile>(`${this.apiUrl}/user/${userId}`); 
   }
 
-  // Método para actualizar la información del usuario por ID
+  getPurchasingInfo(): Observable<PurchasingInfo> {
+    return this.http.get<PurchasingInfo>(`${this.apiUrl}/user/purchasing-info`);
+  }
+
   updateUser(profileData: UserProfile): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/user`, profileData);
   }
 
-  // Método para obtener la información del usuario por ID
   GetForeignProfileData(userId: number): Observable<ForeignProfileData> {
-    return this.http.get<ForeignProfileData>(`${this.apiUrl}/foreign-profile/${userId}`); // Asumimos que el endpoint es /user/profile/:id
+    return this.http.get<ForeignProfileData>(`${this.apiUrl}/foreign-profile/${userId}`); 
   }
 }

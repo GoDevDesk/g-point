@@ -28,29 +28,6 @@
       <!-- Modal PERFIL -->
       <app-edit-photo-modal [isOpen]="isProfileModalOpen" [currentPhoto]="currentProfilePhoto"[currentPhotoId]="profilePictureId" 
         (close)="closeProfileModal()" (updatePhoto)="handleProfilePhotoSelected($event)" (deletePhoto)="deleteProfilePhotoSelected($event)"></app-edit-photo-modal>
-
-    <!--informacion del usuario - Solo para creadores, no para consumidores -->
-    <div *ngIf="false" class="flex justify-center items-center gap-6 my-6">
-        <div class="font-semibold text-center">
-          <p class="text-2xl text-cyan-500">{{userProfile.postsCount}}</p>
-          <span class="text-gray-400">Posts</span>
-        </div>
-        <div class="font-semibold text-center">
-          <p class="text-2xl text-cyan-500">{{userProfile.followersCount}}</p>
-          <span class="text-gray-400">Followers</span>
-        </div>
-        <div class="font-semibold text-center">
-          <p class="text-2xl text-cyan-500">{{userProfile.photosCount}}</p>
-          <span class="text-gray-400">Photos</span>
-        </div>
-        <div class="font-semibold text-center">
-          <p class="text-2xl text-cyan-500">{{userProfile.videosCount}}</p>
-          <span class="text-gray-400">Videos</span>
-        </div>
-      </div>
-
-
-
       <!-- Contenido solo visible para el dueño del perfil -->
       <div *ngIf="isOwner">
         <!--boton tab único para contenido comprado-->
@@ -118,8 +95,9 @@
                         Ver Perfil
                       </button>
                       <button 
-                        *ngIf="content.type !== 'subscriptions'"
-                        class="bg-gray-600 text-white px-3 py-2 rounded-lg hover:bg-gray-500 transition-colors duration-300 text-sm whitespace-nowrap">
+                        *ngIf="content.type === 'albums' && item.albumId"
+                        class="bg-gray-600 text-white px-3 py-2 rounded-lg hover:bg-gray-500 transition-colors duration-300 text-sm whitespace-nowrap"
+                        (click)="navigateToAlbum(item.albumId)">
                         Ver
                       </button>
                     </div>

@@ -7,22 +7,16 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ChatService } from 'src/app/services/chat.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { UserService } from 'src/app/services/user.service';
+import { PurchasingInfo, PurchasedAlbum, ActiveSubscription } from 'src/app/models/purchasingInfo';
 
-// Interfaz para el contenido comprado
-interface PurchasedContentItem {
-  name: string;
-  description: string;
-  creatorId?: number;
-  creatorName?: string;
-}
-
+// Interfaz para el contenido comprado (usando datos reales)
 interface PurchasedContent {
   id: number;
   title: string;
   creator: string;
   date: string;
   type: string;
-  items: PurchasedContentItem[];
+  items: any[];
   isExpanded?: boolean;
 }
 
@@ -56,44 +50,9 @@ export class ProfileNoCreatorComponent implements OnInit {
 
   isLoading = false; // Estado de carga
 
-  // Datos de contenido comprado (simulado)
-  purchasedContent: PurchasedContent[] = [
-    {
-      id: 1,
-      title: 'Albums Comprados',
-      creator: '',
-      date: '2024-01-15',
-      type: 'albums',
-      items: [
-        { name: 'Album de Fotos Premium', description: 'Maria Garcia - 15 fotos', creatorId: 101, creatorName: 'Maria Garcia' },
-        { name: 'Colección de Fotos', description: 'Ana Martinez - 20 fotos', creatorId: 102, creatorName: 'Ana Martinez' },
-        { name: 'Album Especial', description: 'Carlos Rodriguez - 10 fotos', creatorId: 103, creatorName: 'Carlos Rodriguez' }
-      ]
-    },
-    {
-      id: 2,
-      title: 'Suscripciones Activas',
-      creator: '',
-      date: '2024-01-10',
-      type: 'subscriptions',
-      items: [
-        { name: 'Maria Garcia', description: 'Suscripción mensual activa', creatorId: 101, creatorName: 'Maria Garcia' },
-        { name: 'Ana Martinez', description: 'Suscripción mensual activa', creatorId: 102, creatorName: 'Ana Martinez' }
-      ]
-    },
-    {
-      id: 3,
-      title: 'Contenido Personalizado',
-      creator: '',
-      date: '2024-01-05',
-      type: 'custom',
-      items: [
-        { name: 'Video Exclusivo', description: 'Video personalizado de 15 minutos', creatorId: 101, creatorName: 'Maria Garcia' },
-        { name: 'Foto Personalizada', description: 'Foto especial solicitada', creatorId: 102, creatorName: 'Ana Martinez' },
-        { name: 'Mensaje de Voz', description: 'Mensaje personalizado', creatorId: 103, creatorName: 'Carlos Rodriguez' }
-      ]
-    }
-  ];
+  // Datos de contenido comprado (reales desde la API)
+  purchasingInfo: PurchasingInfo = {};
+  purchasedContent: PurchasedContent[] = [];
 
   constructor(
     private route: ActivatedRoute, 
@@ -211,6 +170,58 @@ export class ProfileNoCreatorComponent implements OnInit {
     }
   }
 
+  fetchPurchasingInfo(): void {
+    this.userService.getPurchasingInfo().subscribe({
+      next: (response: PurchasingInfo) => {
+        this.purchasingInfo = response;
+        this.transformPurchasingData();
+      },
+      error: (error) => {
+        console.error('Error al obtener información de compras:', error);
+        this.purchasedContent = [];
+      }
+    });
+  }
+
+  transformPurchasingData(): void {
+    this.purchasedContent = [];
+
+    // Transformar álbumes comprados
+    if (this.purchasingInfo.purchasedAlbumsResponse && this.purchasingInfo.purchasedAlbumsResponse.length > 0) {
+      this.purchasedContent.push({
+        id: 1,
+        title: 'Álbumes Comprados',
+        creator: '',
+        date: new Date().toISOString().split('T')[0],
+        type: 'albums',
+        items: this.purchasingInfo.purchasedAlbumsResponse.map((album: PurchasedAlbum) => ({
+          name: album.albumResponse?.name || 'Álbum sin nombre',
+          description: `${album.albumOwnerName || 'Creador'} - ${album.postCount || 0} fotos`,
+          creatorId: album.albumResponse?.userId,
+          creatorName: album.albumOwnerName,
+          albumId: album.albumResponse?.id
+        }))
+      });
+    }
+
+    // Transformar suscripciones activas
+    if (this.purchasingInfo.activeSubscriptionsResponse && this.purchasingInfo.activeSubscriptionsResponse.length > 0) {
+      this.purchasedContent.push({
+        id: 2,
+        title: 'Suscripciones Activas',
+        creator: '',
+        date: new Date().toISOString().split('T')[0],
+        type: 'subscriptions',
+        items: this.purchasingInfo.activeSubscriptionsResponse.map((sub: ActiveSubscription) => ({
+          name: sub.planOwnerName || 'Creador',
+          description: 'Suscripción activa',
+          creatorId: sub.planOwnerId,
+          creatorName: sub.planOwnerName
+        }))
+      });
+    }
+  }
+
   getCurrentLoggedIdUser(): void {
     this.authService.getCurrentUserLogged().subscribe({
       next: (response: User) => {
@@ -233,6 +244,7 @@ export class ProfileNoCreatorComponent implements OnInit {
     }
     this.fetchUserProfile();
     this.fetchProfilePhoto();
+    this.fetchPurchasingInfo();
     this.authService.setVisitedProfileId(Number(this.profileId));
   }
 
@@ -279,25 +291,25 @@ export class ProfileNoCreatorComponent implements OnInit {
     this.router.navigate(['/profile', creatorId]);
   }
 
-  // Obtener foto del creador (mock)
+  // Navegar al álbum
+  navigateToAlbum(albumId: number): void {
+    this.router.navigate(['/album', albumId]);
+  }
+
+  // Obtener foto del creador
   getCreatorPhoto(creatorId?: number): string {
     if (!creatorId) return 'assets/defaultIcons/defaultProfilePhoto.png';
     
-    // Array de fotos mock para diferentes creadores
-    const creatorPhotos = [
-      'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg',
-      'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg',
-      'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg',
-      'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg',
-      'https://images.pexels.com/photos/1462630/pexels-photo-1462630.jpeg',
-      'https://images.pexels.com/photos/1642228/pexels-photo-1642228.jpeg',
-      'https://images.pexels.com/photos/1858175/pexels-photo-1858175.jpeg',
-      'https://images.pexels.com/photos/1898555/pexels-photo-1898555.jpeg'
-    ];
+    // Buscar si tenemos la foto del creador en las suscripciones activas
+    if (this.purchasingInfo.activeSubscriptionsResponse) {
+      const subscription = this.purchasingInfo.activeSubscriptionsResponse.find(sub => sub.planOwnerId === creatorId);
+      if (subscription?.avatarUrl) {
+        return subscription.avatarUrl;
+      }
+    }
     
-    // Usar el ID del creador para seleccionar una foto específica
-    const photoIndex = creatorId % creatorPhotos.length;
-    return creatorPhotos[photoIndex];
+    // Si no hay foto real, usar foto por defecto
+    return 'assets/defaultIcons/defaultProfilePhoto.png';
   }
 
 
