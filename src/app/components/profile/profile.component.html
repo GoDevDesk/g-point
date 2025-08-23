@@ -9,7 +9,7 @@
       <a *ngIf="isOwner" href="#"
         class="absolute bottom-4 right-8 bg-gray-800 p-2 rounded-full shadow opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:bg-gray-700"
         (click)="openCoverModal($event)">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-pink-500" fill="none" viewBox="0 0 24 24"
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-emerald-500" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M15.232 5.232l3.536 3.536M4 13v6a2 2 0 002 2h6M16.828 4.586a2 2 0 112.828 2.828L7 19l-4 1 1-4 12.828-12.828z" />
@@ -23,12 +23,12 @@
       <div class="flex flex-col gap-1 text-center">
         <div class="relative w-24 h-24 mx-auto profile-container">
           <!-- Foto de perfil -->
-          <div class="block bg-center bg-no-repeat bg-cover w-24 h-24 rounded-full border-2 border-pink-500 shadow-lg"
+          <div class="block bg-center bg-no-repeat bg-cover w-24 h-24 rounded-full border-2 border-emerald-500 shadow-lg"
             href="" style="background-image: url({{currentProfilePhoto}})">
           </div>
           <!-- Ícono de lápiz -->
           <a *ngIf="isOwner" href="#" class="edit-icon" (click)="openProfileModal($event)">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-500" fill="none" viewBox="0 0 24 24"
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M15.232 5.232l3.536 3.536M4 13v6a2 2 0 002 2h6M16.828 4.586a2 2 0 112.828 2.828L7 19l-4 1 1-4 12.828-12.828z" />
@@ -49,30 +49,30 @@
       <!--informacion del usuario-->
       <div class="flex justify-center items-center gap-6 my-6">
         <div class="font-semibold text-center">
-          <p class="text-2xl text-pink-500">{{userProfile.postsCount}}</p>
+          <p class="text-2xl text-emerald-500">{{userProfile.postsCount}}</p>
           <span class="text-gray-400">Posts</span>
         </div>
         <div class="font-semibold text-center">
-          <p class="text-2xl text-pink-500">{{userProfile.followersCount}}</p>
+          <p class="text-2xl text-emerald-500">{{userProfile.followersCount}}</p>
           <span class="text-gray-400">Followers</span>
         </div>
         <div class="font-semibold text-center">
-          <p class="text-2xl text-pink-500">{{userProfile.photosCount}}</p>
+          <p class="text-2xl text-emerald-500">{{userProfile.photosCount}}</p>
           <span class="text-gray-400">Photos</span>
         </div>
         <div class="font-semibold text-center">
-          <p class="text-2xl text-pink-500">{{userProfile.videosCount}}</p>
+          <p class="text-2xl text-emerald-500">{{userProfile.videosCount}}</p>
           <span class="text-gray-400">Videos</span>
         </div>
       </div>
 
       <!--boton seguir y mensaje-->
       <div *ngIf="!isOwner && userId !=0" class="flex justify-center gap-4 my-6">
-        <button [ngClass]="{'bg-pink-500 text-white': isFollowed, 'bg-gray-800 text-white border border-pink-500': !isFollowed}"
+        <button [ngClass]="{'bg-emerald-500 text-white': isFollowed, 'bg-gray-800 text-white border border-emerald-500': !isFollowed}"
           class="px-8 py-2 rounded-lg shadow-lg transition-all duration-300 hover:scale-105" (click)="toggleFollow()">
           {{isFollowed ? 'Siguiendo' : 'Seguir'}}
         </button>
-        <button class="bg-gray-800 text-white border border-pink-500 px-6 py-2 rounded-lg shadow-lg transition-all duration-300 hover:scale-105" 
+        <button class="bg-gray-800 text-white border border-emerald-500 px-6 py-2 rounded-lg shadow-lg transition-all duration-300 hover:scale-105" 
           (click)="setChats()">
           Envíame un Mensaje
         </button>
@@ -81,19 +81,19 @@
       <!--botones tab-->
       <div class="flex justify-between items-center border-b border-gray-800 mb-6">
         <button class="w-full py-3 text-lg font-semibold transition-colors duration-300" 
-          [class.text-pink-500]="activeTab === 'albums'"
+          [class.text-emerald-500]="activeTab === 'albums'"
           [class.border-b-2]="activeTab === 'albums'"
-          [class.border-pink-500]="activeTab === 'albums'"
+          [class.border-emerald-500]="activeTab === 'albums'"
           (click)="activeTab = 'albums'">
           Albums
         </button>
         <button class="w-full py-3 text-lg font-semibold transition-colors duration-300 flex items-center justify-center gap-2"
-          [class.text-pink-500]="activeTab === 'photos'"
+          [class.text-emerald-500]="activeTab === 'photos'"
           [class.border-b-2]="activeTab === 'photos'"
-          [class.border-pink-500]="activeTab === 'photos'"
+          [class.border-emerald-500]="activeTab === 'photos'"
           (click)="activeTab = 'photos'">
           Premium
-          <span class="bg-pink-500 text-white text-sm px-2 py-1 rounded-full flex items-center gap-1">
+          <span class="bg-emerald-500 text-white text-sm px-2 py-1 rounded-full flex items-center gap-1">
             <i class="fas fa-crown"></i>
             Suscriptores
           </span>
@@ -101,10 +101,10 @@
       </div>
 
       <app-mensual-suscription *ngIf="hasPlan"></app-mensual-suscription>
-      <div *ngIf="!hasPlan && isOwner" class="bg-gray-800 p-6 rounded-lg shadow-lg mt-6 border border-pink-500/20">
+      <div *ngIf="!hasPlan && isOwner" class="bg-gray-800 p-6 rounded-lg shadow-lg mt-6 border border-emerald-500/20">
         <div class="flex items-center justify-between">
-          <h1 class="text-2xl font-bold text-pink-500">Suscripción Mensual</h1>
-          <span class="text-pink-500 text-2xl font-bold">&gt;</span>
+          <h1 class="text-2xl font-bold text-emerald-500">Suscripción Mensual</h1>
+          <span class="text-emerald-500 text-2xl font-bold">&gt;</span>
         </div>
         <div class="flex flex-col gap-3 text-left mt-4">
           <div class="flex items-center text-white">
@@ -117,7 +117,7 @@
           </div>
           <div class="flex items-center text-white">
             <i class="fas fa-plus-circle text-green-500 mr-3"></i>
-            <button class="bg-pink-500 text-white px-6 py-2 rounded-lg hover:bg-pink-600 transition-all duration-300 hover:scale-105" 
+            <button class="bg-emerald-500 text-white px-6 py-2 rounded-lg hover:bg-emerald-600 transition-all duration-300 hover:scale-105" 
               (click)="openCreatePlanModal()">
               Crear Plan
             </button>

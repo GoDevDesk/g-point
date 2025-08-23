@@ -5,15 +5,43 @@
 @tailwind components;
 @tailwind utilities;
 
+// Variables CSS personalizadas para colores centralizados
+:root {
+  --app-primary: #10B981;
+  --app-primary-light: #34D399;
+  --app-primary-dark: #059669;
+  --app-success: #10B981;
+  --app-warning: #F59E0B;
+  --app-error: #EF4444;
+  --app-info: #3B82F6;
+}
 
 html body {
     background-color: black;
-    color: rgb(236 72 153 / var(--tw-bg-opacity, 1));
+    color: var(--app-primary);
 }
 
 .gray-cards {
     background-color: #363636; /* Cambia este valor según lo que necesites */
-  }
+}
+
 html, body { height: 85%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// Clases utilitarias personalizadas
+.app-text-primary {
+  color: var(--app-primary);
+}
+
+.app-bg-primary {
+  background-color: var(--app-primary);
+}
+
+.app-border-primary {
+  border-color: var(--app-primary);
+}
+
+.app-focus-ring-primary:focus {
+  --tw-ring-color: var(--app-primary);
+}
 

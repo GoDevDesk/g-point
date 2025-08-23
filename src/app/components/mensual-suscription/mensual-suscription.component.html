@@ -4,12 +4,12 @@
 
 <div *ngIf="isOwner || plan?.active" [class.cursor-pointer]="!isOwner" [class.hover\:bg-gray-900]="!isOwner" class="bg-[#080808] p-6 rounded-lg shadow-lg mt-6" (click)="onSubscriptionClick()">
   <div class="flex items-center justify-between">
-    <h1 class="text-2xl font-bold text-pink-500">Suscripción Mensual</h1>
+    <h1 class="text-2xl font-bold text-emerald-500">Suscripción Mensual</h1>
     <div *ngIf="isOwner" class="flex items-center gap-4">
       <span class="text-white">{{ isPlanActive ? 'Activo' : 'Inactivo' }}</span>
       <label class="relative inline-flex items-center cursor-pointer">
         <input type="checkbox" class="sr-only peer" [checked]="isPlanActive" (change)="togglePlanStatus()">
-        <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-pink-500"></div>
+        <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
       </label>
     </div>
   </div>
@@ -18,7 +18,7 @@
     <div class="flex items-center text-white">
       <i class="fas fa-dollar-sign text-blue-500 mr-3"></i>
       <span>Precio: ARS {{ plan?.price }}</span>
-      <button *ngIf="isOwner" (click)="openEditPriceModal()" class="ml-2 p-1 text-gray-400 hover:text-pink-500 transition-colors">
+      <button *ngIf="isOwner" (click)="openEditPriceModal()" class="ml-2 p-1 text-gray-400 hover:text-emerald-500 transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
         </svg>
@@ -48,7 +48,7 @@
           type="number"
           id="price"
           [(ngModel)]="newPrice"
-          class="w-full px-3 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          class="w-full px-3 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           placeholder="Ej: 9999"
           min="1"
           step="0.01"
@@ -68,7 +68,7 @@
           type="button"
           (click)="onSubmitEditPrice()"
           [disabled]="isSavingPrice || newPrice <= 0"
-          class="px-3 py-1.5 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          class="px-3 py-1.5 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span *ngIf="!isSavingPrice">Guardar</span>
           <span *ngIf="isSavingPrice" class="flex items-center">

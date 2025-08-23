@@ -20,7 +20,7 @@
   .album-card:hover,
   .album-card:active {
     transform: scale(1.05);
-    background-color: #e9a0c6; /* Cambia por tu color hover */
+    background-color: var(--app-primary-light); /* Color hover verde global */
   }
 
   /* Contenedor del símbolo "+" */

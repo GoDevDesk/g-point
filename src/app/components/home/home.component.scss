@@ -1,14 +1,14 @@
 // Variables de color
-$primary-pink: #ec4899;
-$primary-pink-light: #f472b6;
-$primary-pink-dark: #be185d;
+$primary-green: #10B981;
+$primary-green-light: #34D399;
+$primary-green-dark: #059669;
 $dark-bg: #0f0f0f;
 $dark-surface: #1a1a1a;
 $dark-card: #2a2a2a;
 $text-primary: #ffffff;
 $text-secondary: #a1a1aa;
 $text-muted: #71717a;
-$border-color: rgba(236, 72, 153, 0.2);
+$border-color: rgba(16, 185, 129, 0.2);
 
 // Feed Container
 .feed-container {
@@ -66,8 +66,8 @@ $border-color: rgba(236, 72, 153, 0.2);
       }
 
       &:focus {
-        border-color: $primary-pink;
-        box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+        border-color: $primary-green;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
       }
     }
 
@@ -83,8 +83,8 @@ $border-color: rgba(236, 72, 153, 0.2);
       transition: all 0.2s ease;
 
       &:hover {
-        color: $primary-pink;
-        background: rgba(236, 72, 153, 0.1);
+        color: $primary-green;
+        background: rgba(16, 185, 129, 0.1);
       }
     }
   }
@@ -143,7 +143,7 @@ $border-color: rgba(236, 72, 153, 0.2);
       align-items: center;
       gap: 6px;
       padding: 8px 12px;
-      background: rgba(236, 72, 153, 0.1);
+      background: rgba(16, 185, 129, 0.1);
       border: 1px solid $border-color;
       border-radius: 20px;
       color: $text-secondary;
@@ -153,14 +153,14 @@ $border-color: rgba(236, 72, 153, 0.2);
       transition: all 0.2s ease;
 
       &:hover:not(.disabled) {
-        background: rgba(236, 72, 153, 0.2);
-        color: $primary-pink;
+        background: rgba(16, 185, 129, 0.2);
+        color: $primary-green;
       }
 
       &.active {
-        background: $primary-pink;
+        background: $primary-green;
         color: white;
-        border-color: $primary-pink;
+        border-color: $primary-green;
       }
 
       &.disabled {
@@ -209,21 +209,21 @@ $border-color: rgba(236, 72, 153, 0.2);
     gap: 8px;
     margin-bottom: 12px;
 
-    .selected-tag {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      background: $primary-pink;
-      color: white;
-      border-radius: 16px;
-      font-size: 12px;
-      font-weight: 500;
+          .selected-tag {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: $primary-green;
+        color: white;
+        border-radius: 16px;
+        font-size: 12px;
+        font-weight: 500;
 
-      &.custom-tag {
-        background: $primary-pink-dark;
-        border: 1px solid $primary-pink;
-      }
+        &.custom-tag {
+          background: $primary-green-dark;
+          border: 1px solid $primary-green;
+        }
 
       .remove-tag {
         background: none;
@@ -253,8 +253,8 @@ $border-color: rgba(236, 72, 153, 0.2);
     transition: all 0.2s ease;
 
     &:hover {
-      color: $primary-pink;
-      border-color: $primary-pink;
+      color: $primary-green;
+      border-color: $primary-green;
     }
   }
 }
@@ -285,7 +285,7 @@ $border-color: rgba(236, 72, 153, 0.2);
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(236, 72, 153, 0.15);
+    box-shadow: 0 8px 30px rgba(16, 185, 129, 0.15);
   }
 }
 
@@ -307,7 +307,7 @@ $border-color: rgba(236, 72, 153, 0.2);
       height: 40px;
       border-radius: 50%;
       overflow: hidden;
-      border: 2px solid $primary-pink;
+      border: 2px solid $primary-green;
 
       img {
         width: 100%;
@@ -332,7 +332,7 @@ $border-color: rgba(236, 72, 153, 0.2);
         text-align: left;
 
         &:hover {
-          color: $primary-pink;
+          color: $primary-green;
         }
       }
 
@@ -371,8 +371,8 @@ $border-color: rgba(236, 72, 153, 0.2);
       transition: all 0.2s ease;
 
       &:hover {
-        color: $primary-pink;
-        background: rgba(236, 72, 153, 0.1);
+        color: $primary-green;
+        background: rgba(16, 185, 129, 0.1);
       }
     }
   }
@@ -443,22 +443,22 @@ $border-color: rgba(236, 72, 153, 0.2);
     }
 
     .view-profile-btn {
-      background: rgba(236, 72, 153, 0.1);
-      color: $primary-pink;
+      background: rgba(16, 185, 129, 0.1);
+      color: $primary-green;
       border: 1px solid $border-color;
 
       &:hover {
-        background: rgba(236, 72, 153, 0.2);
+        background: rgba(16, 185, 129, 0.2);
         transform: translateY(-1px);
       }
     }
 
     .message-btn {
-      background: $primary-pink;
+      background: $primary-green;
       color: white;
 
       &:hover {
-        background: $primary-pink-light;
+        background: $primary-green-light;
         transform: translateY(-1px);
       }
     }
@@ -476,8 +476,8 @@ $border-color: rgba(236, 72, 153, 0.2);
   .loading-spinner {
     width: 32px;
     height: 32px;
-    border: 3px solid rgba(236, 72, 153, 0.2);
-    border-top: 3px solid $primary-pink;
+    border: 3px solid rgba(16, 185, 129, 0.2);
+    border-top: 3px solid $primary-green;
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }
@@ -500,7 +500,7 @@ $border-color: rgba(236, 72, 153, 0.2);
 
   .end-icon {
     font-size: 48px;
-    color: $primary-pink;
+    color: $primary-green;
     margin-bottom: 16px;
   }
 
@@ -546,7 +546,7 @@ $border-color: rgba(236, 72, 153, 0.2);
     align-items: center;
     gap: 8px;
     padding: 12px 24px;
-    background: $primary-pink;
+    background: $primary-green;
     color: white;
     border: none;
     border-radius: 12px;
@@ -556,7 +556,7 @@ $border-color: rgba(236, 72, 153, 0.2);
     transition: all 0.2s ease;
 
     &:hover {
-      background: $primary-pink-light;
+      background: $primary-green-light;
       transform: translateY(-1px);
     }
   }
@@ -639,10 +639,10 @@ $border-color: rgba(236, 72, 153, 0.2);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: $primary-pink;
+  background: $primary-green;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: $primary-pink-light;
+  background: $primary-green-light;
 }

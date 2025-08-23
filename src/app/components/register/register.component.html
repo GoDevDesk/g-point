@@ -3,7 +3,7 @@
 </div>
 
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
-    <div [class.opacity-50]="isLoading" class="max-w-md w-full space-y-8 bg-gray-800 p-10 rounded-2xl shadow-2xl border border-pink-500/20">
+    <div [class.opacity-50]="isLoading" class="max-w-md w-full space-y-8 bg-gray-800 p-10 rounded-2xl shadow-2xl border border-emerald-500/20">
         <div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
                 Crear una cuenta
@@ -23,7 +23,7 @@
                             id="username"
                             [(ngModel)]="user.UserName"
                             name="username"
-                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
+                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
                             placeholder="Tu nombre de usuario"
                             required
                         />
@@ -38,7 +38,7 @@
                             id="email"
                             [(ngModel)]="user.EmailAddress"
                             name="email"
-                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
+                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
                             placeholder="tu@email.com"
                             required
                         />
@@ -53,7 +53,7 @@
                             id="firstName"
                             [(ngModel)]="user.FirstName"
                             name="firstName"
-                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
+                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
                             placeholder="Tu nombre"
                             required
                         />
@@ -68,7 +68,7 @@
                             id="lastName"
                             [(ngModel)]="user.LastName"
                             name="lastName"
-                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
+                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
                             placeholder="Tu apellido"
                             required
                         />
@@ -83,7 +83,7 @@
                             id="password"
                             [(ngModel)]="user.Password"
                             name="password"
-                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
+                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
                             placeholder="Tu contraseña"
                             required
                         />
@@ -98,7 +98,7 @@
                             id="confirmPassword"
                             [(ngModel)]="confirmPassword"
                             name="confirmPassword"
-                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
+                            class="appearance-none relative block w-full px-4 py-3 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out"
                             placeholder="Confirma tu contraseña"
                             required
                         />
@@ -116,7 +116,7 @@
                                 name="isCreator"
                                 [value]="true"
                                 [(ngModel)]="user.isCreator"
-                                class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-600 bg-gray-700"
+                                class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-600 bg-gray-700"
                             />
                             <label for="isCreator-true" class="ml-3 text-sm text-gray-300">
                                 <span class="font-medium">Creadxr de Contenido</span>
@@ -129,7 +129,7 @@
                                 name="isCreator"
                                 [value]="false"
                                 [(ngModel)]="user.isCreator"
-                                class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-600 bg-gray-700"
+                                class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-600 bg-gray-700"
                             />
                             <label for="isCreator-false" class="ml-3 text-sm text-gray-300">
                                 <span class="font-medium">Usuario Regular</span>
@@ -141,7 +141,7 @@
                     <div *ngIf="user.isCreator !== undefined" class="mt-4 p-4 bg-gray-700 rounded-lg border border-gray-600">
                         <div class="text-sm text-gray-300">
                             <div *ngIf="user.isCreator" class="flex items-start">
-                                <span class="text-pink-400 font-medium mr-2">🎨 Creadxr:</span>
+                                <span class="text-emerald-400 font-medium mr-2">🎨 Creadxr:</span>
                                 <span>Puedes crear y vender contenido exclusivo, gestionar suscripciones, recibir donaciones y monetizar tu contenido en la plataforma.</span>
                             </div>
                             <div *ngIf="!user.isCreator" class="flex items-start">
@@ -156,7 +156,7 @@
             <div>
                 <button
                     type="submit"
-                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 focus:ring-offset-gray-800 transition duration-150 ease-in-out transform hover:scale-[1.02]"
+                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 focus:ring-offset-gray-800 transition duration-150 ease-in-out transform hover:scale-[1.02]"
                 >
                     Registrarse
                 </button>
@@ -175,7 +175,7 @@
 
             <div class="mt-6">
                 <a [routerLink]="'/login'" 
-                   class="w-full flex justify-center py-2 px-4 border border-pink-500/20 rounded-lg shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 focus:ring-offset-gray-800 transition duration-150 ease-in-out">
+                   class="w-full flex justify-center py-2 px-4 border border-emerald-500/20 rounded-lg shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 focus:ring-offset-gray-800 transition duration-150 ease-in-out">
                     Iniciar sesión
                 </a>
             </div>

@@ -1,6 +1,6 @@
 <!-- Hero Section -->
-<section *ngIf="showBanner && !isLoggedIn" class="bg-gradient-to-br from-gray-900 via-pink-900 to-gray-900 text-white py-16 relative">
-  <button (click)="closeBanner()" class="absolute top-4 right-4 text-white hover:text-pink-400 transition-colors">
+<section *ngIf="showBanner && !isLoggedIn" class="bg-gradient-to-br from-gray-900 via-emerald-900 to-gray-900 text-white py-16 relative">
+  <button (click)="closeBanner()" class="absolute top-4 right-4 text-white hover:text-emerald-400 transition-colors">
     <i class="fas fa-times text-2xl"></i>
   </button>
   <div class="container mx-auto px-4">
@@ -8,10 +8,10 @@
       <h1 class="text-4xl md:text-5xl font-bold mb-6">Descubre Contenido Exclusivo</h1>
       <p class="text-xl mb-14 text-gray-300">Plataforma para creadores de contenido adulto y más</p>
       <div class="space-x-4 mt-8">
-        <a routerLink="/register" class="bg-pink-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-pink-600 transition-all duration-300 hover:scale-105">
+        <a routerLink="/register" class="bg-emerald-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-emerald-600 transition-all duration-300 hover:scale-105">
           Registrarse
         </a>
-        <a routerLink="/login" class="border-2 border-pink-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-pink-500 hover:text-white transition-all duration-300 hover:scale-105">
+        <a routerLink="/login" class="border-2 border-emerald-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-emerald-500 hover:text-white transition-all duration-300 hover:scale-105">
           Iniciar Sesión
         </a>
       </div>
@@ -26,8 +26,8 @@
     <h2 class="text-2xl font-bold mb-6 text-white">Explora Categorías</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div *ngFor="let category of categories" 
-           class="category-card bg-gray-800 rounded-lg shadow-lg p-4 text-center hover:shadow-xl transition-all duration-300 cursor-pointer border border-pink-500/20">
-        <i class="fas {{category.icon}} text-2xl text-pink-500 mb-3"></i>
+           class="category-card bg-gray-800 rounded-lg shadow-lg p-4 text-center hover:shadow-xl transition-all duration-300 cursor-pointer border border-emerald-500/20">
+        <i class="fas {{category.icon}} text-2xl text-emerald-500 mb-3"></i>
         <h3 class="text-base font-semibold mb-1 text-white">{{category.name}}</h3>
         <p class="text-sm text-gray-400">{{category.count}}+ creadores</p>
       </div>
@@ -39,7 +39,7 @@
     <h2 class="text-2xl font-bold mb-6 text-white">Creadoras Destacadas</h2>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <!-- Creadora 1 -->
-      <div class="creator-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-pink-500/20">
+      <div class="creator-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-emerald-500/20">
         <div class="relative">
           <div class="absolute top-2 right-2 z-50">
             <div class="bg-black bg-opacity-50 rounded-full p-1 text-3xl">
@@ -49,7 +49,7 @@
           <img src="assets/iaModels/1.jpg" alt="Creadora" class="w-full h-40 object-cover">
           <!-- Foto de perfil circular -->
           <div class="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-1/2 z-50">
-            <div class="w-24 h-24 rounded-full border-4 border-pink-500 shadow-lg overflow-hidden">
+            <div class="w-24 h-24 rounded-full border-4 border-emerald-500 shadow-lg overflow-hidden">
               <img src="assets/defaultIcons/defaultProfilePhoto.png" alt="Foto de perfil" class="w-full h-full object-cover">
             </div>
           </div>
@@ -65,24 +65,24 @@
               <span class="text-sm text-gray-300">4.8</span>
             </div>
             <div class="flex items-center">
-              <i class="fas fa-users text-pink-500 mr-1"></i>
+              <i class="fas fa-users text-emerald-500 mr-1"></i>
               <span class="text-sm text-gray-300">1.2k</span>
             </div>
           </div>
           <p class="text-sm text-gray-400 mb-3 line-clamp-2">Fotógrafa profesional especializada en retratos artísticos y contenido exclusivo.</p>
-          <button class="w-full bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600 transition-all duration-300 hover:scale-105 text-sm">
+          <button class="w-full bg-emerald-500 text-white py-2 rounded-lg hover:bg-emerald-600 transition-all duration-300 hover:scale-105 text-sm">
             Ver Perfil
           </button>
         </div>
       </div>
 
       <!-- Creadora 2 -->
-      <div class="creator-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-pink-500/20">
+      <div class="creator-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-emerald-500/20">
         <div class="relative">
           <img src="assets/iaModels/2.jpeg" alt="Creadora" class="w-full h-40 object-cover">
           <!-- Foto de perfil circular -->
           <div class="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-1/2 z-50">
-            <div class="w-24 h-24 rounded-full border-4 border-pink-500 shadow-lg overflow-hidden">
+            <div class="w-24 h-24 rounded-full border-4 border-emerald-500 shadow-lg overflow-hidden">
               <img src="assets/defaultIcons/defaultProfilePhoto.png" alt="Foto de perfil" class="w-full h-full object-cover">
             </div>
           </div>
@@ -98,24 +98,24 @@
               <span class="text-sm text-gray-300">4.9</span>
             </div>
             <div class="flex items-center">
-              <i class="fas fa-users text-pink-500 mr-1"></i>
+              <i class="fas fa-users text-emerald-500 mr-1"></i>
               <span class="text-sm text-gray-300">2.5k</span>
             </div>
           </div>
           <p class="text-sm text-gray-400 mb-3 line-clamp-2">Modelo y creadora de contenido fitness y lifestyle.</p>
-          <button class="w-full bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600 transition-all duration-300 hover:scale-105 text-sm">
+          <button class="w-full bg-emerald-500 text-white py-2 rounded-lg hover:bg-emerald-600 transition-all duration-300 hover:scale-105 text-sm">
             Ver Perfil
           </button>
         </div>
       </div>
 
       <!-- Creadora 3 -->
-      <div class="creator-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-pink-500/20">
+      <div class="creator-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-emerald-500/20">
         <div class="relative">
           <img src="assets/iaModels/3.jpeg" alt="Creadora" class="w-full h-40 object-cover">
           <!-- Foto de perfil circular -->
           <div class="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-1/2 z-50">
-            <div class="w-24 h-24 rounded-full border-4 border-pink-500 shadow-lg overflow-hidden">
+            <div class="w-24 h-24 rounded-full border-4 border-emerald-500 shadow-lg overflow-hidden">
               <img src="assets/defaultIcons/defaultProfilePhoto.png" alt="Foto de perfil" class="w-full h-full object-cover">
             </div>
           </div>
@@ -131,24 +131,24 @@
               <span class="text-sm text-gray-300">4.7</span>
             </div>
             <div class="flex items-center">
-              <i class="fas fa-users text-pink-500 mr-1"></i>
+              <i class="fas fa-users text-emerald-500 mr-1"></i>
               <span class="text-sm text-gray-300">1.8k</span>
             </div>
           </div>
           <p class="text-sm text-gray-400 mb-3 line-clamp-2">Artista visual y creadora de contenido artístico y conceptual.</p>
-          <button class="w-full bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600 transition-all duration-300 hover:scale-105 text-sm">
+          <button class="w-full bg-emerald-500 text-white py-2 rounded-lg hover:bg-emerald-600 transition-all duration-300 hover:scale-105 text-sm">
             Ver Perfil
           </button>
         </div>
       </div>
 
       <!-- Creadora 4 -->
-      <div class="creator-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-pink-500/20">
+      <div class="creator-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-emerald-500/20">
         <div class="relative">
           <img src="assets/iaModels/images.jpeg" alt="Creadora" class="w-full h-40 object-cover">
           <!-- Foto de perfil circular -->
           <div class="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-1/2 z-50">
-            <div class="w-24 h-24 rounded-full border-4 border-pink-500 shadow-lg overflow-hidden">
+            <div class="w-24 h-24 rounded-full border-4 border-emerald-500 shadow-lg overflow-hidden">
               <img src="assets/defaultIcons/defaultProfilePhoto.png" alt="Foto de perfil" class="w-full h-full object-cover">
             </div>
           </div>
@@ -164,12 +164,12 @@
               <span class="text-sm text-gray-300">4.6</span>
             </div>
             <div class="flex items-center">
-              <i class="fas fa-users text-pink-500 mr-1"></i>
+              <i class="fas fa-users text-emerald-500 mr-1"></i>
               <span class="text-sm text-gray-300">1.5k</span>
             </div>
           </div>
           <p class="text-sm text-gray-400 mb-3 line-clamp-2">Creadora de contenido fitness y bienestar.</p>
-          <button class="w-full bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600 transition-all duration-300 hover:scale-105 text-sm">
+          <button class="w-full bg-emerald-500 text-white py-2 rounded-lg hover:bg-emerald-600 transition-all duration-300 hover:scale-105 text-sm">
             Ver Perfil
           </button>
         </div>
@@ -182,16 +182,16 @@
     <h2 class="text-2xl font-bold mb-6 text-white">Trending</h2>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <!-- Contenido Trending 1 -->
-      <div class="content-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-pink-500/20">
+      <div class="content-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-emerald-500/20">
         <div class="relative">
           <img src="assets/iaModels/images (1).jpeg" alt="Contenido" class="w-full h-40 object-cover">
           <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-xs">
-            <i class="fas fa-fire text-pink-500 mr-1"></i> Trending
+            <i class="fas fa-fire text-emerald-500 mr-1"></i> Trending
           </div>
         </div>
         <div class="p-4">
           <div class="flex items-center mb-3">
-            <img src="assets/iaModels/1.jpg" alt="Creadora" class="w-8 h-8 rounded-full mr-2 border-2 border-pink-500">
+            <img src="assets/iaModels/1.jpg" alt="Creadora" class="w-8 h-8 rounded-full mr-2 border-2 border-emerald-500">
             <div>
               <h3 class="text-sm font-semibold text-white">María García</h3>
               <p class="text-xs text-gray-400">Hace 2 horas</p>
@@ -200,10 +200,10 @@
           <p class="text-sm text-gray-300 mb-3 line-clamp-2">Nueva sesión fotográfica con un toque artístico y sensual.</p>
           <div class="flex justify-between items-center">
             <div class="flex items-center">
-              <i class="fas fa-heart text-pink-500 mr-1"></i>
+              <i class="fas fa-heart text-emerald-500 mr-1"></i>
               <span class="text-sm text-gray-300">2.5k</span>
             </div>
-            <button class="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-all duration-300 hover:scale-105 text-sm">
+            <button class="bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 transition-all duration-300 hover:scale-105 text-sm">
               Ver Contenido
             </button>
           </div>
@@ -211,16 +211,16 @@
       </div>
 
       <!-- Contenido Trending 2 -->
-      <div class="content-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-pink-500/20">
+      <div class="content-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-emerald-500/20">
         <div class="relative">
           <img src="assets/iaModels/images (4).jpeg" alt="Contenido" class="w-full h-40 object-cover">
           <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-xs">
-            <i class="fas fa-fire text-pink-500 mr-1"></i> Trending
+            <i class="fas fa-fire text-emerald-500 mr-1"></i> Trending
           </div>
         </div>
         <div class="p-4">
           <div class="flex items-center mb-3">
-            <img src="assets/iaModels/2.jpeg" alt="Creadora" class="w-8 h-8 rounded-full mr-2 border-2 border-pink-500">
+            <img src="assets/iaModels/2.jpeg" alt="Creadora" class="w-8 h-8 rounded-full mr-2 border-2 border-emerald-500">
             <div>
               <h3 class="text-sm font-semibold text-white">Ana Martínez</h3>
               <p class="text-xs text-gray-400">Hace 3 horas</p>
@@ -229,10 +229,10 @@
           <p class="text-sm text-gray-300 mb-3 line-clamp-2">Rutina de ejercicios especial para el verano.</p>
           <div class="flex justify-between items-center">
             <div class="flex items-center">
-              <i class="fas fa-heart text-pink-500 mr-1"></i>
+              <i class="fas fa-heart text-emerald-500 mr-1"></i>
               <span class="text-sm text-gray-300">1.8k</span>
             </div>
-            <button class="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-all duration-300 hover:scale-105 text-sm">
+            <button class="bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 transition-all duration-300 hover:scale-105 text-sm">
               Ver Contenido
             </button>
           </div>
@@ -240,16 +240,16 @@
       </div>
 
       <!-- Contenido Trending 3 -->
-      <div class="content-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-pink-500/20">
+      <div class="content-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-emerald-500/20">
         <div class="relative">
           <img src="assets/iaModels/1.png" alt="Contenido" class="w-full h-40 object-cover">
           <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-xs">
-            <i class="fas fa-fire text-pink-500 mr-1"></i> Trending
+            <i class="fas fa-fire text-emerald-500 mr-1"></i> Trending
           </div>
         </div>
         <div class="p-4">
           <div class="flex items-center mb-3">
-            <img src="assets/iaModels/3.jpeg" alt="Creadora" class="w-8 h-8 rounded-full mr-2 border-2 border-pink-500">
+            <img src="assets/iaModels/3.jpeg" alt="Creadora" class="w-8 h-8 rounded-full mr-2 border-2 border-emerald-500">
             <div>
               <h3 class="text-sm font-semibold text-white">Laura Sánchez</h3>
               <p class="text-xs text-gray-400">Hace 4 horas</p>
@@ -258,10 +258,10 @@
           <p class="text-sm text-gray-300 mb-3 line-clamp-2">Nueva serie de fotografías conceptuales.</p>
           <div class="flex justify-between items-center">
             <div class="flex items-center">
-              <i class="fas fa-heart text-pink-500 mr-1"></i>
+              <i class="fas fa-heart text-emerald-500 mr-1"></i>
               <span class="text-sm text-gray-300">1.5k</span>
             </div>
-            <button class="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-all duration-300 hover:scale-105 text-sm">
+            <button class="bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 transition-all duration-300 hover:scale-105 text-sm">
               Ver Contenido
             </button>
           </div>
@@ -269,16 +269,16 @@
       </div>
 
       <!-- Contenido Trending 4 -->
-      <div class="content-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-pink-500/20">
+      <div class="content-card bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-emerald-500/20">
         <div class="relative">
           <img src="assets/iaModels/una modelo no tan formal sino modelo de redes mujer como si fuera para ,only fans, pero sin violar las reglas .jpg" alt="Contenido" class="w-full h-40 object-cover">
           <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-xs">
-            <i class="fas fa-fire text-pink-500 mr-1"></i> Trending
+            <i class="fas fa-fire text-emerald-500 mr-1"></i> Trending
           </div>
         </div>
         <div class="p-4">
           <div class="flex items-center mb-3">
-            <img src="assets/iaModels/images.jpeg" alt="Creadora" class="w-8 h-8 rounded-full mr-2 border-2 border-pink-500">
+            <img src="assets/iaModels/images.jpeg" alt="Creadora" class="w-8 h-8 rounded-full mr-2 border-2 border-emerald-500">
             <div>
               <h3 class="text-sm font-semibold text-white">Sofía Rodríguez</h3>
               <p class="text-xs text-gray-400">Hace 5 horas</p>
@@ -287,10 +287,10 @@
           <p class="text-sm text-gray-300 mb-3 line-clamp-2">Nueva rutina de ejercicios para principiantes.</p>
           <div class="flex justify-between items-center">
             <div class="flex items-center">
-              <i class="fas fa-heart text-pink-500 mr-1"></i>
+              <i class="fas fa-heart text-emerald-500 mr-1"></i>
               <span class="text-sm text-gray-300">1.2k</span>
             </div>
-            <button class="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-all duration-300 hover:scale-105 text-sm">
+            <button class="bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 transition-all duration-300 hover:scale-105 text-sm">
               Ver Contenido
             </button>
           </div>
@@ -301,23 +301,23 @@
 </main>
 
 <!-- Footer con Información -->
-<footer class="bg-gray-900 text-white py-12 border-t border-pink-500/20">
+<footer class="bg-gray-900 text-white py-12 border-t border-emerald-500/20">
   <div class="container mx-auto px-4">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div>
-        <h3 class="text-xl font-bold mb-4 text-pink-500">Sobre Nosotros</h3>
+        <h3 class="text-xl font-bold mb-4 text-emerald-500">Sobre Nosotros</h3>
         <p class="text-gray-400">Plataforma para creadores de contenido adulto y más.</p>
       </div>
       <div>
-        <h3 class="text-xl font-bold mb-4 text-pink-500">Enlaces Rápidos</h3>
+        <h3 class="text-xl font-bold mb-4 text-emerald-500">Enlaces Rápidos</h3>
         <ul class="space-y-2">
-          <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">Términos y Condiciones</a></li>
-          <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">Política de Privacidad</a></li>
-          <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">FAQ</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">Términos y Condiciones</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">Política de Privacidad</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-emerald-500 transition-colors">FAQ</a></li>
         </ul>
       </div>
       <div>
-        <h3 class="text-xl font-bold mb-4 text-pink-500">Contacto</h3>
+        <h3 class="text-xl font-bold mb-4 text-emerald-500">Contacto</h3>
         <p class="text-gray-400">¿Tienes preguntas? Contáctanos.</p>
       </div>
     </div>

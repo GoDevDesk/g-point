@@ -1,18 +1,18 @@
 <div class="configuration-container">
   <!-- Botón de menú para móvil -->
   <button class="menu-toggle" (click)="toggleSidebar()">
-    <i class="fas fa-bars text-pink-500"></i>
+    <i class="fas fa-bars text-emerald-500"></i>
   </button>
 
   <!-- Barra lateral de navegación -->
   <nav class="sidebar" [class.active]="sidebarActive">
     <div class="sidebar-header">
-      <h3 class="text-pink-500">Configuración</h3>
+      <h3 class="text-emerald-500">Configuración</h3>
     </div>
     <ul>
       <li *ngFor="let section of sections" 
           (click)="scrollToSection(section.id)"
-          class="hover:text-pink-500 transition-colors">
+          class="hover:text-emerald-500 transition-colors">
         <i class="fas {{section.icon}} mr-2"></i>
         {{ section.name }}
       </li>
@@ -23,7 +23,7 @@
   <main class="content">
     <!-- Sección de Perfil -->
     <section id="profile" class="section">
-      <h2 class="text-pink-500">Datos Personales</h2>
+      <h2 class="text-emerald-500">Datos Personales</h2>
       <div class="card">
         <div class="form-group">
           <label for="name">Nombre</label>
@@ -45,7 +45,7 @@
 
     <!-- Sección de Etiquetas - Solo para creadores -->
     <section id="tags" class="section" *ngIf="isCreator">
-      <h2 class="text-pink-500">Etiquetas del Perfil</h2>
+      <h2 class="text-emerald-500">Etiquetas del Perfil</h2>
       <div class="card">
         <div class="tags-container">
           <div class="selected-tags">
@@ -108,13 +108,13 @@
 
     <!-- Sección de Redes Sociales - Solo para creadores -->
     <section id="social" class="section" *ngIf="isCreator">
-      <h2 class="text-pink-500">Redes Sociales</h2>
+      <h2 class="text-emerald-500">Redes Sociales</h2>
       <div class="card">
         <div class="social-networks">
           <div class="social-item" *ngFor="let network of socialNetworks">
             <div class="social-input">
               <label>
-                <i class="fab {{network.icon}} mr-2 text-pink-500"></i>
+                <i class="fab {{network.icon}} mr-2 text-emerald-500"></i>
                 {{ network.platform }}
               </label>
               <input type="url" 
@@ -129,7 +129,7 @@
 
     <!-- Sección de Privacidad - Solo para creadores -->
     <section id="privacy" class="section" *ngIf="isCreator">
-      <h2 class="text-pink-500">Privacidad</h2>
+      <h2 class="text-emerald-500">Privacidad</h2>
       <div class="card">
         <div class="privacy-options">
           <div class="privacy-item">
@@ -171,7 +171,7 @@
 
     <!-- Sección de Bloqueos -->
     <section id="blocks" class="section">
-      <h2 class="text-pink-500">Usuarios Bloqueados</h2>
+      <h2 class="text-emerald-500">Usuarios Bloqueados</h2>
       <div class="card">
         <div class="blocked-users">
           <div class="block-input-group">
@@ -215,7 +215,7 @@
 
     <!-- Sección de Cuenta -->
     <section id="account" class="section">
-      <h2 class="text-pink-500">Gestión de Cuenta</h2>
+      <h2 class="text-emerald-500">Gestión de Cuenta</h2>
       <div class="card danger-zone">
         <div class="danger-actions">
           <div class="danger-item">

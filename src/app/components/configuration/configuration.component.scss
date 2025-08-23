@@ -18,11 +18,11 @@
   overflow-y: auto;
   transition: transform 0.3s ease;
   z-index: 1000;
-  border-right: 1px solid rgba(236, 72, 153, 0.2);
+  border-right: 1px solid rgba(16, 185, 129, 0.2);
 
   .sidebar-header {
     padding: 0 1.5rem 0.5rem;
-    border-bottom: 1px solid rgba(236, 72, 153, 0.2);
+    border-bottom: 1px solid rgba(16, 185, 129, 0.2);
     margin-bottom: 0.5rem;
 
     h3 {
@@ -52,7 +52,7 @@
       &:hover {
         background-color: #374151;
         padding-left: 2rem;
-        border-left-color: #ec4899;
+        border-left-color: #10B981;
       }
     }
   }
@@ -71,7 +71,7 @@
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(236, 72, 153, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.2);
 
   h2 {
     margin-bottom: 1.5rem;
@@ -108,7 +108,7 @@
   textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid rgba(236, 72, 153, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.2);
     border-radius: 4px;
     background-color: #1f2937;
     color: #fff;
@@ -117,8 +117,8 @@
 
     &:focus {
       outline: none;
-      border-color: #ec4899;
-      box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
+      border-color: #10B981;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
     }
 
     &::placeholder {
@@ -140,7 +140,7 @@
   background-color: #1f2937;
   padding: 0.75rem 1rem;
   border-radius: 4px;
-  border: 1px solid rgba(236, 72, 153, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.2);
 
   label {
     color: #e0e0e0;
@@ -161,7 +161,7 @@
     height: 0;
 
     &:checked + .slider {
-      background-color: #ec4899;
+      background-color: #10B981;
     }
 
     &:checked + .slider:before {
@@ -196,7 +196,7 @@
 
 // Botones
 .save-button {
-  background-color: #ec4899;
+  background-color: #10B981;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -227,7 +227,7 @@
 .selected-tags {
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(236, 72, 153, 0.2);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .tags-grid {
@@ -247,17 +247,17 @@
   color: #fff;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 1px solid rgba(236, 72, 153, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.2);
   position: relative;
 
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-color: #ec4899;
+    border-color: #10B981;
   }
 
   &.selected {
-    background-color: #ec4899;
+    background-color: #10B981;
     padding-right: 2.5rem;
 
     &:hover {
@@ -325,15 +325,15 @@
   input {
     flex: 1;
     padding: 0.75rem;
-    border: 1px solid rgba(236, 72, 153, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.2);
     border-radius: 4px;
     background-color: #1f2937;
     color: #fff;
 
     &:focus {
       outline: none;
-      border-color: #ec4899;
-      box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
+      border-color: #10B981;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
     }
 
     &:disabled {
@@ -343,7 +343,7 @@
   }
 
   button {
-    background-color: #ec4899;
+    background-color: #10B981;
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -389,7 +389,7 @@
       input {
         width: 100%;
         padding: 0.75rem;
-        border: 1px solid rgba(236, 72, 153, 0.2);
+        border: 1px solid rgba(16, 185, 129, 0.2);
         border-radius: 4px;
         background-color: #1f2937;
         color: #fff;
@@ -397,8 +397,8 @@
 
         &:focus {
           outline: none;
-          border-color: #ec4899;
-          box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
+          border-color: #10B981;
+          box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
         }
 
         &::placeholder {
@@ -414,7 +414,7 @@
   .privacy-item {
     margin-bottom: 2rem;
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid rgba(236, 72, 153, 0.2);
+    border-bottom: 1px solid rgba(16, 185, 129, 0.2);
 
     &:last-child {
       margin-bottom: 0;
@@ -453,7 +453,7 @@
       .search-input {
         width: 100%;
         padding: 0.75rem;
-        border: 1px solid rgba(236, 72, 153, 0.2);
+        border: 1px solid rgba(16, 185, 129, 0.2);
         border-radius: 4px;
         background-color: #1f2937;
         color: #fff;
@@ -461,8 +461,8 @@
 
         &:focus {
           outline: none;
-          border-color: #ec4899;
-          box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
+          border-color: #10B981;
+          box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
         }
 
         &::placeholder {
@@ -476,7 +476,7 @@
         left: 0;
         right: 0;
         background-color: #1f2937;
-        border: 1px solid rgba(236, 72, 153, 0.2);
+        border: 1px solid rgba(16, 185, 129, 0.2);
         border-radius: 4px;
         max-height: 200px;
         overflow-y: auto;
@@ -489,7 +489,7 @@
            padding: 0.75rem;
            cursor: pointer;
            transition: all 0.3s ease;
-           border-bottom: 1px solid rgba(236, 72, 153, 0.1);
+           border-bottom: 1px solid rgba(16, 185, 129, 0.1);
 
            &:hover {
              background-color: #ef4444;
@@ -549,7 +549,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid rgba(236, 72, 153, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.2);
 
     &:last-child {
       margin-bottom: 0;
@@ -637,7 +637,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 1px solid rgba(236, 72, 153, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.2);
 
   &:hover {
     background-color: #374151;

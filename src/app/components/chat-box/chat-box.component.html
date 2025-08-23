@@ -8,7 +8,7 @@
   <!-- Toggle sidebar button (visible only on mobile) -->
   <button 
     *ngIf="!showSidebar"
-    class="absolute top-4 left-4 z-20 bg-pink-600 p-2 rounded-full shadow-lg md:hidden sidebar-toggle" 
+    class="absolute top-4 left-4 z-20 bg-emerald-600 p-2 rounded-full shadow-lg md:hidden sidebar-toggle" 
     (click)="toggleSidebar()">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
@@ -20,12 +20,12 @@
     <!-- Sidebar Header -->
     <header class="p-4 border-b border-gray-700 flex justify-between items-center bg-gray-800 text-white sticky top-0 z-10 mt-6 responsive-header">
       <div class="chat-title-container">
-        <h1 class="chat-web-title text-xl font-bold text-pink-400">Chat G-Point</h1>
+        <h1 class="chat-web-title text-xl font-bold text-emerald-400">Chat G-Point</h1>
       </div>
       <div class="relative">
         <button class="focus:outline-none hover:bg-gray-700 p-2 rounded-full transition-all duration-200 md:hidden" 
                 (click)="toggleSidebar()">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-300" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-300" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
           </svg>
         </button>
@@ -39,7 +39,7 @@
         class="flex items-center mb-1 cursor-pointer hover:bg-gray-700 p-3 rounded-lg transition-all duration-200"
         [class.bg-gray-700]="selectedChat.otherUserId === recentChat.otherUserId"
         (click)="selectChatAndCloseSidebar(recentChat.otherUserId)">
-        <div class="w-12 h-12 bg-gray-600 rounded-full mr-3 overflow-hidden border-2 border-pink-400 flex-shrink-0">
+        <div class="w-12 h-12 bg-gray-600 rounded-full mr-3 overflow-hidden border-2 border-emerald-400 flex-shrink-0">
           <img [src]="recentChat.avatar" alt="User Avatar" class="w-12 h-12 rounded-full object-cover">
         </div>
         <div class="flex-1 overflow-hidden my-auto">
@@ -106,16 +106,16 @@
       <button 
         class="mr-2 focus:outline-none hover:bg-gray-700 p-2 rounded-full md:hidden menu-button" 
         (click)="toggleSidebar()">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-300" viewBox="0 0 20 20" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-300" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
         </svg>
       </button>
       <div class="flex items-center">
-        <div class="w-8 h-8 bg-gray-600 rounded-full mr-2 overflow-hidden border-2 border-pink-400 flex-shrink-0">
+        <div class="w-8 h-8 bg-gray-600 rounded-full mr-2 overflow-hidden border-2 border-emerald-400 flex-shrink-0">
           <img [src]="selectedChat.avatar || defaultPhoto" alt="User Avatar" class="w-8 h-8 rounded-full object-cover">
         </div>
         <div class="my-auto chat-user-info">
-          <h1 class="text-lg font-semibold text-pink-400 truncate">{{ selectedChat.otherUserName }}</h1>
+          <h1 class="text-lg font-semibold text-emerald-400 truncate">{{ selectedChat.otherUserName }}</h1>
           <p class="text-xs text-gray-400">En línea</p>
         </div>
       </div>
@@ -126,7 +126,7 @@
       <button 
         class="focus:outline-none hover:bg-gray-700 p-2 rounded-full" 
         (click)="toggleSidebar()">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-300" viewBox="0 0 20 20" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-300" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
         </svg>
       </button>
@@ -137,16 +137,16 @@
       <div class="text-center max-w-md p-8 rounded-2xl bg-gray-800 bg-opacity-70 shadow-lg">
         <div class="mb-6 flex justify-center">
           <div class="w-20 h-20 bg-gray-700 rounded-full flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
           </div>
         </div>
-        <h2 class="text-xl font-bold text-pink-400 mb-2">Bienvenido al Chat</h2>
+        <h2 class="text-xl font-bold text-emerald-400 mb-2">Bienvenido al Chat</h2>
         <p class="text-gray-300 mb-4">Selecciona un contacto para comenzar a chatear</p>
         <div class="flex justify-center">
           <div class="text-sm text-gray-400 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-pink-400 arrow-left-animation" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-emerald-400 arrow-left-animation" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             <span>Toca en un chat de la izquierda</span>
@@ -223,7 +223,7 @@
                       <a *ngIf="isPremiumContentPaid(message)" 
                          [href]="getPremiumContentLink(message)"
                          target="_blank"
-                         class="inline-block bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+                         class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
                         Ver Contenido
                       </a>
                     </div>
@@ -235,7 +235,7 @@
 
           <!-- Mensaje Premium Enviado (Vista del Vendedor) -->
           <div *ngIf="message.senderId === currentUserLoggedId" class="flex justify-end mb-4 cursor-pointer animate-fadeIn">
-            <div class="flex flex-col max-w-96 bg-pink-600 text-white rounded-2xl p-3 gap-3 shadow-lg">
+            <div class="flex flex-col max-w-96 bg-emerald-600 text-white rounded-2xl p-3 gap-3 shadow-lg">
               <div class="premium-content-container">
                 <div class="relative group">
                   <!-- Vista previa con efecto hover -->
@@ -249,7 +249,7 @@
                       <div class="w-full p-3 transform transition-transform duration-300 group-hover:translate-y-0 translate-y-full">
                         <div class="bg-black bg-opacity-75 rounded-lg p-2">
                           <p class="text-white text-sm font-semibold">{{getPremiumContentTitle(message)}}</p>
-                          <p class="text-pink-400 text-xs">${{getPremiumContentPrice(message)}}</p>
+                          <p class="text-emerald-400 text-xs">${{getPremiumContentPrice(message)}}</p>
                           <p class="text-gray-300 text-xs mt-1" [class.text-emerald-400]="isPremiumContentPaid(message)" [class.text-yellow-400]="!isPremiumContentPaid(message)">
                             {{isPremiumContentPaid(message) ? 'Contenido Pagado' : 'Pendiente de Pago'}}
                           </p>
@@ -292,7 +292,7 @@
           
           <!-- Outgoing Message -->
           <div *ngIf="message.senderId === currentUserLoggedId" class="flex justify-end mb-2 cursor-pointer animate-fadeIn">
-            <div class="flex max-w-96 bg-pink-600 text-white rounded-2xl p-3 gap-3 shadow-lg"> 
+            <div class="flex max-w-96 bg-emerald-600 text-white rounded-2xl p-3 gap-3 shadow-lg"> 
               <p>{{ message.message }}</p>
             </div>
             <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2 flex-shrink-0">
@@ -321,9 +321,9 @@
           placeholder="Escribe un mensaje..." 
           [(ngModel)]="newMessage"
           (keydown.enter)="sendMessage()"
-          class="flex-1 p-3 rounded-full border border-gray-600 bg-gray-700 text-white focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400">
+          class="flex-1 p-3 rounded-full border border-gray-600 bg-gray-700 text-white focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400">
         <button 
-          class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-3 rounded-full transition-all duration-200 shadow-md flex-shrink-0" 
+          class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-full transition-all duration-200 shadow-md flex-shrink-0" 
           (click)="sendMessage()">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />

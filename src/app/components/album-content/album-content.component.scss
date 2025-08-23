@@ -112,14 +112,14 @@
 
   /* Estilos para el botón de agregar foto */
   .add-photo-button {
-    background: linear-gradient(135deg, #67e8f9 0%, #22d3ee 100%);
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
     border: 2px solid transparent;
     transition: all 0.3s ease;
     
     &:hover {
-      background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(103, 232, 249, 0.3);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
     }
     
     &:active {
@@ -141,7 +141,7 @@
     transition: all 0.2s ease;
     
     &:hover {
-      color: #0891b2;
+      color: #10B981;
       transform: scale(1.1);
     }
   }
